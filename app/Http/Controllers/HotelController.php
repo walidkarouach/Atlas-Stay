@@ -10,7 +10,7 @@ class HotelController extends Controller
 {
     public function index(): JsonResponse
     {
-        $hotels = Hotel::all();
+        $hotels = Hotel::with('proprietaire:id_user,nom,email')->get();
 
         return response()->json([
             'message' => 'Liste des hôtels',
@@ -29,9 +29,10 @@ class HotelController extends Controller
             'type_hebergement' => 'required|string|max:100',
             'capacite' => 'required|integer|min:1',
             'disponibilite' => 'boolean',
-            'proprietaire_id' => 'required|exists:users,id_user',
             'statut' => 'nullable|string|max:50',
         ]);
+
+        $validated['proprietaire_id'] = $request->user()->id_user;
 
         $hotel = Hotel::create($validated);
 
@@ -43,7 +44,7 @@ class HotelController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $hotel = Hotel::findOrFail($id);
+        $hotel = Hotel::with('proprietaire:id_user,nom,email')->findOrFail($id);
 
         return response()->json([
             'message' => 'Hôtel trouvé',
@@ -54,6 +55,12 @@ class HotelController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $hotel = Hotel::findOrFail($id);
+
+        if ($hotel->proprietaire_id !== $request->user()->id_user) {
+            return response()->json([
+                'message' => 'Vous ne pouvez modifier que vos propres hôtels',
+            ], 403);
+        }
 
         $validated = $request->validate([
             'nom' => 'sometimes|string|max:255',
@@ -76,9 +83,15 @@ class HotelController extends Controller
         ]);
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(Request $request, int $id): JsonResponse
     {
         $hotel = Hotel::findOrFail($id);
+
+        if ($hotel->proprietaire_id !== $request->user()->id_user) {
+            return response()->json([
+                'message' => 'Vous ne pouvez supprimer que vos propres hôtels',
+            ], 403);
+        }
 
         $hotel->delete();
 

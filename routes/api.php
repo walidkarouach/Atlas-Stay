@@ -23,10 +23,13 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->get('/admin-test', function (
 
 Route::get('/hotels', [HotelController::class, 'index']);
 
-Route::post('/hotels', [HotelController::class, 'store']);
+Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+    ->post('/hotels', [HotelController::class, 'store']);
 
 Route::get('/hotels/{id}', [HotelController::class, 'show']);
 
-Route::put('/hotels/{id}', [HotelController::class, 'update']);
+Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+    ->put('/hotels/{id}', [HotelController::class, 'update']);
 
-Route::delete('/hotels/{id}', [HotelController::class, 'destroy']);
+Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+    ->delete('/hotels/{id}', [HotelController::class, 'destroy']);
