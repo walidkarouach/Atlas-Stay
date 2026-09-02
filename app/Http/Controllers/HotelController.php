@@ -44,7 +44,10 @@ class HotelController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $hotel = Hotel::with('proprietaire:id_user,nom,email')->findOrFail($id);
+        $hotel = Hotel::with([
+            'proprietaire:id_user,nom,email',
+            'images'
+        ])->findOrFail($id);
 
         return response()->json([
             'message' => 'Hôtel trouvé',

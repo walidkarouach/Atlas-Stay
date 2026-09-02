@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\ImageController;
 
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -33,3 +34,6 @@ Route::middleware(['auth:sanctum', 'role:Propriétaire'])
 
 Route::middleware(['auth:sanctum', 'role:Propriétaire'])
     ->delete('/hotels/{id}', [HotelController::class, 'destroy']);
+
+    Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+    ->post('/hotels/{hotelId}/images', [ImageController::class, 'store']);
