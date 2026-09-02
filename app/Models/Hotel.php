@@ -30,4 +30,9 @@ class Hotel extends Model
             'id_user'
         );
     }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'hotel_id', 'id_hotel');
+    }
 }
