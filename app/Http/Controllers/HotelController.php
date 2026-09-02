@@ -8,9 +8,23 @@ use Illuminate\Http\JsonResponse;
 
 class HotelController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $hotels = Hotel::with('proprietaire:id_user,nom,email')->get();
+        $query = Hotel::with('proprietaire:id_user,nom,email');
+
+        if ($request->has('ville')) {
+            $query->where('ville', 'like', '%' . $request->ville . '%');
+        }
+
+        if ($request->has('prix_max')) {
+            $query->where('prix', '<=', $request->prix_max);
+        }
+
+        if ($request->has('type_hebergement')) {
+            $query->where('type_hebergement', $request->type_hebergement);
+        }
+
+        $hotels = $query->get();
 
         return response()->json([
             'message' => 'Liste des hôtels',
