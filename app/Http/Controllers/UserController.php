@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Hotel;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
@@ -107,6 +109,47 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'Mot de passe modifié avec succès',
+        ]);
+    }
+
+    public function statistics(): JsonResponse
+    {
+        $totalUsers = User::count();
+
+        $totalHotels = Hotel::count();
+
+        $hotelsEnAttente = Hotel::where('statut', 'en_attente')->count();
+
+        $hotelsValides = Hotel::where('statut', 'valide')->count();
+
+        $hotelsRefuses = Hotel::where('statut', 'refuse')->count();
+
+        $totalReservations = Reservation::count();
+
+        $reservationsEnAttente = Reservation::where('statut', 'en_attente')->count();
+
+        $reservationsConfirmees = Reservation::where('statut', 'confirmee')->count();
+
+        return response()->json([
+            'message' => 'Statistiques du dashboard',
+            'data' => [
+                'users' => [
+                    'total' => $totalUsers,
+                ],
+
+                'hotels' => [
+                    'total' => $totalHotels,
+                    'en_attente' => $hotelsEnAttente,
+                    'valides' => $hotelsValides,
+                    'refuses' => $hotelsRefuses,
+                ],
+
+                'reservations' => [
+                    'total' => $totalReservations,
+                    'en_attente' => $reservationsEnAttente,
+                    'confirmees' => $reservationsConfirmees,
+                ],
+            ],
         ]);
     }
 }
