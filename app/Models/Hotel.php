@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -34,5 +35,14 @@ class Hotel extends Model
     public function images()
     {
         return $this->hasMany(Image::class, 'hotel_id', 'id_hotel');
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(
+            Reservation::class,
+            'hotel_id',
+            'id_hotel'
+        );
     }
 }
