@@ -26,7 +26,7 @@ class HotelController extends Controller
             $query->where('type_hebergement', $request->type_hebergement);
         }
 
-        $hotels = $query->get();
+        $hotels = $query->paginate(10);
 
         return response()->json([
             'message' => 'Liste des hôtels',
@@ -127,7 +127,8 @@ class HotelController extends Controller
     {
         $hotels = Hotel::with([
             'proprietaire:id_user,nom,email'
-        ])->get();
+        ])
+        ->paginate(10);
 
         return response()->json([
             'message' => 'Liste de tous les hôtels',

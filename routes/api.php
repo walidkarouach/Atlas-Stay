@@ -124,3 +124,9 @@ Route::middleware('auth:sanctum')
 
 Route::middleware(['auth:sanctum', 'role:Propriétaire'])
     ->delete('/images/{id}', [ImageController::class, 'destroy']);
+
+Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+    ->patch('/reservations/{id}/cancel-owner', [ReservationController::class, 'cancelByOwner']);
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->get('/admin/reservations', [ReservationController::class, 'adminIndex']);

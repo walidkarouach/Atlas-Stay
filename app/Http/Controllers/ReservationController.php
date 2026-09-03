@@ -13,12 +13,15 @@ class ReservationController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $reservations = Reservation::with('hotel')
-            ->where('utilisateur_id', $request->user()->id_user)
-            ->get();
+        $reservations = Reservation::with([
+            'hotel:id_hotel,nom,ville,adresse,prix,type_hebergement'
+        ])
+        ->where('utilisateur_id', $request->user()->id_user)
+        ->orderByDesc('created_at')
+        ->paginate(10);
 
         return response()->json([
-            'message' => 'Liste de vos réservations',
+            'message' => 'Historique de vos réservations',
             'data' => $reservations,
         ]);
     }
@@ -152,9 +155,9 @@ class ReservationController extends Controller
             ], 403);
         }
 
-        if ($reservation->statut === 'annulee') {
+        if ($reservation->statut !== 'en_attente') {
             return response()->json([
-                'message' => 'Une réservation annulée ne peut pas être confirmée',
+                'message' => 'Seules les réservations en attente peuvent être confirmées',
             ], 422);
         }
 
@@ -162,12 +165,12 @@ class ReservationController extends Controller
             'statut' => 'confirmee',
         ]);
 
-    Notification::create([
+        Notification::create([
             'titre' => 'Réservation confirmée',
             'message' => 'Votre réservation a été confirmée par le propriétaire.',
             'lu' => false,
             'utilisateur_id' => $reservation->utilisateur_id,
-    ]);
+        ]);
 
         return response()->json([
             'message' => 'Réservation confirmée avec succès',
@@ -185,9 +188,9 @@ class ReservationController extends Controller
             ], 403);
         }
 
-        if ($reservation->statut === 'annulee') {
+        if ($reservation->statut !== 'en_attente') {
             return response()->json([
-                'message' => 'Une réservation annulée ne peut pas être refusée',
+                'message' => 'Seules les réservations en attente peuvent être refusées',
             ], 422);
         }
 
@@ -205,6 +208,54 @@ class ReservationController extends Controller
         return response()->json([
             'message' => 'Réservation refusée avec succès',
             'data' => $reservation,
+        ]);
+    }
+
+    public function cancelByOwner(Request $request, int $id): JsonResponse
+    {
+        $reservation = Reservation::with('hotel')->findOrFail($id);
+
+        if ($reservation->hotel->proprietaire_id !== $request->user()->id_user) {
+            return response()->json([
+                'message' => 'Vous ne pouvez gérer que les réservations de vos propres hôtels',
+            ], 403);
+        }
+
+        if ($reservation->statut === 'annulee') {
+            return response()->json([
+                'message' => 'Cette réservation est déjà annulée',
+            ], 422);
+        }
+
+        $reservation->update([
+            'statut' => 'annulee',
+        ]);
+
+        Notification::create([
+            'titre' => 'Réservation annulée',
+            'message' => 'Le propriétaire a annulé votre réservation pour cause d’indisponibilité.',
+            'lu' => false,
+            'utilisateur_id' => $reservation->utilisateur_id,
+        ]);
+
+        return response()->json([
+            'message' => 'Réservation annulée avec succès',
+            'data' => $reservation,
+        ]);
+    }
+
+    public function adminIndex(): JsonResponse
+    {
+        $reservations = Reservation::with([
+            'utilisateur:id_user,nom,email',
+            'hotel:id_hotel,nom,ville,proprietaire_id'
+        ])
+        ->orderByDesc('created_at')
+        ->paginate(10);
+
+        return response()->json([
+            'message' => 'Liste de toutes les réservations',
+            'data' => $reservations,
         ]);
     }
 }

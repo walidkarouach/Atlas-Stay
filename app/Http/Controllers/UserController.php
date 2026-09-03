@@ -12,7 +12,7 @@ class UserController extends Controller
     public function index(): JsonResponse
     {
         $users = User::with('role:id_role,nom')
-            ->get();
+            ->paginate(10);
 
         return response()->json([
             'message' => 'Liste des utilisateurs',
