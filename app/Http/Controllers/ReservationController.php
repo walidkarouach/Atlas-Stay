@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Models\Notification;
 
 class ReservationController extends Controller
 {
@@ -85,7 +86,7 @@ class ReservationController extends Controller
 
     public function destroy(Request $request, int $id): JsonResponse
     {
-        $reservation = Reservation::findOrFail($id);
+        $reservation = Reservation::with('hotel')->findOrFail($id);
 
         if ($reservation->utilisateur_id !== $request->user()->id_user) {
             return response()->json([
@@ -109,6 +110,13 @@ class ReservationController extends Controller
 
         $reservation->update([
             'statut' => 'annulee',
+        ]);
+
+        Notification::create([
+            'titre' => 'Réservation annulée',
+            'message' => 'Un client a annulé une réservation pour votre hôtel.',
+            'lu' => false,
+            'utilisateur_id' => $reservation->hotel->proprietaire_id,
         ]);
 
         return response()->json([
@@ -154,6 +162,13 @@ class ReservationController extends Controller
             'statut' => 'confirmee',
         ]);
 
+    Notification::create([
+            'titre' => 'Réservation confirmée',
+            'message' => 'Votre réservation a été confirmée par le propriétaire.',
+            'lu' => false,
+            'utilisateur_id' => $reservation->utilisateur_id,
+    ]);
+
         return response()->json([
             'message' => 'Réservation confirmée avec succès',
             'data' => $reservation,
@@ -178,6 +193,13 @@ class ReservationController extends Controller
 
         $reservation->update([
             'statut' => 'refusee',
+        ]);
+
+        Notification::create([
+            'titre' => 'Réservation refusée',
+            'message' => 'Votre réservation a été refusée par le propriétaire.',
+            'lu' => false,
+            'utilisateur_id' => $reservation->utilisateur_id,
         ]);
 
         return response()->json([

@@ -7,6 +7,7 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AvisController;
+use App\Http\Controllers\NotificationController;
 
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -67,5 +68,13 @@ Route::middleware(['auth:sanctum', 'role:Client'])->group(function () {
     Route::put('/avis/{id}', [AvisController::class, 'update']);
 
     Route::delete('/avis/{id}', [AvisController::class, 'destroy']);
+
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
+
+    Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 
 });
