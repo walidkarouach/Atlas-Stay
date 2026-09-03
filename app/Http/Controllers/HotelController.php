@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -146,6 +147,13 @@ class HotelController extends Controller
             'statut' => 'valide',
         ]);
 
+        Notification::create([
+            'titre' => 'Hôtel validé',
+            'message' => 'Votre hôtel a été validé par l’administrateur.',
+            'lu' => false,
+            'utilisateur_id' => $hotel->proprietaire_id,
+        ]);
+
         return response()->json([
             'message' => 'Hôtel validé avec succès',
             'data' => $hotel,
@@ -164,6 +172,13 @@ class HotelController extends Controller
 
         $hotel->update([
             'statut' => 'refuse',
+        ]);
+
+        Notification::create([
+            'titre' => 'Hôtel refusé',
+            'message' => 'Votre hôtel a été refusé par l’administrateur.',
+            'lu' => false,
+            'utilisateur_id' => $hotel->proprietaire_id,
         ]);
 
         return response()->json([

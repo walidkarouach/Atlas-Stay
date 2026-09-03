@@ -42,4 +42,36 @@ class NotificationController extends Controller
             'data' => $notification,
         ]);
     }
+
+    public function unread(Request $request): JsonResponse
+    {
+        $notifications = Notification::where(
+            'utilisateur_id',
+            $request->user()->id_user
+        )
+        ->where('lu', false)
+        ->orderByDesc('created_at')
+        ->get();
+
+        return response()->json([
+            'message' => 'Liste des notifications non lues',
+            'data' => $notifications,
+        ]);
+    }
+
+    public function markAllAsRead(Request $request): JsonResponse
+    {
+        Notification::where(
+            'utilisateur_id',
+            $request->user()->id_user
+        )
+        ->where('lu', false)
+        ->update([
+            'lu' => true,
+        ]);
+
+        return response()->json([
+            'message' => 'Toutes les notifications ont été marquées comme lues',
+        ]);
+    }
 }

@@ -115,3 +115,9 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
 
 Route::middleware(['auth:sanctum', 'role:Admin'])
     ->delete('/admin/avis/{id}', [AvisController::class, 'adminDestroy']);
+
+Route::middleware('auth:sanctum')
+    ->get('/notifications/unread', [NotificationController::class, 'unread']);
+
+Route::middleware('auth:sanctum')
+    ->patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
