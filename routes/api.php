@@ -8,6 +8,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AvisController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserController;
 
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -78,3 +79,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 
 });
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->get('/admin/users', [UserController::class, 'index']);
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->patch('/admin/users/{id}/role', [UserController::class, 'updateRole']);
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->delete('/admin/users/{id}', [UserController::class, 'destroy']);
