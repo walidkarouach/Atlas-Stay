@@ -111,4 +111,30 @@ class AvisController extends Controller
             'message' => 'Avis supprimé avec succès',
         ]);
     }
+
+    public function adminIndex(): JsonResponse
+    {
+        $avis = Avis::with([
+            'utilisateur:id_user,nom,email',
+            'hotel:id_hotel,nom'
+        ])
+        ->orderByDesc('date_avis')
+        ->get();
+
+        return response()->json([
+            'message' => 'Liste de tous les avis',
+            'data' => $avis,
+        ]);
+    }
+
+    public function adminDestroy(int $id): JsonResponse
+    {
+        $avis = Avis::findOrFail($id);
+
+        $avis->delete();
+
+        return response()->json([
+            'message' => 'Avis supprimé avec succès',
+        ]);
+    }
 }

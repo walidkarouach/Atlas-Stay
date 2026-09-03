@@ -109,3 +109,9 @@ Route::middleware('auth:sanctum')
 
 Route::middleware('auth:sanctum')
     ->put('/profile/password', [UserController::class, 'changePassword']);
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->get('/admin/avis', [AvisController::class, 'adminIndex']);
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->delete('/admin/avis/{id}', [AvisController::class, 'adminDestroy']);
