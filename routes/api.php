@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\AvisController;
 
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -56,3 +57,15 @@ Route::middleware(['auth:sanctum', 'role:Propriétaire'])
 
 Route::middleware(['auth:sanctum', 'role:Propriétaire'])
     ->patch('/reservations/{id}/reject', [ReservationController::class, 'reject']);
+
+Route::get('/hotels/{hotelId}/avis', [AvisController::class, 'index']);
+
+Route::middleware(['auth:sanctum', 'role:Client'])->group(function () {
+
+    Route::post('/avis', [AvisController::class, 'store']);
+
+    Route::put('/avis/{id}', [AvisController::class, 'update']);
+
+    Route::delete('/avis/{id}', [AvisController::class, 'destroy']);
+
+});

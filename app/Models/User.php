@@ -6,6 +6,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Role;
 use App\Models\Reservation;
+use App\Models\Avis;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -46,6 +47,15 @@ class User extends Authenticatable
         return $this->hasMany(
             Reservation::class,
             'utilisateur_id',
+            'id_user'
+        );
+    }
+
+    public function avis()
+    {
+        return $this->hasMany(
+            Avis::class,
+            'user_id',
             'id_user'
         );
     }
