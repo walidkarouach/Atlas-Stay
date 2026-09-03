@@ -88,3 +88,15 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
 
 Route::middleware(['auth:sanctum', 'role:Admin'])
     ->delete('/admin/users/{id}', [UserController::class, 'destroy']);
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->get('/admin/hotels', [HotelController::class, 'adminIndex']);
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->patch('/admin/hotels/{id}/validate', [HotelController::class, 'validate']);
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->patch('/admin/hotels/{id}/reject', [HotelController::class, 'reject']);
+
+Route::middleware(['auth:sanctum', 'role:Admin'])
+    ->delete('/admin/hotels/{id}', [HotelController::class, 'adminDestroy']);

@@ -116,4 +116,67 @@ class HotelController extends Controller
             'message' => 'Hôtel supprimé avec succès',
         ]);
     }
+
+    public function adminIndex(): JsonResponse
+    {
+        $hotels = Hotel::with([
+            'proprietaire:id_user,nom,email'
+        ])->get();
+
+        return response()->json([
+            'message' => 'Liste de tous les hôtels',
+            'data' => $hotels,
+        ]);
+    }
+
+    public function validate(int $id): JsonResponse
+    {
+        $hotel = Hotel::findOrFail($id);
+
+        if ($hotel->statut !== 'en_attente') {
+            return response()->json([
+                'message' => 'Cet hôtel ne peut pas être validé',
+            ], 422);
+        }
+
+        $hotel->update([
+            'statut' => 'valide',
+        ]);
+
+        return response()->json([
+            'message' => 'Hôtel validé avec succès',
+            'data' => $hotel,
+        ]);
+    }
+
+    public function reject(int $id): JsonResponse
+    {
+        $hotel = Hotel::findOrFail($id);
+
+        if ($hotel->statut !== 'en_attente') {
+            return response()->json([
+                'message' => 'Cet hôtel ne peut pas être refusé',
+            ], 422);
+        }
+
+        $hotel->update([
+            'statut' => 'refuse',
+        ]);
+
+        return response()->json([
+            'message' => 'Hôtel refusé avec succès',
+            'data' => $hotel,
+        ]);
+    }
+
+    public function adminDestroy(int $id): JsonResponse
+    {
+        $hotel = Hotel::findOrFail($id);
+
+        $hotel->delete();
+
+        return response()->json([
+            'message' => 'Hôtel supprimé avec succès',
+        ]);
+    }
 }
