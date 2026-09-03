@@ -58,10 +58,14 @@ class HotelController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $hotel = Hotel::with([
-            'proprietaire:id_user,nom,email',
-            'images'
-        ])->findOrFail($id);
+    $hotel = Hotel::with([
+        'proprietaire:id_user,nom,email',
+        'images'
+    ])->findOrFail($id);
+
+    $hotel->images->each(function ($image) {
+        $image->image = asset('storage/' . $image->image);
+    });
 
         return response()->json([
             'message' => 'Hôtel trouvé',
@@ -88,7 +92,6 @@ class HotelController extends Controller
             'type_hebergement' => 'sometimes|string|max:100',
             'capacite' => 'sometimes|integer|min:1',
             'disponibilite' => 'sometimes|boolean',
-            'proprietaire_id' => 'sometimes|exists:users,id_user',
             'statut' => 'sometimes|string|max:50',
         ]);
 

@@ -100,3 +100,12 @@ Route::middleware(['auth:sanctum', 'role:Admin'])
 
 Route::middleware(['auth:sanctum', 'role:Admin'])
     ->delete('/admin/hotels/{id}', [HotelController::class, 'adminDestroy']);
+
+Route::middleware('auth:sanctum')
+    ->get('/profile', [UserController::class, 'profile']);
+
+Route::middleware('auth:sanctum')
+    ->put('/profile', [UserController::class, 'updateProfile']);
+
+Route::middleware('auth:sanctum')
+    ->put('/profile/password', [UserController::class, 'changePassword']);

@@ -20,12 +20,15 @@ class ImageController extends Controller
         }
 
         $validated = $request->validate([
-            'image' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $validated['hotel_id'] = $hotel->id_hotel;
+        $path = $request->file('image')->store('hotels', 'public');
 
-        $image = Image::create($validated);
+        $image = Image::create([
+            'image' => $path,
+            'hotel_id' => $hotel->id_hotel,
+        ]);
 
         return response()->json([
             'message' => 'Image ajoutée avec succès',
