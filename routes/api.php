@@ -50,3 +50,9 @@ Route::middleware(['auth:sanctum', 'role:Client'])
 
 Route::middleware(['auth:sanctum', 'role:Propriétaire'])
     ->get('/proprietaire/reservations', [ReservationController::class, 'ownerReservations']);
+
+Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+    ->patch('/reservations/{id}/confirm', [ReservationController::class, 'confirm']);
+
+Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+    ->patch('/reservations/{id}/reject', [ReservationController::class, 'reject']);

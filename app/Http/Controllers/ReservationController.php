@@ -39,6 +39,27 @@ class ReservationController extends Controller
             ], 422);
         }
 
+        if ($validated['nb_personnes'] > $hotel->capacite) {
+            return response()->json([
+                'message' => 'Le nombre de personnes dépasse la capacité de cet hôtel',
+                'capacite_max' => $hotel->capacite,
+            ], 422);
+        }
+
+        $existingReservation = Reservation::where('hotel_id', $hotel->id_hotel)
+            ->whereIn('statut', ['en_attente', 'confirmee'])
+            ->where(function ($query) use ($validated) {
+        $query->where('date_arrivee', '<', $validated['date_depart'])
+            ->where('date_depart', '>', $validated['date_arrivee']);
+        })
+            ->exists();
+
+        if ($existingReservation) {
+            return response()->json([
+                'message' => 'Cet hôtel est déjà réservé pour cette période',
+            ], 422);
+        }
+
         $dateArrivee = \Carbon\Carbon::parse($validated['date_arrivee']);
         $dateDepart = \Carbon\Carbon::parse($validated['date_depart']);
 
@@ -78,6 +99,14 @@ class ReservationController extends Controller
             ], 422);
         }
 
+        $dateArrivee = \Carbon\Carbon::parse($reservation->date_arrivee);
+
+        if (now()->addHours(48)->greaterThan($dateArrivee)) {
+            return response()->json([
+                'message' => 'Vous ne pouvez plus annuler cette réservation moins de 48 heures avant l’arrivée',
+            ], 422);
+        }
+
         $reservation->update([
             'statut' => 'annulee',
         ]);
@@ -102,6 +131,58 @@ class ReservationController extends Controller
         return response()->json([
             'message' => 'Liste des réservations de vos hôtels',
             'data' => $reservations,
+        ]);
+    }
+
+    public function confirm(Request $request, int $id): JsonResponse
+    {
+        $reservation = Reservation::with('hotel')->findOrFail($id);
+
+        if ($reservation->hotel->proprietaire_id !== $request->user()->id_user) {
+            return response()->json([
+                'message' => 'Vous ne pouvez gérer que les réservations de vos propres hôtels',
+            ], 403);
+        }
+
+        if ($reservation->statut === 'annulee') {
+            return response()->json([
+                'message' => 'Une réservation annulée ne peut pas être confirmée',
+            ], 422);
+        }
+
+        $reservation->update([
+            'statut' => 'confirmee',
+        ]);
+
+        return response()->json([
+            'message' => 'Réservation confirmée avec succès',
+            'data' => $reservation,
+        ]);
+    }
+
+    public function reject(Request $request, int $id): JsonResponse
+    {
+        $reservation = Reservation::with('hotel')->findOrFail($id);
+
+        if ($reservation->hotel->proprietaire_id !== $request->user()->id_user) {
+            return response()->json([
+                'message' => 'Vous ne pouvez gérer que les réservations de vos propres hôtels',
+            ], 403);
+        }
+
+        if ($reservation->statut === 'annulee') {
+            return response()->json([
+                'message' => 'Une réservation annulée ne peut pas être refusée',
+            ], 422);
+        }
+
+        $reservation->update([
+            'statut' => 'refusee',
+        ]);
+
+        return response()->json([
+            'message' => 'Réservation refusée avec succès',
+            'data' => $reservation,
         ]);
     }
 }
