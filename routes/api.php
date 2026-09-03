@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ReservationController;
 
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -35,5 +36,17 @@ Route::middleware(['auth:sanctum', 'role:Propriétaire'])
 Route::middleware(['auth:sanctum', 'role:Propriétaire'])
     ->delete('/hotels/{id}', [HotelController::class, 'destroy']);
 
-    Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+Route::middleware(['auth:sanctum', 'role:Propriétaire'])
     ->post('/hotels/{hotelId}/images', [ImageController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'role:Client'])
+    ->post('/reservations', [ReservationController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'role:Client'])
+    ->get('/reservations', [ReservationController::class, 'index']);
+
+Route::middleware(['auth:sanctum', 'role:Client'])
+    ->patch('/reservations/{id}/cancel', [ReservationController::class, 'destroy']);
+
+Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+    ->get('/proprietaire/reservations', [ReservationController::class, 'ownerReservations']);
