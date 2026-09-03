@@ -35,4 +35,21 @@ class ImageController extends Controller
             'data' => $image,
         ], 201);
     }
+
+    public function destroy(Request $request, int $id): JsonResponse
+    {
+        $image = Image::with('hotel')->findOrFail($id);
+
+        if ($image->hotel->proprietaire_id !== $request->user()->id_user) {
+            return response()->json([
+                'message' => 'Vous ne pouvez supprimer que les images de vos propres hôtels',
+            ], 403);
+        }
+
+        $image->delete();
+
+        return response()->json([
+            'message' => 'Image supprimée avec succès',
+        ]);
+    }
 }

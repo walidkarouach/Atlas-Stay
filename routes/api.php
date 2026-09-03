@@ -121,3 +121,6 @@ Route::middleware('auth:sanctum')
 
 Route::middleware('auth:sanctum')
     ->patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+
+Route::middleware(['auth:sanctum', 'role:Propriétaire'])
+    ->delete('/images/{id}', [ImageController::class, 'destroy']);
