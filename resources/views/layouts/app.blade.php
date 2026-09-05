@@ -59,11 +59,51 @@
 
             </div>
 
-            {{-- Authentication --}}
-            <div class="flex items-center gap-3">
+        {{-- =========================
+            AUTHENTICATION
+        ========================== --}}
+        <div class="flex items-center gap-3">
+
+            @auth
+
+                {{-- User connecté --}}
+                <div class="hidden text-right sm:block">
+
+                    <p class="text-sm font-semibold text-stone-900">
+                        {{ auth()->user()->nom }}
+                    </p>
+
+                    <p class="text-xs text-stone-500">
+                        {{ auth()->user()->role->nom }}
+                    </p>
+
+                </div>
+
+
+                {{-- Logout --}}
+                <form
+                    action="{{ route('logout') }}"
+                    method="POST"
+                >
+
+                    @csrf
+
+                    <button
+                        type="submit"
+                        class="rounded-full border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-100"
+                    >
+                        Déconnexion
+                    </button>
+
+                </form>
+
+
+            @else
+
+                {{-- User non connecté --}}
 
                 <a
-                    href="/login"
+                    href="{{ route('login') }}"
                     class="hidden text-sm font-medium text-stone-700 transition hover:text-stone-950 sm:block"
                 >
                     Connexion
@@ -76,7 +116,9 @@
                     Créer un compte
                 </a>
 
-            </div>
+            @endauth
+
+        </div>
 
         </nav>
     </header>
