@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Avis;
 use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,5 +45,10 @@ class Hotel extends Model
             'hotel_id',
             'id_hotel'
         );
+    }
+
+    public function avis()
+    {
+        return $this->hasMany(Avis::class, 'hotel_id', 'id_hotel');
     }
 }
