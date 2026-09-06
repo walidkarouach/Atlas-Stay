@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +12,12 @@
 
 <body class="bg-stone-50 text-stone-900 antialiased">
 
-    {{-- =========================
-        NAVBAR
-    ========================== --}}
+    {{-- HEADER --}}
     <header class="border-b border-stone-200 bg-white">
+
         <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 
-            {{-- Logo --}}
+            {{-- LOGO --}}
             <a href="/" class="flex items-center">
                 <img
                     src="{{ asset('images/logo-atlas.png') }}"
@@ -26,7 +26,8 @@
                 >
             </a>
 
-            {{-- Navigation --}}
+
+            {{-- NAVIGATION --}}
             <div class="hidden items-center gap-8 md:flex">
 
                 <a
@@ -37,7 +38,7 @@
                 </a>
 
                 <a
-                    href="/hotels"
+                    href="{{ route('hotels.index') }}"
                     class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
                 >
                     Hôtels
@@ -57,108 +58,122 @@
                     À propos
                 </a>
 
+                {{-- MES RÉSERVATIONS : CLIENT UNIQUEMENT --}}
+                @auth
+                    @if (auth()->user()->role->nom === 'Client')
+
+                        <a
+                            href="{{ route('reservations.index') }}"
+                            class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
+                        >
+                            Mes réservations
+                        </a>
+
+                    @endif
+                @endauth
+
             </div>
 
-        {{-- =========================
-            AUTHENTICATION
-        ========================== --}}
-        <div class="flex items-center gap-3">
 
-            @auth
+            {{-- AUTHENTIFICATION --}}
+            <div class="flex items-center gap-3">
 
-                {{-- User connecté --}}
-                <div class="hidden text-right sm:block">
+                @auth
 
-                    <p class="text-sm font-semibold text-stone-900">
-                        {{ auth()->user()->nom }}
-                    </p>
+                    {{-- USER INFO --}}
+                    <div class="hidden text-right sm:block">
 
-                    <p class="text-xs text-stone-500">
-                        {{ auth()->user()->role->nom }}
-                    </p>
+                        <p class="text-sm font-semibold text-stone-900">
+                            {{ auth()->user()->nom }}
+                        </p>
 
-                </div>
+                        <p class="text-xs text-stone-500">
+                            {{ auth()->user()->role->nom }}
+                        </p>
+
+                    </div>
 
 
-                {{-- Logout --}}
-                <form
-                    action="{{ route('logout') }}"
-                    method="POST"
-                >
-
-                    @csrf
-
-                    <button
-                        type="submit"
-                        class="rounded-full border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-100"
+                    {{-- LOGOUT --}}
+                    <form
+                        action="{{ route('logout') }}"
+                        method="POST"
                     >
-                        Déconnexion
-                    </button>
 
-                </form>
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="rounded-full border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-100"
+                        >
+                            Déconnexion
+                        </button>
+
+                    </form>
+
+                @else
+
+                    {{-- LOGIN --}}
+                    <a
+                        href="{{ route('login') }}"
+                        class="hidden text-sm font-medium text-stone-700 transition hover:text-stone-950 sm:block"
+                    >
+                        Connexion
+                    </a>
 
 
-            @else
+                    {{-- REGISTER --}}
+                    <a
+                        href="/register"
+                        class="rounded-full bg-stone-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-stone-700"
+                    >
+                        Créer un compte
+                    </a>
 
-                {{-- User non connecté --}}
+                @endauth
 
-                <a
-                    href="{{ route('login') }}"
-                    class="hidden text-sm font-medium text-stone-700 transition hover:text-stone-950 sm:block"
-                >
-                    Connexion
-                </a>
-
-                <a
-                    href="/register"
-                    class="rounded-full bg-stone-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-stone-700"
-                >
-                    Créer un compte
-                </a>
-
-            @endauth
-
-        </div>
+            </div>
 
         </nav>
+
     </header>
 
 
-    {{-- =========================
-        MAIN CONTENT
-    ========================== --}}
+    {{-- MAIN CONTENT --}}
     <main>
         @yield('content')
     </main>
 
 
-    {{-- =========================
-        FOOTER
-    ========================== --}}
+    {{-- FOOTER --}}
     <footer class="mt-20 border-t border-stone-200 bg-white">
 
         <div class="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:grid-cols-3">
 
-            {{-- Logo --}}
+            {{-- BRAND --}}
             <div>
 
-                <a href="/" class="inline-flex items-center">
+                <a
+                    href="/"
+                    class="inline-flex items-center"
+                >
+
                     <img
                         src="{{ asset('images/logo-atlas.png') }}"
                         alt="Atlas Stay"
                         class="h-14 w-auto"
                     >
+
                 </a>
 
                 <p class="mt-4 max-w-sm text-sm leading-6 text-stone-500">
-                    Découvrez des hébergements uniques
-                    au cœur des montagnes du Maroc.
+                    Découvrez des hébergements uniques au cœur des montagnes du Maroc.
                 </p>
 
             </div>
 
 
-            {{-- Navigation --}}
+            {{-- NAVIGATION FOOTER --}}
             <div>
 
                 <h3 class="text-sm font-semibold uppercase tracking-wider">
@@ -175,11 +190,24 @@
                     </a>
 
                     <a
-                        href="/hotels"
+                        href="{{ route('hotels.index') }}"
                         class="block transition hover:text-stone-900"
                     >
                         Hôtels
                     </a>
+
+                    @auth
+                        @if (auth()->user()->role->nom === 'Client')
+
+                            <a
+                                href="{{ route('reservations.index') }}"
+                                class="block transition hover:text-stone-900"
+                            >
+                                Mes réservations
+                            </a>
+
+                        @endif
+                    @endauth
 
                     <a
                         href="#"
@@ -200,7 +228,7 @@
             </div>
 
 
-            {{-- About --}}
+            {{-- ATLAS STAY --}}
             <div>
 
                 <h3 class="text-sm font-semibold uppercase tracking-wider">
@@ -208,8 +236,7 @@
                 </h3>
 
                 <p class="mt-4 text-sm leading-6 text-stone-500">
-                    Plateforme de réservation d'hôtels
-                    de montagne au Maroc.
+                    Plateforme de réservation d'hôtels de montagne au Maroc.
                 </p>
 
             </div>
@@ -217,13 +244,12 @@
         </div>
 
 
-        {{-- Copyright --}}
+        {{-- COPYRIGHT --}}
         <div class="border-t border-stone-200">
 
             <div class="mx-auto max-w-7xl px-6 py-5 text-center text-sm text-stone-500">
 
-                © {{ date('Y') }} Atlas Stay.
-                Tous droits réservés.
+                © {{ date('Y') }} Atlas Stay. Tous droits réservés.
 
             </div>
 
@@ -232,4 +258,5 @@
     </footer>
 
 </body>
+
 </html>

@@ -152,4 +152,40 @@ class HotelWebController extends Controller
             ->route('hotels.show', $hotel->id_hotel)
             ->with('success', 'Votre réservation a été créée avec succès.');
     }
+
+public function cancelReservation(Request $request, int $id)
+{
+    $reservation = Reservation::with('hotel')->findOrFail($id);
+
+    if ($reservation->utilisateur_id !== $request->user()->id_user) {
+        abort(403, 'Vous ne pouvez annuler que vos propres réservations.');
+    }
+
+    if ($reservation->statut === 'annulee') {
+        return back()->withErrors([
+            'reservation' => 'Cette réservation est déjà annulée.',
+        ]);
+    }
+
+    $dateArrivee = Carbon::parse($reservation->date_arrivee);
+
+    if (now()->addHours(48)->greaterThan($dateArrivee)) {
+        return back()->withErrors([
+            'reservation' => 'Vous ne pouvez plus annuler cette réservation moins de 48 heures avant l’arrivée.',
+        ]);
+    }
+
+    $reservation->update([
+        'statut' => 'annulee',
+    ]);
+
+    Notification::create([
+        'titre' => 'Réservation annulée',
+        'message' => 'Un client a annulé une réservation pour votre hôtel.',
+        'lu' => false,
+        'utilisateur_id' => $reservation->hotel->proprietaire_id,
+    ]);
+
+    return back()->with('success', 'Réservation annulée avec succès.');
+}
 }

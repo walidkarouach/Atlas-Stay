@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelWebController;
 use App\Http\Controllers\WebAuthController;
+use App\Http\Controllers\ReservationWebController;
 
 Route::get('/', function () {
     return view('home');
@@ -42,3 +43,11 @@ Route::post('/logout', [WebAuthController::class, 'logout'])
 Route::middleware(['auth', 'role:Client'])
     ->post('/reservations', [HotelWebController::class, 'storeReservation'])
     ->name('reservations.store');
+
+Route::middleware(['auth', 'role:Client'])
+    ->get('/mes-reservations', [ReservationWebController::class, 'index'])
+    ->name('reservations.index');
+
+Route::middleware(['auth', 'role:Client'])
+    ->patch('/mes-reservations/{id}/cancel', [HotelWebController::class, 'cancelReservation'])
+    ->name('reservations.cancel');
