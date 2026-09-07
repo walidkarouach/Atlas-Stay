@@ -9,9 +9,25 @@ use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
 {
+    /**
+     * Afficher le dashboard Admin.
+     */
     public function index()
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Utilisateurs
+        |--------------------------------------------------------------------------
+        */
+
         $totalUsers = User::count();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hôtels
+        |--------------------------------------------------------------------------
+        */
 
         $totalHotels = Hotel::count();
 
@@ -30,6 +46,13 @@ class AdminDashboardController extends Controller
             'refuse'
         )->count();
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Réservations
+        |--------------------------------------------------------------------------
+        */
+
         $totalReservations = Reservation::count();
 
         $reservationsEnAttente = Reservation::where(
@@ -41,6 +64,13 @@ class AdminDashboardController extends Controller
             'statut',
             'confirmee'
         )->count();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard
+        |--------------------------------------------------------------------------
+        */
 
         return view(
             'admin.dashboard',

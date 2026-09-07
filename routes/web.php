@@ -12,6 +12,7 @@ use App\Http\Controllers\ProprietaireDashboardController;
 use App\Http\Controllers\ProprietaireHotelWebController;
 use App\Http\Controllers\ImageWebController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminUserWebController;
 
 
 /*
@@ -89,7 +90,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | Dashboard
+    | Dashboard Propriétaire
     |--------------------------------------------------------------------------
     */
 
@@ -101,7 +102,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | Hotels
+    | Hôtels Propriétaire
     |--------------------------------------------------------------------------
     */
 
@@ -138,7 +139,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | Images
+    | Images Propriétaire
     |--------------------------------------------------------------------------
     */
 
@@ -160,7 +161,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | Reservations
+    | Réservations Propriétaire
     |--------------------------------------------------------------------------
     */
 
@@ -316,7 +317,7 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN DASHBOARD
+| ADMIN
 |--------------------------------------------------------------------------
 */
 
@@ -325,9 +326,56 @@ Route::middleware([
     'role:Admin'
 ])->group(function () {
 
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard Admin
+    |--------------------------------------------------------------------------
+    */
+
     Route::get('/admin/dashboard', [
         AdminDashboardController::class,
         'index'
     ])->name('admin.dashboard');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Liste des utilisateurs
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/users', [
+        AdminUserWebController::class,
+        'index'
+    ])->name('admin.users.index');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Modifier le rôle
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/users/{id}/edit-role', [
+        AdminUserWebController::class,
+        'editRole'
+    ])->name('admin.users.edit-role');
+
+    Route::put('/admin/users/{id}/role', [
+        AdminUserWebController::class,
+        'updateRole'
+    ])->name('admin.users.update-role');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Supprimer un utilisateur
+    |--------------------------------------------------------------------------
+    */
+
+    Route::delete('/admin/users/{id}', [
+        AdminUserWebController::class,
+        'destroy'
+    ])->name('admin.users.destroy');
 
 });
