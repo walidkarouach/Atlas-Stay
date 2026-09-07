@@ -14,7 +14,7 @@
         <div class="relative hidden overflow-hidden lg:block">
 
             <img
-                src="{{ asset('images/hero.jpg') }}"
+                src="{{ asset('images/hero.png') }}"
                 alt="Montagnes du Maroc"
                 class="absolute inset-0 h-full w-full object-cover"
             >

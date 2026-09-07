@@ -4,304 +4,392 @@
 
 @section('content')
 
-<div class="min-h-screen bg-stone-50">
+<section class="bg-stone-50">
 
-    {{-- HEADER --}}
-    <section class="border-b border-stone-200 bg-white">
+    <div class="mx-auto max-w-7xl px-6 py-12">
 
-        <div class="mx-auto max-w-7xl px-6 py-10">
+        {{-- HEADER --}}
+        <div class="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
 
-            <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
 
-                <div>
+                <p class="text-sm font-semibold uppercase tracking-widest text-stone-500">
+                    Administration
+                </p>
 
-                    <p class="text-sm font-medium uppercase tracking-widest text-stone-500">
-                        Espace administration
-                    </p>
+                <h1 class="mt-2 text-3xl font-semibold tracking-tight text-stone-950 md:text-4xl">
+                    Dashboard Admin
+                </h1>
 
-                    <h1 class="mt-2 text-4xl font-semibold tracking-tight text-stone-950">
-                        Dashboard
-                    </h1>
+                <p class="mt-3 max-w-2xl text-sm leading-6 text-stone-600">
+                    Bienvenue {{ auth()->user()->nom }}.
+                    Gérez les utilisateurs, les hôtels, les réservations
+                    et les avis de la plateforme.
+                </p>
 
-                    <p class="mt-3 text-stone-500">
-                        Bienvenue, {{ auth()->user()->nom }}.
-                        Voici un aperçu de votre plateforme Atlas Stay.
-                    </p>
+            </div>
 
-                </div>
 
-                <div class="rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4">
+            {{-- ADMIN INFO --}}
+            <div class="rounded-2xl border border-stone-200 bg-white px-5 py-4 shadow-sm">
 
-                    <p class="text-xs font-medium uppercase tracking-wider text-stone-500">
-                        Administrateur
-                    </p>
+                <p class="text-sm font-semibold text-stone-900">
+                    {{ auth()->user()->nom }}
+                </p>
 
-                    <p class="mt-1 text-sm font-semibold text-stone-900">
-                        {{ auth()->user()->email }}
-                    </p>
+                <p class="mt-1 text-xs text-stone-500">
+                    {{ auth()->user()->email }}
+                </p>
 
-                </div>
+                <span class="mt-3 inline-flex rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-700">
+                    Administrateur
+                </span>
 
             </div>
 
         </div>
 
-    </section>
 
-
-    {{-- STATISTICS --}}
-    <section class="mx-auto max-w-7xl px-6 py-10">
-
+        {{-- STATISTIQUES PRINCIPALES --}}
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
 
-            {{-- USERS --}}
-            <div class="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+            {{-- UTILISATEURS --}}
+            <a
+                href="{{ route('admin.users.index') }}"
+                class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            >
 
-                <div class="flex items-center justify-between">
+                <div class="flex items-start justify-between">
+
+                    <div>
+
+                        <p class="text-sm font-medium text-stone-500">
+                            Utilisateurs
+                        </p>
+
+                        <p class="mt-3 text-3xl font-semibold text-stone-950">
+                            {{ $totalUsers }}
+                        </p>
+
+                    </div>
 
                     <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-xl">
                         👥
                     </div>
 
-                    <span class="text-xs font-medium uppercase tracking-wider text-stone-400">
-                        Utilisateurs
-                    </span>
-
                 </div>
 
-                <p class="mt-6 text-3xl font-semibold text-stone-950">
-                    {{ $totalUsers }}
+                <p class="mt-5 text-xs font-semibold text-stone-500 transition group-hover:text-stone-900">
+                    Gérer les utilisateurs →
                 </p>
 
-                <p class="mt-1 text-sm text-stone-500">
-                    Utilisateurs inscrits
-                </p>
-
-            </div>
+            </a>
 
 
             {{-- HOTELS --}}
-            <div class="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+            <a
+                href="{{ route('admin.hotels.index') }}"
+                class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            >
 
-                <div class="flex items-center justify-between">
+                <div class="flex items-start justify-between">
+
+                    <div>
+
+                        <p class="text-sm font-medium text-stone-500">
+                            Hôtels
+                        </p>
+
+                        <p class="mt-3 text-3xl font-semibold text-stone-950">
+                            {{ $totalHotels }}
+                        </p>
+
+                    </div>
 
                     <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-xl">
                         🏨
                     </div>
 
-                    <span class="text-xs font-medium uppercase tracking-wider text-stone-400">
-                        Hôtels
-                    </span>
-
                 </div>
 
-                <p class="mt-6 text-3xl font-semibold text-stone-950">
-                    {{ $totalHotels }}
+                <p class="mt-5 text-xs font-semibold text-stone-500 transition group-hover:text-stone-900">
+                    Gérer les hôtels →
                 </p>
 
-                <p class="mt-1 text-sm text-stone-500">
-                    Hôtels sur la plateforme
-                </p>
-
-            </div>
+            </a>
 
 
             {{-- RESERVATIONS --}}
-            <div class="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+            <a
+                href="{{ route('admin.reservations.index') }}"
+                class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            >
 
-                <div class="flex items-center justify-between">
+                <div class="flex items-start justify-between">
+
+                    <div>
+
+                        <p class="text-sm font-medium text-stone-500">
+                            Réservations
+                        </p>
+
+                        <p class="mt-3 text-3xl font-semibold text-stone-950">
+                            {{ $totalReservations }}
+                        </p>
+
+                    </div>
 
                     <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-xl">
                         📅
                     </div>
 
-                    <span class="text-xs font-medium uppercase tracking-wider text-stone-400">
-                        Réservations
-                    </span>
-
                 </div>
 
-                <p class="mt-6 text-3xl font-semibold text-stone-950">
-                    {{ $totalReservations }}
+                <p class="mt-5 text-xs font-semibold text-stone-500 transition group-hover:text-stone-900">
+                    Gérer les réservations →
                 </p>
 
-                <p class="mt-1 text-sm text-stone-500">
-                    Réservations effectuées
-                </p>
-
-            </div>
+            </a>
 
 
-            {{-- PENDING --}}
-            <div class="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+            {{-- AVIS --}}
+            <a
+                href="{{ route('admin.avis.index') }}"
+                class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            >
 
-                <div class="flex items-center justify-between">
+                <div class="flex items-start justify-between">
+
+                    <div>
+
+                        <p class="text-sm font-medium text-stone-500">
+                            Avis clients
+                        </p>
+
+                        <p class="mt-3 text-3xl font-semibold text-stone-950">
+                            {{ \App\Models\Avis::count() }}
+                        </p>
+
+                    </div>
 
                     <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-xl">
-                        ⏳
+                        ⭐
                     </div>
-
-                    <span class="text-xs font-medium uppercase tracking-wider text-stone-400">
-                        En attente
-                    </span>
 
                 </div>
 
-                <p class="mt-6 text-3xl font-semibold text-stone-950">
-                    {{ $hotelsEnAttente }}
+                <p class="mt-5 text-xs font-semibold text-stone-500 transition group-hover:text-stone-900">
+                    Gérer les avis →
                 </p>
 
-                <p class="mt-1 text-sm text-stone-500">
-                    Hôtels à valider
-                </p>
-
-            </div>
+            </a>
 
         </div>
 
 
-        {{-- HOTELS STATUS --}}
-        <div class="mt-8 grid gap-5 md:grid-cols-3">
+        {{-- GESTION DES HOTELS --}}
+        <div class="mt-8">
 
+            <div class="mb-5">
 
-            {{-- VALIDATED --}}
-            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+                <p class="text-xs font-semibold uppercase tracking-widest text-stone-400">
+                    Modération
+                </p>
 
-                <div class="flex items-center justify-between">
-
-                    <div>
-
-                        <p class="text-sm font-medium text-emerald-700">
-                            Hôtels validés
-                        </p>
-
-                        <p class="mt-2 text-3xl font-semibold text-emerald-950">
-                            {{ $hotelsValides }}
-                        </p>
-
-                    </div>
-
-                    <div class="text-2xl">
-                        ✓
-                    </div>
-
-                </div>
+                <h2 class="mt-1 text-xl font-semibold text-stone-950">
+                    État des hôtels
+                </h2>
 
             </div>
 
 
-            {{-- PENDING --}}
-            <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6">
-
-                <div class="flex items-center justify-between">
-
-                    <div>
-
-                        <p class="text-sm font-medium text-amber-700">
-                            Hôtels en attente
-                        </p>
-
-                        <p class="mt-2 text-3xl font-semibold text-amber-950">
-                            {{ $hotelsEnAttente }}
-                        </p>
-
-                    </div>
-
-                    <div class="text-2xl">
-                        ⏳
-                    </div>
-
-                </div>
-
-            </div>
+            <div class="grid gap-5 md:grid-cols-3">
 
 
-            {{-- REFUSED --}}
-            <div class="rounded-2xl border border-red-200 bg-red-50 p-6">
+                {{-- EN ATTENTE --}}
+                <a
+                    href="{{ route('admin.hotels.index') }}"
+                    class="group rounded-2xl border border-amber-200 bg-amber-50 p-6 transition hover:-translate-y-1 hover:shadow-md"
+                >
 
-                <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between">
 
-                    <div>
+                        <div>
 
-                        <p class="text-sm font-medium text-red-700">
-                            Hôtels refusés
-                        </p>
+                            <p class="text-sm font-medium text-amber-700">
+                                En attente
+                            </p>
 
-                        <p class="mt-2 text-3xl font-semibold text-red-950">
-                            {{ $hotelsRefuses }}
-                        </p>
+                            <p class="mt-2 text-3xl font-semibold text-amber-900">
+                                {{ $hotelsEnAttente }}
+                            </p>
+
+                        </div>
+
+                        <div class="text-2xl">
+                            ⏳
+                        </div>
 
                     </div>
 
-                    <div class="text-2xl">
-                        ✕
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {{-- RESERVATIONS STATUS --}}
-        <div class="mt-8 rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
-
-            <div class="flex items-center justify-between">
-
-                <div>
-
-                    <p class="text-sm font-medium uppercase tracking-wider text-stone-400">
-                        Réservations
+                    <p class="mt-5 text-xs font-semibold text-amber-700">
+                        Vérifier les demandes →
                     </p>
 
-                    <h2 class="mt-1 text-2xl font-semibold text-stone-950">
-                        État des réservations
-                    </h2>
+                </a>
 
-                </div>
+
+                {{-- VALIDES --}}
+                <a
+                    href="{{ route('admin.hotels.index') }}"
+                    class="group rounded-2xl border border-green-200 bg-green-50 p-6 transition hover:-translate-y-1 hover:shadow-md"
+                >
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+
+                            <p class="text-sm font-medium text-green-700">
+                                Validés
+                            </p>
+
+                            <p class="mt-2 text-3xl font-semibold text-green-900">
+                                {{ $hotelsValides }}
+                            </p>
+
+                        </div>
+
+                        <div class="text-2xl">
+                            ✓
+                        </div>
+
+                    </div>
+
+                    <p class="mt-5 text-xs font-semibold text-green-700">
+                        Voir les hôtels →
+                    </p>
+
+                </a>
+
+
+                {{-- REFUSES --}}
+                <a
+                    href="{{ route('admin.hotels.index') }}"
+                    class="group rounded-2xl border border-red-200 bg-red-50 p-6 transition hover:-translate-y-1 hover:shadow-md"
+                >
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+
+                            <p class="text-sm font-medium text-red-700">
+                                Refusés
+                            </p>
+
+                            <p class="mt-2 text-3xl font-semibold text-red-900">
+                                {{ $hotelsRefuses }}
+                            </p>
+
+                        </div>
+
+                        <div class="text-2xl">
+                            ×
+                        </div>
+
+                    </div>
+
+                    <p class="mt-5 text-xs font-semibold text-red-700">
+                        Consulter les hôtels →
+                    </p>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        {{-- RESERVATIONS --}}
+        <div class="mt-8">
+
+            <div class="mb-5">
+
+                <p class="text-xs font-semibold uppercase tracking-widest text-stone-400">
+                    Réservations
+                </p>
+
+                <h2 class="mt-1 text-xl font-semibold text-stone-950">
+                    État des réservations
+                </h2>
 
             </div>
 
 
-            <div class="mt-6 grid gap-5 md:grid-cols-2">
+            <div class="grid gap-5 md:grid-cols-3">
 
 
-                {{-- PENDING RESERVATIONS --}}
-                <div class="rounded-xl border border-amber-200 bg-amber-50 p-5">
+                {{-- TOTAL --}}
+                <a
+                    href="{{ route('admin.reservations.index') }}"
+                    class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                >
+
+                    <p class="text-sm font-medium text-stone-500">
+                        Total
+                    </p>
+
+                    <p class="mt-2 text-3xl font-semibold text-stone-950">
+                        {{ $totalReservations }}
+                    </p>
+
+                    <p class="mt-4 text-xs font-semibold text-stone-500 group-hover:text-stone-900">
+                        Voir toutes les réservations →
+                    </p>
+
+                </a>
+
+
+                {{-- EN ATTENTE --}}
+                <a
+                    href="{{ route('admin.reservations.index') }}"
+                    class="group rounded-2xl border border-amber-200 bg-amber-50 p-6 transition hover:-translate-y-1 hover:shadow-md"
+                >
 
                     <p class="text-sm font-medium text-amber-700">
                         En attente
                     </p>
 
-                    <p class="mt-2 text-3xl font-semibold text-amber-950">
+                    <p class="mt-2 text-3xl font-semibold text-amber-900">
                         {{ $reservationsEnAttente }}
                     </p>
 
-                    <p class="mt-1 text-sm text-amber-700/70">
-                        Réservations en attente de traitement
+                    <p class="mt-4 text-xs font-semibold text-amber-700">
+                        Gérer les demandes →
                     </p>
 
-                </div>
+                </a>
 
 
-                {{-- CONFIRMED RESERVATIONS --}}
-                <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+                {{-- CONFIRMEES --}}
+                <a
+                    href="{{ route('admin.reservations.index') }}"
+                    class="group rounded-2xl border border-green-200 bg-green-50 p-6 transition hover:-translate-y-1 hover:shadow-md"
+                >
 
-                    <p class="text-sm font-medium text-emerald-700">
+                    <p class="text-sm font-medium text-green-700">
                         Confirmées
                     </p>
 
-                    <p class="mt-2 text-3xl font-semibold text-emerald-950">
+                    <p class="mt-2 text-3xl font-semibold text-green-900">
                         {{ $reservationsConfirmees }}
                     </p>
 
-                    <p class="mt-1 text-sm text-emerald-700/70">
-                        Réservations confirmées
+                    <p class="mt-4 text-xs font-semibold text-green-700">
+                        Voir les réservations →
                     </p>
 
-                </div>
+                </a>
 
             </div>
 
@@ -309,43 +397,44 @@
 
 
         {{-- QUICK ACTIONS --}}
-        <div class="mt-8 rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+        <div class="mt-8">
 
-            <p class="text-sm font-medium uppercase tracking-wider text-stone-400">
-                Administration
-            </p>
+            <div class="mb-5">
 
-            <h2 class="mt-1 text-2xl font-semibold text-stone-950">
-                Gestion de la plateforme
-            </h2>
+                <p class="text-xs font-semibold uppercase tracking-widest text-stone-400">
+                    Accès rapide
+                </p>
 
-            <div class="mt-6 grid gap-4 md:grid-cols-3">
+                <h2 class="mt-1 text-xl font-semibold text-stone-950">
+                    Gestion de la plateforme
+                </h2>
+
+            </div>
+
+
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
 
                 {{-- USERS --}}
                 <a
-                    href="#"
-                    class="group rounded-xl border border-stone-200 p-5 transition hover:border-stone-400 hover:bg-stone-50"
+                    href="{{ route('admin.users.index') }}"
+                    class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
 
-                    <div class="flex items-center justify-between">
-
-                        <span class="text-2xl">
-                            👥
-                        </span>
-
-                        <span class="text-stone-400 transition group-hover:translate-x-1">
-                            →
-                        </span>
-
+                    <div class="text-2xl">
+                        👥
                     </div>
 
-                    <h3 class="mt-4 font-semibold text-stone-900">
+                    <h3 class="mt-4 font-semibold text-stone-950">
                         Utilisateurs
                     </h3>
 
-                    <p class="mt-1 text-sm text-stone-500">
+                    <p class="mt-2 text-sm leading-6 text-stone-500">
                         Gérer les comptes et les rôles.
+                    </p>
+
+                    <p class="mt-4 text-xs font-semibold text-stone-500 group-hover:text-stone-900">
+                        Ouvrir →
                     </p>
 
                 </a>
@@ -353,28 +442,24 @@
 
                 {{-- HOTELS --}}
                 <a
-                    href="#"
-                    class="group rounded-xl border border-stone-200 p-5 transition hover:border-stone-400 hover:bg-stone-50"
+                    href="{{ route('admin.hotels.index') }}"
+                    class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
 
-                    <div class="flex items-center justify-between">
-
-                        <span class="text-2xl">
-                            🏨
-                        </span>
-
-                        <span class="text-stone-400 transition group-hover:translate-x-1">
-                            →
-                        </span>
-
+                    <div class="text-2xl">
+                        🏨
                     </div>
 
-                    <h3 class="mt-4 font-semibold text-stone-900">
+                    <h3 class="mt-4 font-semibold text-stone-950">
                         Hôtels
                     </h3>
 
-                    <p class="mt-1 text-sm text-stone-500">
-                        Valider ou refuser les hôtels.
+                    <p class="mt-2 text-sm leading-6 text-stone-500">
+                        Valider ou refuser les hôtels proposés.
+                    </p>
+
+                    <p class="mt-4 text-xs font-semibold text-stone-500 group-hover:text-stone-900">
+                        Ouvrir →
                     </p>
 
                 </a>
@@ -382,28 +467,49 @@
 
                 {{-- RESERVATIONS --}}
                 <a
-                    href="#"
-                    class="group rounded-xl border border-stone-200 p-5 transition hover:border-stone-400 hover:bg-stone-50"
+                    href="{{ route('admin.reservations.index') }}"
+                    class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
 
-                    <div class="flex items-center justify-between">
-
-                        <span class="text-2xl">
-                            📅
-                        </span>
-
-                        <span class="text-stone-400 transition group-hover:translate-x-1">
-                            →
-                        </span>
-
+                    <div class="text-2xl">
+                        📅
                     </div>
 
-                    <h3 class="mt-4 font-semibold text-stone-900">
+                    <h3 class="mt-4 font-semibold text-stone-950">
                         Réservations
                     </h3>
 
-                    <p class="mt-1 text-sm text-stone-500">
-                        Consulter les réservations.
+                    <p class="mt-2 text-sm leading-6 text-stone-500">
+                        Consulter et gérer les réservations.
+                    </p>
+
+                    <p class="mt-4 text-xs font-semibold text-stone-500 group-hover:text-stone-900">
+                        Ouvrir →
+                    </p>
+
+                </a>
+
+
+                {{-- AVIS --}}
+                <a
+                    href="{{ route('admin.avis.index') }}"
+                    class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                >
+
+                    <div class="text-2xl">
+                        ⭐
+                    </div>
+
+                    <h3 class="mt-4 font-semibold text-stone-950">
+                        Avis
+                    </h3>
+
+                    <p class="mt-2 text-sm leading-6 text-stone-500">
+                        Consulter et modérer les avis clients.
+                    </p>
+
+                    <p class="mt-4 text-xs font-semibold text-stone-500 group-hover:text-stone-900">
+                        Ouvrir →
                     </p>
 
                 </a>
@@ -412,8 +518,8 @@
 
         </div>
 
-    </section>
+    </div>
 
-</div>
+</section>
 
 @endsection

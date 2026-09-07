@@ -12,7 +12,7 @@
         <div class="relative hidden lg:block">
 
             <img
-                src="{{ asset('images/hero.jpg') }}"
+                src="{{ asset('images/hero.png') }}"
                 alt="Atlas Stay - Montagnes du Maroc"
                 class="absolute inset-0 h-full w-full object-cover"
             >
