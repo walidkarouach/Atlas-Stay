@@ -6,6 +6,7 @@ use App\Http\Controllers\HotelWebController;
 use App\Http\Controllers\WebAuthController;
 use App\Http\Controllers\ReservationWebController;
 use App\Http\Controllers\NotificationWebController;
+use App\Http\Controllers\ProfileWebController;
 
 
 /*
@@ -25,11 +26,9 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 
-// Liste des hôtels
 Route::get('/hotels', [HotelWebController::class, 'index'])
     ->name('hotels.index');
 
-// Détails d'un hôtel
 Route::get('/hotels/{id}', [HotelWebController::class, 'show'])
     ->name('hotels.show');
 
@@ -40,21 +39,18 @@ Route::get('/hotels/{id}', [HotelWebController::class, 'show'])
 |--------------------------------------------------------------------------
 */
 
-// Login
 Route::get('/login', [WebAuthController::class, 'showLogin'])
     ->name('login');
 
 Route::post('/login', [WebAuthController::class, 'login'])
     ->name('login.submit');
 
-// Register
 Route::get('/register', [WebAuthController::class, 'showRegister'])
     ->name('register');
 
 Route::post('/register', [WebAuthController::class, 'register'])
     ->name('register.submit');
 
-// Logout
 Route::post('/logout', [WebAuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
@@ -68,15 +64,12 @@ Route::post('/logout', [WebAuthController::class, 'logout'])
 
 Route::middleware(['auth', 'role:Client'])->group(function () {
 
-    // Créer une réservation
     Route::post('/reservations', [HotelWebController::class, 'storeReservation'])
         ->name('reservations.store');
 
-    // Voir mes réservations
     Route::get('/mes-reservations', [ReservationWebController::class, 'index'])
         ->name('reservations.index');
 
-    // Annuler une réservation
     Route::patch('/mes-reservations/{id}/cancel', [HotelWebController::class, 'cancelReservation'])
         ->name('reservations.cancel');
 
@@ -91,16 +84,27 @@ Route::middleware(['auth', 'role:Client'])->group(function () {
 
 Route::middleware('auth')->group(function () {
 
-    // Liste des notifications
     Route::get('/notifications', [NotificationWebController::class, 'index'])
         ->name('notifications.index');
 
-    // Tout marquer comme lu
     Route::patch('/notifications/read-all', [NotificationWebController::class, 'markAllAsRead'])
         ->name('notifications.read-all');
 
-    // Marquer une notification comme lue
     Route::patch('/notifications/{id}/read', [NotificationWebController::class, 'markAsRead'])
         ->name('notifications.read');
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| PROFILE
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/profile', [ProfileWebController::class, 'index'])
+        ->name('profile.index');
 
 });
