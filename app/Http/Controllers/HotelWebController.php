@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
-use Illuminate\Http\Request;
 use App\Models\Reservation;
 use App\Models\Notification;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class HotelWebController extends Controller
 {
@@ -63,8 +63,41 @@ class HotelWebController extends Controller
         ->where('statut', 'valide')
         ->findOrFail($id);
 
-        return view('hotels.show', compact('hotel'));
+        $canReview = false;
+        $userAvis = null;
+
+        if (auth()->check() && auth()->user()->role->nom === 'Client') {
+
+            $userId = auth()->user()->id_user;
+
+            // Vérifier si le client a déjà laissé un avis
+            $userAvis = $hotel->avis
+                ->firstWhere('user_id', $userId);
+
+            // Vérifier si le client a terminé un séjour confirmé
+            $canReview = Reservation::where('utilisateur_id', $userId)
+                ->where('hotel_id', $hotel->id_hotel)
+                ->where('statut', 'confirmee')
+                ->where('date_depart', '<', today())
+                ->exists();
+
+            // Si un avis existe déjà, on ne peut plus en ajouter
+            if ($userAvis) {
+                $canReview = false;
+            }
+        }
+
+        return view('hotels.show', compact(
+            'hotel',
+            'canReview',
+            'userAvis'
+        ));
     }
+
+
+    // =========================
+    // RESERVATION
+    // =========================
 
     public function storeReservation(Request $request)
     {
@@ -96,21 +129,26 @@ class HotelWebController extends Controller
         }
 
         // Vérifier les réservations qui se chevauchent
-        $existingReservation = Reservation::where('hotel_id', $hotel->id_hotel)
-            ->whereIn('statut', ['en_attente', 'confirmee'])
-            ->where(function ($query) use ($validated) {
-                $query->where(
-                    'date_arrivee',
-                    '<',
-                    $validated['date_depart']
-                )
-                ->where(
-                    'date_depart',
-                    '>',
-                    $validated['date_arrivee']
-                );
-            })
-            ->exists();
+        $existingReservation = Reservation::where(
+            'hotel_id',
+            $hotel->id_hotel
+        )
+        ->whereIn('statut', ['en_attente', 'confirmee'])
+        ->where(function ($query) use ($validated) {
+
+            $query->where(
+                'date_arrivee',
+                '<',
+                $validated['date_depart']
+            )
+            ->where(
+                'date_depart',
+                '>',
+                $validated['date_arrivee']
+            );
+
+        })
+        ->exists();
 
         if ($existingReservation) {
             return back()
@@ -121,10 +159,17 @@ class HotelWebController extends Controller
         }
 
         // Calcul du nombre de nuits
-        $dateArrivee = Carbon::parse($validated['date_arrivee']);
-        $dateDepart = Carbon::parse($validated['date_depart']);
+        $dateArrivee = Carbon::parse(
+            $validated['date_arrivee']
+        );
 
-        $nombreNuits = $dateArrivee->diffInDays($dateDepart);
+        $dateDepart = Carbon::parse(
+            $validated['date_depart']
+        );
+
+        $nombreNuits = $dateArrivee->diffInDays(
+            $dateDepart
+        );
 
         // Calcul du montant total
         $montantTotal = $nombreNuits * $hotel->prix;
@@ -150,42 +195,68 @@ class HotelWebController extends Controller
 
         return redirect()
             ->route('hotels.show', $hotel->id_hotel)
-            ->with('success', 'Votre réservation a été créée avec succès.');
+            ->with(
+                'success',
+                'Votre réservation a été créée avec succès.'
+            );
     }
 
-public function cancelReservation(Request $request, int $id)
-{
-    $reservation = Reservation::with('hotel')->findOrFail($id);
 
-    if ($reservation->utilisateur_id !== $request->user()->id_user) {
-        abort(403, 'Vous ne pouvez annuler que vos propres réservations.');
-    }
+    // =========================
+    // CANCEL RESERVATION
+    // =========================
 
-    if ($reservation->statut === 'annulee') {
-        return back()->withErrors([
-            'reservation' => 'Cette réservation est déjà annulée.',
+    public function cancelReservation(Request $request, int $id)
+    {
+        $reservation = Reservation::with('hotel')
+            ->findOrFail($id);
+
+        if (
+            $reservation->utilisateur_id !==
+            $request->user()->id_user
+        ) {
+            abort(
+                403,
+                'Vous ne pouvez annuler que vos propres réservations.'
+            );
+        }
+
+        if ($reservation->statut === 'annulee') {
+            return back()->withErrors([
+                'reservation' => 'Cette réservation est déjà annulée.',
+            ]);
+        }
+
+        $dateArrivee = Carbon::parse(
+            $reservation->date_arrivee
+        );
+
+        if (
+            now()->addHours(48)->greaterThan(
+                $dateArrivee
+            )
+        ) {
+            return back()->withErrors([
+                'reservation' =>
+                    'Vous ne pouvez plus annuler cette réservation moins de 48 heures avant l’arrivée.',
+            ]);
+        }
+
+        $reservation->update([
+            'statut' => 'annulee',
         ]);
-    }
 
-    $dateArrivee = Carbon::parse($reservation->date_arrivee);
-
-    if (now()->addHours(48)->greaterThan($dateArrivee)) {
-        return back()->withErrors([
-            'reservation' => 'Vous ne pouvez plus annuler cette réservation moins de 48 heures avant l’arrivée.',
+        Notification::create([
+            'titre' => 'Réservation annulée',
+            'message' => 'Un client a annulé une réservation pour votre hôtel.',
+            'lu' => false,
+            'utilisateur_id' =>
+                $reservation->hotel->proprietaire_id,
         ]);
+
+        return back()->with(
+            'success',
+            'Réservation annulée avec succès.'
+        );
     }
-
-    $reservation->update([
-        'statut' => 'annulee',
-    ]);
-
-    Notification::create([
-        'titre' => 'Réservation annulée',
-        'message' => 'Un client a annulé une réservation pour votre hôtel.',
-        'lu' => false,
-        'utilisateur_id' => $reservation->hotel->proprietaire_id,
-    ]);
-
-    return back()->with('success', 'Réservation annulée avec succès.');
-}
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\WebAuthController;
 use App\Http\Controllers\ReservationWebController;
 use App\Http\Controllers\NotificationWebController;
 use App\Http\Controllers\ProfileWebController;
+use App\Http\Controllers\AvisWebController;
 
 
 /*
@@ -78,6 +79,39 @@ Route::middleware(['auth', 'role:Client'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| AVIS - PUBLIC
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/hotels/{hotelId}/avis', [AvisWebController::class, 'index'])
+    ->name('avis.index');
+
+
+/*
+|--------------------------------------------------------------------------
+| AVIS - CLIENT
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:Client'])->group(function () {
+
+    Route::post('/avis', [AvisWebController::class, 'store'])
+        ->name('avis.store');
+
+    Route::get('/avis/{id}/edit', [AvisWebController::class, 'edit'])
+        ->name('avis.edit');
+
+    Route::put('/avis/{id}', [AvisWebController::class, 'update'])
+        ->name('avis.update');
+
+    Route::delete('/avis/{id}', [AvisWebController::class, 'destroy'])
+        ->name('avis.destroy');
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
 | NOTIFICATIONS
 |--------------------------------------------------------------------------
 */
@@ -104,15 +138,12 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
-    // Afficher le profil
     Route::get('/profile', [ProfileWebController::class, 'index'])
         ->name('profile.index');
 
-    // Afficher formulaire de modification
     Route::get('/profile/edit', [ProfileWebController::class, 'edit'])
         ->name('profile.edit');
 
-    // Enregistrer les modifications
     Route::put('/profile', [ProfileWebController::class, 'update'])
         ->name('profile.update');
 

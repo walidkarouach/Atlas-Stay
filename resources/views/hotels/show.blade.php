@@ -4,9 +4,6 @@
 
 @section('content')
 
-{{-- =========================
-    HOTEL DETAILS
-========================== --}}
 <section class="bg-stone-50 py-12">
 
     <div class="mx-auto max-w-7xl px-6">
@@ -15,7 +12,7 @@
         <div class="mb-8 flex items-center gap-2 text-sm text-stone-500">
 
             <a
-                href="/hotels"
+                href="{{ route('hotels.index') }}"
                 class="transition hover:text-stone-900"
             >
                 Hôtels
@@ -30,9 +27,7 @@
         </div>
 
 
-        {{-- =========================
-            HOTEL HEADER
-        ========================== --}}
+        {{-- HOTEL HEADER --}}
         <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
 
             <div>
@@ -96,9 +91,7 @@
 
 
 
-        {{-- =========================
-            IMAGE GALLERY
-        ========================== --}}
+        {{-- IMAGE GALLERY --}}
         <div class="mt-10">
 
             @if($hotel->images->count() > 0)
@@ -168,9 +161,7 @@
 
 
 
-        {{-- =========================
-            MAIN CONTENT
-        ========================== --}}
+        {{-- MAIN CONTENT --}}
         <div class="mt-12 grid gap-10 lg:grid-cols-[1fr_380px]">
 
 
@@ -275,19 +266,26 @@
 
 
 
-                {{-- Avis --}}
+                {{-- =========================
+                    AVIS
+                ========================== --}}
                 <div class="pt-10">
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-end justify-between gap-4">
 
                         <div>
 
-                            <h2 class="text-2xl font-semibold text-stone-900">
+                            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-400">
+                                Expériences
+                            </p>
+
+                            <h2 class="mt-2 text-2xl font-semibold text-stone-900">
                                 Avis des voyageurs
                             </h2>
 
                             <p class="mt-1 text-sm text-stone-500">
-                                {{ $hotel->avis->count() }} avis
+                                {{ $hotel->avis->count() }}
+                                {{ $hotel->avis->count() > 1 ? 'avis' : 'avis' }}
                             </p>
 
                         </div>
@@ -295,15 +293,273 @@
                     </div>
 
 
+                    {{-- Success --}}
+                    @if(session('success'))
+
+                        <div class="mt-6 rounded-2xl border border-green-200 bg-green-50 px-5 py-4">
+
+                            <p class="text-sm font-medium text-green-700">
+                                {{ session('success') }}
+                            </p>
+
+                        </div>
+
+                    @endif
+
+
+                    {{-- Error --}}
+                    @if($errors->has('avis'))
+
+                        <div class="mt-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4">
+
+                            <p class="text-sm font-medium text-red-700">
+                                {{ $errors->first('avis') }}
+                            </p>
+
+                        </div>
+
+                    @endif
+
+
+                    {{-- ADD AVIS --}}
+                    @auth
+
+                        @if(auth()->user()->role->nom === 'Client')
+
+                            @if($canReview)
+
+                                <div class="mt-7 rounded-3xl border border-stone-200 bg-white p-7 shadow-sm">
+
+                                    <div>
+
+                                        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-400">
+                                            Votre expérience
+                                        </p>
+
+                                        <h3 class="mt-2 text-xl font-semibold text-stone-900">
+                                            Partagez votre avis
+                                        </h3>
+
+                                        <p class="mt-2 text-sm leading-6 text-stone-500">
+                                            Votre séjour est terminé. Donnez votre avis sur cet hébergement.
+                                        </p>
+
+                                    </div>
+
+
+                                    <form
+                                        action="{{ route('avis.store') }}"
+                                        method="POST"
+                                        class="mt-7 space-y-6"
+                                    >
+
+                                        @csrf
+
+
+                                        <input
+                                            type="hidden"
+                                            name="hotel_id"
+                                            value="{{ $hotel->id_hotel }}"
+                                        >
+
+
+                                        {{-- Note --}}
+                                        <div>
+
+                                            <label
+                                                for="note"
+                                                class="mb-2 block text-sm font-semibold text-stone-700"
+                                            >
+                                                Votre note
+                                            </label>
+
+                                            <select
+                                                id="note"
+                                                name="note"
+                                                required
+                                                class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
+                                            >
+
+                                                <option value="">
+                                                    Choisissez une note
+                                                </option>
+
+                                                <option value="5">
+                                                    ★★★★★ — Excellent
+                                                </option>
+
+                                                <option value="4">
+                                                    ★★★★☆ — Très bien
+                                                </option>
+
+                                                <option value="3">
+                                                    ★★★☆☆ — Bien
+                                                </option>
+
+                                                <option value="2">
+                                                    ★★☆☆☆ — Moyen
+                                                </option>
+
+                                                <option value="1">
+                                                    ★☆☆☆☆ — Décevant
+                                                </option>
+
+                                            </select>
+
+                                        </div>
+
+
+                                        {{-- Commentaire --}}
+                                        <div>
+
+                                            <label
+                                                for="commentaire"
+                                                class="mb-2 block text-sm font-semibold text-stone-700"
+                                            >
+                                                Votre commentaire
+                                            </label>
+
+                                            <textarea
+                                                id="commentaire"
+                                                name="commentaire"
+                                                rows="5"
+                                                placeholder="Partagez votre expérience..."
+                                                class="w-full resize-none rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
+                                            >{{ old('commentaire') }}</textarea>
+
+                                        </div>
+
+
+                                        {{-- Submit --}}
+                                        <button
+                                            type="submit"
+                                            class="w-full rounded-xl bg-stone-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-stone-700"
+                                        >
+                                            Publier mon avis
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+
+                            @elseif($userAvis)
+
+                                {{-- Already reviewed --}}
+                                <div class="mt-7 rounded-3xl border border-stone-200 bg-white p-7">
+
+                                    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-400">
+                                        Votre avis
+                                    </p>
+
+                                    <div class="mt-3 flex items-center gap-3">
+
+                                        <div class="text-lg tracking-wide text-stone-900">
+                                            @for($i = 1; $i <= 5; $i++)
+
+                                                @if($i <= $userAvis->note)
+                                                    ★
+                                                @else
+                                                    ☆
+                                                @endif
+
+                                            @endfor
+                                        </div>
+
+                                        <span class="text-sm font-semibold text-stone-700">
+                                            {{ $userAvis->note }}/5
+                                        </span>
+
+                                    </div>
+
+                                    @if($userAvis->commentaire)
+
+                                        <p class="mt-4 text-sm leading-7 text-stone-600">
+                                            {{ $userAvis->commentaire }}
+                                        </p>
+
+                                    @endif
+
+                                    <div class="mt-6 flex flex-wrap gap-3">
+
+                                        <a
+                                            href="{{ route('avis.edit', $userAvis->id_avis) }}"
+                                            class="rounded-xl bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
+                                        >
+                                            Modifier mon avis
+                                        </a>
+
+
+                                        <form
+                                            action="{{ route('avis.destroy', $userAvis->id_avis) }}"
+                                            method="POST"
+                                        >
+
+                                            @csrf
+
+                                            @method('DELETE')
+
+                                            <button
+                                                type="submit"
+                                                onclick="return confirm('Voulez-vous vraiment supprimer votre avis ?')"
+                                                class="rounded-xl border border-red-200 bg-white px-5 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                                            >
+                                                Supprimer
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </div>
+
+
+                            @else
+
+                                {{-- Client without completed stay --}}
+                                <div class="mt-7 rounded-3xl border border-stone-200 bg-white p-7">
+
+                                    <p class="text-sm leading-6 text-stone-500">
+                                        Vous pourrez laisser un avis après avoir terminé un séjour confirmé dans cet hôtel.
+                                    </p>
+
+                                </div>
+
+                            @endif
+
+                        @endif
+
+                    @else
+
+                        {{-- Guest --}}
+                        <div class="mt-7 rounded-3xl border border-stone-200 bg-white p-7">
+
+                            <p class="text-sm leading-6 text-stone-500">
+                                Connectez-vous pour pouvoir laisser un avis.
+                            </p>
+
+                            <a
+                                href="{{ route('login') }}"
+                                class="mt-5 inline-flex rounded-xl bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
+                            >
+                                Se connecter
+                            </a>
+
+                        </div>
+
+                    @endauth
+
+
+                    {{-- Existing reviews --}}
                     @if($hotel->avis->count() > 0)
 
-                        <div class="mt-7 space-y-5">
+                        <div class="mt-8 space-y-5">
 
                             @foreach($hotel->avis as $avis)
 
-                                <div class="rounded-2xl bg-white p-6">
+                                <div class="rounded-3xl border border-stone-200 bg-white p-6">
 
-                                    <div class="flex items-start justify-between">
+                                    <div class="flex items-start justify-between gap-5">
 
                                         <div>
 
@@ -318,9 +574,26 @@
                                         </div>
 
 
-                                        <div class="text-sm font-semibold text-stone-900">
+                                        {{-- Stars --}}
+                                        <div class="text-right">
 
-                                            {{ $avis->note }}/5
+                                            <div class="text-sm tracking-wide text-stone-900">
+
+                                                @for($i = 1; $i <= 5; $i++)
+
+                                                    @if($i <= $avis->note)
+                                                        ★
+                                                    @else
+                                                        ☆
+                                                    @endif
+
+                                                @endfor
+
+                                            </div>
+
+                                            <p class="mt-1 text-xs font-semibold text-stone-500">
+                                                {{ $avis->note }}/5
+                                            </p>
 
                                         </div>
 
@@ -329,11 +602,54 @@
 
                                     @if($avis->commentaire)
 
-                                        <p class="mt-4 text-sm leading-6 text-stone-600">
+                                        <p class="mt-5 text-sm leading-7 text-stone-600">
                                             {{ $avis->commentaire }}
                                         </p>
 
                                     @endif
+
+
+                                    {{-- Actions for current user's review --}}
+                                    @auth
+
+                                        @if(
+                                            auth()->user()->role->nom === 'Client' &&
+                                            $avis->user_id === auth()->user()->id_user
+                                        )
+
+                                            <div class="mt-5 flex gap-3 border-t border-stone-100 pt-5">
+
+                                                <a
+                                                    href="{{ route('avis.edit', $avis->id_avis) }}"
+                                                    class="text-sm font-semibold text-stone-900 hover:text-stone-500"
+                                                >
+                                                    Modifier
+                                                </a>
+
+                                                <form
+                                                    action="{{ route('avis.destroy', $avis->id_avis) }}"
+                                                    method="POST"
+                                                >
+
+                                                    @csrf
+
+                                                    @method('DELETE')
+
+                                                    <button
+                                                        type="submit"
+                                                        onclick="return confirm('Voulez-vous vraiment supprimer cet avis ?')"
+                                                        class="text-sm font-semibold text-red-600 hover:text-red-400"
+                                                    >
+                                                        Supprimer
+                                                    </button>
+
+                                                </form>
+
+                                            </div>
+
+                                        @endif
+
+                                    @endauth
 
                                 </div>
 
@@ -343,7 +659,7 @@
 
                     @else
 
-                        <div class="mt-7 rounded-2xl bg-white p-8 text-center">
+                        <div class="mt-7 rounded-3xl border border-stone-200 bg-white p-8 text-center">
 
                             <p class="text-sm text-stone-500">
                                 Aucun avis pour le moment.
@@ -359,9 +675,7 @@
 
 
 
-            {{-- =========================
-                BOOKING CARD
-            ========================== --}}
+            {{-- BOOKING CARD --}}
             <aside>
 
                 <div class="sticky top-8 rounded-3xl border border-stone-200 bg-white p-7 shadow-lg">
@@ -395,6 +709,7 @@
                             >
 
                                 @csrf
+
 
                                 {{-- Hotel ID --}}
                                 <input
@@ -532,7 +847,6 @@
 
                                 @endif
 
-
                             </form>
 
 
@@ -560,7 +874,7 @@
                             </p>
 
                             <a
-                                href="/login"
+                                href="{{ route('login') }}"
                                 class="mt-4 block w-full rounded-xl bg-stone-900 px-6 py-4 text-center text-sm font-semibold text-white transition hover:bg-stone-700"
                             >
                                 Se connecter
