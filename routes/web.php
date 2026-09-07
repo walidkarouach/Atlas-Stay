@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileWebController;
 use App\Http\Controllers\AvisWebController;
 use App\Http\Controllers\ProprietaireDashboardController;
 use App\Http\Controllers\ProprietaireHotelWebController;
+use App\Http\Controllers\ImageWebController;
 
 
 /*
@@ -101,6 +102,28 @@ Route::middleware(['auth', 'role:Propriétaire'])->group(function () {
         ProprietaireHotelWebController::class,
         'destroy'
     ])->name('proprietaire.hotels.destroy');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | IMAGES
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/proprietaire/hotels/{id}/images', [
+        ProprietaireHotelWebController::class,
+        'images'
+    ])->name('proprietaire.hotels.images');
+
+    Route::post('/proprietaire/hotels/{hotelId}/images', [
+        ImageWebController::class,
+        'store'
+    ])->name('proprietaire.hotels.images.store');
+
+    Route::delete('/proprietaire/images/{id}', [
+        ImageWebController::class,
+        'destroy'
+    ])->name('proprietaire.images.destroy');
 
 });
 

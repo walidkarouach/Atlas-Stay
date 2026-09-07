@@ -25,6 +25,7 @@
 
             </div>
 
+
             <a
                 href="{{ route('proprietaire.hotels.create') }}"
                 class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
@@ -66,6 +67,44 @@
         @endif
 
 
+        {{-- Message erreur --}}
+        @if ($errors->any())
+
+            <div class="mb-8 rounded-2xl border border-red-200 bg-red-50 p-5">
+
+                <div class="flex items-start gap-3">
+
+                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700">
+                        !
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-semibold text-red-900">
+                            Une erreur est survenue
+                        </h3>
+
+                        <ul class="mt-2 space-y-1 text-sm text-red-800">
+
+                            @foreach ($errors->all() as $error)
+
+                                <li>
+                                    • {{ $error }}
+                                </li>
+
+                            @endforeach
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        @endif
+
+
         {{-- Liste des hôtels --}}
         @if ($hotels->count())
 
@@ -75,7 +114,7 @@
 
                     <div class="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
 
-                        {{-- Image --}}
+                        {{-- Image principale --}}
                         <div class="relative h-56 overflow-hidden bg-slate-100">
 
                             @if ($hotel->images->count())
@@ -152,6 +191,7 @@
                         {{-- Contenu --}}
                         <div class="p-6">
 
+                            {{-- Type --}}
                             <div class="mb-3">
 
                                 <span class="text-xs font-semibold uppercase tracking-wider text-emerald-600">
@@ -161,17 +201,20 @@
                             </div>
 
 
+                            {{-- Nom --}}
                             <h2 class="text-xl font-bold text-slate-900">
                                 {{ $hotel->nom }}
                             </h2>
 
 
+                            {{-- Localisation --}}
                             <p class="mt-2 flex items-center gap-2 text-sm text-slate-500">
                                 <span>📍</span>
                                 {{ $hotel->ville }} · {{ $hotel->adresse }}
                             </p>
 
 
+                            {{-- Description --}}
                             @if ($hotel->description)
 
                                 <p class="mt-4 line-clamp-2 text-sm leading-6 text-slate-600">
@@ -187,6 +230,7 @@
                             @endif
 
 
+                            {{-- Informations --}}
                             <div class="mt-6 grid grid-cols-2 gap-3">
 
                                 <div class="rounded-xl bg-slate-50 p-3">
@@ -217,6 +261,7 @@
                             </div>
 
 
+                            {{-- Disponibilité --}}
                             <div class="mt-4">
 
                                 @if ($hotel->disponibilite)
@@ -239,57 +284,81 @@
 
 
                             {{-- Actions --}}
-                            <div class="mt-6 flex items-center gap-3 border-t border-slate-100 pt-5">
+                            <div class="mt-6 border-t border-slate-100 pt-5">
 
-                                {{-- Voir --}}
-                                @if ($hotel->statut === 'valide')
+                                {{-- Ligne principale --}}
+                                <div class="flex items-center gap-3">
 
+                                    {{-- Voir --}}
+                                    @if ($hotel->statut === 'valide')
+
+                                        <a
+                                            href="{{ route('hotels.show', $hotel->id_hotel) }}"
+                                            class="flex-1 rounded-xl bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-slate-800"
+                                        >
+                                            Voir
+                                        </a>
+
+                                    @else
+
+                                        <span
+                                            class="flex-1 cursor-not-allowed rounded-xl bg-slate-100 px-4 py-3 text-center text-sm font-semibold text-slate-400"
+                                        >
+                                            Non publié
+                                        </span>
+
+                                    @endif
+
+
+                                    {{-- Modifier --}}
                                     <a
-                                        href="{{ route('hotels.show', $hotel->id_hotel) }}"
-                                        class="flex-1 rounded-xl bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-slate-800"
+                                        href="{{ route('proprietaire.hotels.edit', $hotel->id_hotel) }}"
+                                        class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
                                     >
-                                        Voir
+                                        Modifier
                                     </a>
 
-                                @else
 
-                                    <span
-                                        class="flex-1 cursor-not-allowed rounded-xl bg-slate-100 px-4 py-3 text-center text-sm font-semibold text-slate-400"
+                                    {{-- Supprimer --}}
+                                    <form
+                                        action="{{ route('proprietaire.hotels.destroy', $hotel->id_hotel) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet hôtel ?');"
                                     >
-                                        Non publié
-                                    </span>
 
-                                @endif
+                                        @csrf
+
+                                        @method('DELETE')
+
+                                        <button
+                                            type="submit"
+                                            class="rounded-xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                                        >
+                                            Supprimer
+                                        </button>
+
+                                    </form>
+
+                                </div>
 
 
-                                {{-- Modifier --}}
+                                {{-- Gestion des images --}}
                                 <a
-                                    href="{{ route('proprietaire.hotels.edit', $hotel->id_hotel) }}"
-                                    class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                                    href="{{ route('proprietaire.hotels.images', $hotel->id_hotel) }}"
+                                    class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100"
                                 >
-                                    Modifier
+                                    📷
+                                    Gérer les images
+
+                                    @if ($hotel->images->count())
+
+                                        <span class="rounded-full bg-emerald-200 px-2 py-0.5 text-xs">
+                                            {{ $hotel->images->count() }}
+                                        </span>
+
+                                    @endif
+
                                 </a>
-
-
-                                {{-- Supprimer --}}
-                                <form
-                                    action="{{ route('proprietaire.hotels.destroy', $hotel->id_hotel) }}"
-                                    method="POST"
-                                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet hôtel ?');"
-                                >
-
-                                    @csrf
-
-                                    @method('DELETE')
-
-                                    <button
-                                        type="submit"
-                                        class="rounded-xl border border-red-200 bg-white px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
-                                    >
-                                        Supprimer
-                                    </button>
-
-                                </form>
 
                             </div>
 
@@ -316,6 +385,7 @@
 
         @else
 
+            {{-- Empty state --}}
             <div class="rounded-3xl border border-slate-200 bg-white px-6 py-20 text-center shadow-sm">
 
                 <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald-50 text-4xl">

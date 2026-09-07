@@ -10,6 +10,7 @@
         <div class="mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
 
             <div>
+
                 <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600">
                     Espace propriétaire
                 </p>
@@ -21,6 +22,7 @@
                 <p class="mt-3 max-w-2xl text-slate-600">
                     Présentez votre établissement aux voyageurs d’Atlas Stay.
                 </p>
+
             </div>
 
             <a
@@ -75,6 +77,7 @@
         <form
             action="{{ route('proprietaire.hotels.store') }}"
             method="POST"
+            enctype="multipart/form-data"
             class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
         >
 
@@ -348,6 +351,50 @@
                         </select>
 
                     </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- Images --}}
+            <div class="border-b border-slate-200 p-8">
+
+                <div class="mb-8">
+
+                    <h2 class="text-xl font-bold text-slate-900">
+                        Photos de l’hôtel
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Ajoutez jusqu’à 10 photos pour présenter votre établissement.
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <label
+                        for="images"
+                        class="mb-2 block text-sm font-semibold text-slate-700"
+                    >
+                        Images
+                    </label>
+
+                    <input
+                        type="file"
+                        id="images"
+                        name="images[]"
+                        accept="image/jpeg,image/png,image/jpg,image/webp"
+                        multiple
+                        class="block w-full rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-700 file:mr-4 file:border-0 file:bg-slate-900 file:px-5 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-slate-800"
+                    >
+
+                    <p class="mt-2 text-xs text-slate-500">
+                        Formats acceptés : JPG, JPEG, PNG, WEBP.
+                        Maximum 2 MB par image.
+                    </p>
 
                 </div>
 
