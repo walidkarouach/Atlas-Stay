@@ -14,6 +14,7 @@ use App\Http\Controllers\ImageWebController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminUserWebController;
 use App\Http\Controllers\AdminHotelWebController;
+use App\Http\Controllers\AdminReservationWebController;
 
 
 /*
@@ -391,5 +392,22 @@ Route::middleware([
         AdminHotelWebController::class,
         'destroy'
     ])->name('admin.hotels.destroy');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gestion des réservations
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/reservations', [
+        AdminReservationWebController::class,
+        'index'
+    ])->name('admin.reservations.index');
+
+    Route::patch('/admin/reservations/{id}/cancel', [
+        AdminReservationWebController::class,
+        'cancel'
+    ])->name('admin.reservations.cancel');
 
 });
