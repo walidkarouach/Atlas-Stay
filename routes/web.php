@@ -47,6 +47,13 @@ Route::get('/login', [WebAuthController::class, 'showLogin'])
 Route::post('/login', [WebAuthController::class, 'login'])
     ->name('login.submit');
 
+// Register
+Route::get('/register', [WebAuthController::class, 'showRegister'])
+    ->name('register');
+
+Route::post('/register', [WebAuthController::class, 'register'])
+    ->name('register.submit');
+
 // Logout
 Route::post('/logout', [WebAuthController::class, 'logout'])
     ->middleware('auth')
@@ -84,12 +91,15 @@ Route::middleware(['auth', 'role:Client'])->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+    // Liste des notifications
     Route::get('/notifications', [NotificationWebController::class, 'index'])
         ->name('notifications.index');
 
+    // Tout marquer comme lu
     Route::patch('/notifications/read-all', [NotificationWebController::class, 'markAllAsRead'])
         ->name('notifications.read-all');
 
+    // Marquer une notification comme lue
     Route::patch('/notifications/{id}/read', [NotificationWebController::class, 'markAsRead'])
         ->name('notifications.read');
 

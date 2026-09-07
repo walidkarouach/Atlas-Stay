@@ -6,16 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Role;
 
 class WebAuthController extends Controller
 {
-    // Afficher la page Login
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    // Login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -24,7 +23,6 @@ class WebAuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-
             $request->session()->regenerate();
 
             return redirect()
@@ -39,7 +37,6 @@ class WebAuthController extends Controller
             ->withInput();
     }
 
-    // Logout
     public function logout(Request $request)
     {
         Auth::logout();
@@ -50,5 +47,37 @@ class WebAuthController extends Controller
 
         return redirect('/')
             ->with('success', 'Vous êtes déconnecté.');
+    }
+
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+
+            'email' => 'required|email|max:255|unique:users,email',
+
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $roleClient = Role::where('nom', 'Client')->firstOrFail();
+
+        $user = User::create([
+            'nom' => $validated['nom'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role_id' => $roleClient->id_role,
+        ]);
+
+        Auth::login($user);
+
+        $request->session()->regenerate();
+
+        return redirect('/')
+            ->with('success', 'Votre compte a été créé avec succès.');
     }
 }

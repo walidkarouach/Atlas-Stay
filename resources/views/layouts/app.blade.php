@@ -18,12 +18,15 @@
 
             {{-- LOGO --}}
             <a href="{{ url('/') }}" class="flex items-center">
+
                 <img
                     src="{{ asset('images/logo-atlas.png') }}"
                     alt="Atlas Stay"
                     class="h-12 w-auto"
                 >
+
             </a>
+
 
             {{-- NAVIGATION --}}
             <nav class="hidden items-center gap-8 md:flex">
@@ -56,8 +59,10 @@
                     À propos
                 </a>
 
+
                 {{-- CLIENT NAVIGATION --}}
                 @auth
+
                     @if (auth()->user()->role->nom === 'Client')
 
                         <a
@@ -75,9 +80,11 @@
                         </a>
 
                     @endif
+
                 @endauth
 
             </nav>
+
 
             {{-- AUTHENTICATION AREA --}}
             <div class="flex items-center gap-4">
@@ -97,11 +104,13 @@
 
                     </div>
 
+
                     {{-- LOGOUT --}}
                     <form
                         action="{{ route('logout') }}"
                         method="POST"
                     >
+
                         @csrf
 
                         <button
@@ -110,6 +119,7 @@
                         >
                             Déconnexion
                         </button>
+
                     </form>
 
                 @else
@@ -122,9 +132,10 @@
                         Connexion
                     </a>
 
+
                     {{-- REGISTER --}}
                     <a
-                        href="#"
+                        href="{{ route('register') }}"
                         class="hidden rounded-xl bg-stone-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-stone-700 sm:inline-flex"
                     >
                         Inscription
@@ -139,23 +150,11 @@
     </header>
 
 
-    {{-- FLASH SUCCESS MESSAGE --}}
-    @if (session('success'))
-
-        <div class="mx-auto max-w-7xl px-6 pt-6">
-
-            <div class="rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-sm text-green-700">
-                {{ session('success') }}
-            </div>
-
-        </div>
-
-    @endif
-
-
     {{-- PAGE CONTENT --}}
     <main>
+
         @yield('content')
+
     </main>
 
 
@@ -165,6 +164,7 @@
         <div class="mx-auto max-w-7xl px-6 py-12">
 
             <div class="grid gap-10 md:grid-cols-3">
+
 
                 {{-- BRAND --}}
                 <div>
