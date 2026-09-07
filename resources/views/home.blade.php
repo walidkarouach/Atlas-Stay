@@ -158,7 +158,10 @@
 {{-- =========================
     DESTINATIONS
 ========================== --}}
-<section class="bg-stone-50 py-24">
+<section
+    id="destinations"
+    class="bg-stone-50 py-24"
+>
 
     <div class="mx-auto max-w-7xl px-6">
 
@@ -408,6 +411,112 @@
                 </div>
 
             </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+{{-- =========================
+    À PROPOS
+========================== --}}
+<section
+    id="a-propos"
+    class="bg-white py-24"
+>
+
+    <div class="mx-auto max-w-7xl px-6">
+
+        <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+
+
+            {{-- LEFT --}}
+            <div>
+
+                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-stone-500">
+                    À propos
+                </p>
+
+                <h2 class="mt-3 text-4xl font-bold tracking-tight text-stone-900 sm:text-5xl">
+
+                    Atlas Stay,
+
+                    <br>
+
+                    votre porte vers les montagnes.
+
+                </h2>
+
+            </div>
+
+
+            {{-- RIGHT --}}
+            <div>
+
+                <p class="text-lg leading-8 text-stone-600">
+
+                    Atlas Stay est une plateforme dédiée à la découverte
+                    et à la réservation d’hébergements authentiques dans
+                    les régions montagneuses du Maroc.
+
+                </p>
+
+                <p class="mt-5 text-base leading-7 text-stone-500">
+
+                    Explorez les destinations, découvrez les hôtels,
+                    trouvez l'hébergement qui vous correspond et
+                    réservez votre séjour simplement.
+
+                </p>
+
+
+                {{-- Small highlights --}}
+                <div class="mt-8 grid gap-4 sm:grid-cols-3">
+
+                    <div class="rounded-2xl border border-stone-200 bg-stone-50 p-5">
+
+                        <p class="text-2xl font-bold text-stone-900">
+                            6
+                        </p>
+
+                        <p class="mt-1 text-sm text-stone-500">
+                            Destinations
+                        </p>
+
+                    </div>
+
+
+                    <div class="rounded-2xl border border-stone-200 bg-stone-50 p-5">
+
+                        <p class="text-2xl font-bold text-stone-900">
+                            Maroc
+                        </p>
+
+                        <p class="mt-1 text-sm text-stone-500">
+                            Destination
+                        </p>
+
+                    </div>
+
+
+                    <div class="rounded-2xl border border-stone-200 bg-stone-50 p-5">
+
+                        <p class="text-2xl font-bold text-stone-900">
+                            Simple
+                        </p>
+
+                        <p class="mt-1 text-sm text-stone-500">
+                            Réservation
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
