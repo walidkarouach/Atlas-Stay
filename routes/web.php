@@ -13,6 +13,7 @@ use App\Http\Controllers\ProprietaireHotelWebController;
 use App\Http\Controllers\ImageWebController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminUserWebController;
+use App\Http\Controllers\AdminHotelWebController;
 
 
 /*
@@ -340,7 +341,7 @@ Route::middleware([
 
     /*
     |--------------------------------------------------------------------------
-    | Liste des utilisateurs
+    | Gestion des utilisateurs
     |--------------------------------------------------------------------------
     */
 
@@ -348,13 +349,6 @@ Route::middleware([
         AdminUserWebController::class,
         'index'
     ])->name('admin.users.index');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Modifier le rôle
-    |--------------------------------------------------------------------------
-    */
 
     Route::get('/admin/users/{id}/edit-role', [
         AdminUserWebController::class,
@@ -366,16 +360,36 @@ Route::middleware([
         'updateRole'
     ])->name('admin.users.update-role');
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Supprimer un utilisateur
-    |--------------------------------------------------------------------------
-    */
-
     Route::delete('/admin/users/{id}', [
         AdminUserWebController::class,
         'destroy'
     ])->name('admin.users.destroy');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gestion des hôtels
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/hotels', [
+        AdminHotelWebController::class,
+        'index'
+    ])->name('admin.hotels.index');
+
+    Route::patch('/admin/hotels/{id}/validate', [
+        AdminHotelWebController::class,
+        'validateHotel'
+    ])->name('admin.hotels.validate');
+
+    Route::patch('/admin/hotels/{id}/reject', [
+        AdminHotelWebController::class,
+        'reject'
+    ])->name('admin.hotels.reject');
+
+    Route::delete('/admin/hotels/{id}', [
+        AdminHotelWebController::class,
+        'destroy'
+    ])->name('admin.hotels.destroy');
 
 });
