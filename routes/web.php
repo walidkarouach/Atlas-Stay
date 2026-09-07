@@ -104,7 +104,16 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+    // Afficher le profil
     Route::get('/profile', [ProfileWebController::class, 'index'])
         ->name('profile.index');
+
+    // Afficher formulaire de modification
+    Route::get('/profile/edit', [ProfileWebController::class, 'edit'])
+        ->name('profile.edit');
+
+    // Enregistrer les modifications
+    Route::put('/profile', [ProfileWebController::class, 'update'])
+        ->name('profile.update');
 
 });

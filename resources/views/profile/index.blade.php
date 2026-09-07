@@ -209,8 +209,8 @@
 
                         {{-- Edit profile --}}
                         <a
-                            href="#"
-                            class="inline-flex items-center justify-center rounded-xl bg-stone-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-stone-700"
+                            href="{{ route('profile.edit') }}"
+                            class="inline-flex items-center justify-center rounded-xl bg-stone-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
                         >
                             Modifier mon profil
                         </a>

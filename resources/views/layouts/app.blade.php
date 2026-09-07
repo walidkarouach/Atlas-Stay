@@ -17,14 +17,15 @@
         <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
 
             {{-- LOGO --}}
-            <a href="{{ url('/') }}" class="flex items-center">
-
+            <a
+                href="{{ url('/') }}"
+                class="flex items-center"
+            >
                 <img
                     src="{{ asset('images/logo-atlas.png') }}"
                     alt="Atlas Stay"
                     class="h-12 w-auto"
                 >
-
             </a>
 
 
@@ -91,10 +92,13 @@
 
                 @auth
 
-                    {{-- USER INFO --}}
-                    <div class="hidden text-right sm:block">
+                    {{-- PROFILE --}}
+                    <a
+                        href="{{ route('profile.index') }}"
+                        class="group hidden text-right sm:block"
+                    >
 
-                        <p class="text-sm font-semibold text-stone-900">
+                        <p class="text-sm font-semibold text-stone-900 transition group-hover:text-stone-500">
                             {{ auth()->user()->nom }}
                         </p>
 
@@ -102,7 +106,7 @@
                             {{ auth()->user()->role->nom }}
                         </p>
 
-                    </div>
+                    </a>
 
 
                     {{-- LOGOUT --}}
