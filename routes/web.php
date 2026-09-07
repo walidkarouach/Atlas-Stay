@@ -15,6 +15,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminUserWebController;
 use App\Http\Controllers\AdminHotelWebController;
 use App\Http\Controllers\AdminReservationWebController;
+use App\Http\Controllers\AdminAvisWebController;
 
 
 /*
@@ -409,5 +410,22 @@ Route::middleware([
         AdminReservationWebController::class,
         'cancel'
     ])->name('admin.reservations.cancel');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gestion des avis
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/admin/avis', [
+        AdminAvisWebController::class,
+        'index'
+    ])->name('admin.avis.index');
+
+    Route::delete('/admin/avis/{id}', [
+        AdminAvisWebController::class,
+        'destroy'
+    ])->name('admin.avis.destroy');
 
 });
