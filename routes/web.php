@@ -406,6 +406,11 @@ Route::middleware([
         'index'
     ])->name('admin.reservations.index');
 
+    Route::patch('/admin/reservations/{id}/confirm', [
+        AdminReservationWebController::class,
+        'confirm'
+    ])->name('admin.reservations.confirm');
+
     Route::patch('/admin/reservations/{id}/cancel', [
         AdminReservationWebController::class,
         'cancel'

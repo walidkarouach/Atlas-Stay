@@ -27,6 +27,43 @@ class AdminReservationWebController extends Controller
     }
 
     /**
+     * Confirmer une réservation depuis l'administration.
+     */
+    public function confirm(int $id)
+    {
+        $reservation = Reservation::with([
+            'utilisateur',
+            'hotel',
+        ])->findOrFail($id);
+
+        if ($reservation->statut !== 'en_attente') {
+            return back()->withErrors([
+                'reservation' => 'Seules les réservations en attente peuvent être confirmées.',
+            ]);
+        }
+
+        $reservation->update([
+            'statut' => 'confirmee',
+        ]);
+
+        Notification::create([
+            'titre' => 'Réservation confirmée',
+            'message' => 'Votre réservation pour l’hôtel « '
+                . $reservation->hotel->nom
+                . ' » a été confirmée par l’administrateur.',
+            'lu' => false,
+            'utilisateur_id' => $reservation->utilisateur_id,
+        ]);
+
+        return redirect()
+            ->route('admin.reservations.index')
+            ->with(
+                'success',
+                'La réservation #' . $reservation->id_reservation . ' a été confirmée avec succès.'
+            );
+    }
+
+    /**
      * Annuler une réservation depuis l'administration.
      */
     public function cancel(int $id)
@@ -42,7 +79,7 @@ class AdminReservationWebController extends Controller
             ]);
         }
 
-        if (in_array($reservation->statut, ['refusee'])) {
+        if ($reservation->statut === 'refusee') {
             return back()->withErrors([
                 'reservation' => 'Cette réservation ne peut pas être annulée.',
             ]);

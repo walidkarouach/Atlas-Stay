@@ -73,6 +73,7 @@
         {{-- STATISTICS --}}
         <div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
+            {{-- TOTAL --}}
             <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
 
                 <p class="text-sm text-stone-500">
@@ -86,6 +87,7 @@
             </div>
 
 
+            {{-- EN ATTENTE --}}
             <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5">
 
                 <p class="text-sm text-amber-700">
@@ -99,6 +101,7 @@
             </div>
 
 
+            {{-- CONFIRMEES --}}
             <div class="rounded-2xl border border-green-200 bg-green-50 p-5">
 
                 <p class="text-sm text-green-700">
@@ -112,6 +115,7 @@
             </div>
 
 
+            {{-- ANNULEES --}}
             <div class="rounded-2xl border border-red-200 bg-red-50 p-5">
 
                 <p class="text-sm text-red-700">
@@ -305,33 +309,68 @@
                                 {{-- ACTION --}}
                                 <td class="px-6 py-5">
 
-                                    @if (!in_array($reservation->statut, ['annulee', 'refusee']))
+                                    <div class="flex flex-col items-end gap-2">
 
-                                        <form
-                                            action="{{ route('admin.reservations.cancel', $reservation->id_reservation) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');"
-                                        >
+                                        {{-- CONFIRMER --}}
+                                        @if ($reservation->statut === 'en_attente')
 
-                                            @csrf
-                                            @method('PATCH')
-
-                                            <button
-                                                type="submit"
-                                                class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-50"
+                                            <form
+                                                action="{{ route('admin.reservations.confirm', $reservation->id_reservation) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Êtes-vous sûr de vouloir confirmer cette réservation ?');"
                                             >
-                                                Annuler
-                                            </button>
 
-                                        </form>
+                                                @csrf
+                                                @method('PATCH')
 
-                                    @else
+                                                <button
+                                                    type="submit"
+                                                    class="rounded-lg border border-green-200 px-3 py-2 text-xs font-semibold text-green-700 transition hover:bg-green-50"
+                                                >
+                                                    Confirmer
+                                                </button>
 
-                                        <span class="text-xs text-stone-400">
-                                            Aucune action
-                                        </span>
+                                            </form>
 
-                                    @endif
+                                        @endif
+
+
+                                        {{-- ANNULER --}}
+                                        @if (!in_array($reservation->statut, ['annulee', 'refusee']))
+
+                                            <form
+                                                action="{{ route('admin.reservations.cancel', $reservation->id_reservation) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');"
+                                            >
+
+                                                @csrf
+                                                @method('PATCH')
+
+                                                <button
+                                                    type="submit"
+                                                    class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-50"
+                                                >
+                                                    Annuler
+                                                </button>
+
+                                            </form>
+
+                                        @endif
+
+
+                                        @if (
+                                            $reservation->statut !== 'en_attente'
+                                            && in_array($reservation->statut, ['annulee', 'refusee'])
+                                        )
+
+                                            <span class="text-xs text-stone-400">
+                                                Aucune action
+                                            </span>
+
+                                        @endif
+
+                                    </div>
 
                                 </td>
 
@@ -429,6 +468,7 @@
                     {{-- DETAILS --}}
                     <div class="mt-6 space-y-4">
 
+                        {{-- CLIENT --}}
                         <div>
 
                             <p class="text-xs uppercase tracking-wide text-stone-400">
@@ -456,6 +496,7 @@
                         </div>
 
 
+                        {{-- HOTEL --}}
                         <div>
 
                             <p class="text-xs uppercase tracking-wide text-stone-400">
@@ -483,6 +524,7 @@
                         </div>
 
 
+                        {{-- SEJOUR --}}
                         <div>
 
                             <p class="text-xs uppercase tracking-wide text-stone-400">
@@ -498,6 +540,7 @@
                         </div>
 
 
+                        {{-- VOYAGEURS + TOTAL --}}
                         <div class="flex items-center justify-between border-t border-stone-100 pt-4">
 
                             <div>
@@ -531,29 +574,57 @@
                     </div>
 
 
-                    {{-- ACTION --}}
-                    @if (!in_array($reservation->statut, ['annulee', 'refusee']))
+                    {{-- ACTIONS --}}
+                    <div class="mt-6 space-y-3">
 
-                        <form
-                            action="{{ route('admin.reservations.cancel', $reservation->id_reservation) }}"
-                            method="POST"
-                            class="mt-6"
-                            onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');"
-                        >
+                        {{-- CONFIRMER --}}
+                        @if ($reservation->statut === 'en_attente')
 
-                            @csrf
-                            @method('PATCH')
-
-                            <button
-                                type="submit"
-                                class="w-full rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-700 transition hover:bg-red-50"
+                            <form
+                                action="{{ route('admin.reservations.confirm', $reservation->id_reservation) }}"
+                                method="POST"
+                                onsubmit="return confirm('Êtes-vous sûr de vouloir confirmer cette réservation ?');"
                             >
-                                Annuler la réservation
-                            </button>
 
-                        </form>
+                                @csrf
+                                @method('PATCH')
 
-                    @endif
+                                <button
+                                    type="submit"
+                                    class="w-full rounded-xl border border-green-200 px-4 py-3 text-sm font-semibold text-green-700 transition hover:bg-green-50"
+                                >
+                                    Confirmer la réservation
+                                </button>
+
+                            </form>
+
+                        @endif
+
+
+                        {{-- ANNULER --}}
+                        @if (!in_array($reservation->statut, ['annulee', 'refusee']))
+
+                            <form
+                                action="{{ route('admin.reservations.cancel', $reservation->id_reservation) }}"
+                                method="POST"
+                                onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');"
+                            >
+
+                                @csrf
+                                @method('PATCH')
+
+                                <button
+                                    type="submit"
+                                    class="w-full rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-700 transition hover:bg-red-50"
+                                >
+                                    Annuler la réservation
+                                </button>
+
+                            </form>
+
+                        @endif
+
+                    </div>
 
                 </div>
 
