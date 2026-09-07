@@ -1,198 +1,107 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Propriétaire - Atlas Stay')
-
 @section('content')
 
-<section class="min-h-[calc(100vh-80px)] bg-stone-50">
+<div class="min-h-screen bg-slate-50 py-12">
 
-    {{-- =========================
-        HERO / HEADER
-    ========================== --}}
-    <div class="border-b border-stone-200 bg-white">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
 
-        <div class="mx-auto max-w-7xl px-6 py-12">
+        {{-- Header --}}
+        <div class="mb-10">
 
-            <div class="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600">
+                Espace propriétaire
+            </p>
 
-                <div>
+            <h1 class="mt-2 text-4xl font-bold tracking-tight text-slate-900">
+                Bonjour, {{ auth()->user()->nom }}
+            </h1>
 
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-stone-400">
-                        Espace propriétaire
-                    </p>
-
-                    <h1 class="mt-3 text-4xl font-semibold tracking-tight text-stone-950 sm:text-5xl">
-                        Bonjour, {{ auth()->user()->nom }}
-                    </h1>
-
-                    <p class="mt-4 max-w-2xl text-sm leading-7 text-stone-500">
-                        Gérez vos hébergements, suivez vos réservations
-                        et développez votre présence sur Atlas Stay.
-                    </p>
-
-                </div>
-
-
-                {{-- Quick action --}}
-                <div>
-
-                    <a
-                        href="#"
-                        class="inline-flex items-center justify-center rounded-xl bg-stone-900 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-stone-700"
-                    >
-                        + Ajouter un hôtel
-                    </a>
-
-                </div>
-
-            </div>
+            <p class="mt-3 text-slate-600">
+                Gérez vos hôtels et vos réservations depuis votre espace personnel.
+            </p>
 
         </div>
 
-    </div>
 
+        {{-- Hotels --}}
+        <div class="mb-10">
 
+            <div class="mb-5 flex items-center justify-between">
 
-    {{-- =========================
-        DASHBOARD CONTENT
-    ========================== --}}
-    <div class="mx-auto max-w-7xl px-6 py-12">
+                <div>
 
+                    <h2 class="text-2xl font-bold text-slate-900">
+                        Mes hôtels
+                    </h2>
 
-        {{-- =========================
-            HOTELS STATISTICS
-        ========================== --}}
-        <div>
+                    <p class="mt-1 text-sm text-slate-500">
+                        Vue globale de vos établissements.
+                    </p>
 
-            <div class="mb-6">
+                </div>
 
-                <p class="text-xs font-semibold uppercase tracking-[0.25em] text-stone-400">
-                    Hébergements
-                </p>
-
-                <h2 class="mt-2 text-2xl font-semibold tracking-tight text-stone-950">
-                    Vue d'ensemble de vos hôtels
-                </h2>
+                <a
+                    href="{{ route('proprietaire.hotels.index') }}"
+                    class="text-sm font-semibold text-emerald-600 hover:text-emerald-700"
+                >
+                    Voir mes hôtels →
+                </a>
 
             </div>
 
 
             <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
+                <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
 
-                {{-- Total hôtels --}}
-                <div class="group rounded-3xl border border-stone-200 bg-white p-7 shadow-[0_15px_40px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.07)]">
-
-                    <div class="flex items-start justify-between">
-
-                        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-stone-100 text-lg">
-                            🏨
-                        </div>
-
-                        <span class="text-xs font-medium text-stone-400">
-                            01
-                        </span>
-
-                    </div>
-
-                    <p class="mt-7 text-sm font-medium text-stone-500">
+                    <p class="text-sm text-slate-500">
                         Total hôtels
                     </p>
 
-                    <p class="mt-2 text-4xl font-semibold tracking-tight text-stone-950">
+                    <p class="mt-2 text-3xl font-bold text-slate-900">
                         {{ $totalHotels }}
                     </p>
 
                 </div>
 
 
-                {{-- En attente --}}
-                <div class="group rounded-3xl border border-stone-200 bg-white p-7 shadow-[0_15px_40px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.07)]">
+                <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6">
 
-                    <div class="flex items-start justify-between">
-
-                        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-lg">
-                            ⏳
-                        </div>
-
-                        <span class="text-xs font-medium text-stone-400">
-                            02
-                        </span>
-
-                    </div>
-
-                    <p class="mt-7 text-sm font-medium text-stone-500">
+                    <p class="text-sm text-amber-700">
                         En attente
                     </p>
 
-                    <p class="mt-2 text-4xl font-semibold tracking-tight text-stone-950">
+                    <p class="mt-2 text-3xl font-bold text-amber-900">
                         {{ $hotelsEnAttente }}
                     </p>
 
-                    <p class="mt-2 text-xs text-stone-400">
-                        En attente de validation
-                    </p>
-
                 </div>
 
 
-                {{-- Validés --}}
-                <div class="group rounded-3xl border border-stone-200 bg-white p-7 shadow-[0_15px_40px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.07)]">
+                <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
 
-                    <div class="flex items-start justify-between">
-
-                        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-green-50 text-lg">
-                            ✓
-                        </div>
-
-                        <span class="text-xs font-medium text-stone-400">
-                            03
-                        </span>
-
-                    </div>
-
-                    <p class="mt-7 text-sm font-medium text-stone-500">
-                        Hôtels validés
+                    <p class="text-sm text-emerald-700">
+                        Validés
                     </p>
 
-                    <p class="mt-2 text-4xl font-semibold tracking-tight text-stone-950">
+                    <p class="mt-2 text-3xl font-bold text-emerald-900">
                         {{ $hotelsValides }}
                     </p>
 
-                    <p class="mt-2 text-xs text-stone-400">
-                        Visibles sur Atlas Stay
-                    </p>
-
                 </div>
 
 
-                {{-- Refusés --}}
-                <div class="group rounded-3xl border border-stone-200 bg-white p-7 shadow-[0_15px_40px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.07)]">
+                <div class="rounded-2xl border border-red-200 bg-red-50 p-6">
 
-                    <div class="flex items-start justify-between">
-
-                        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-50 text-lg">
-                            ×
-                        </div>
-
-                        <span class="text-xs font-medium text-stone-400">
-                            04
-                        </span>
-
-                    </div>
-
-                    <p class="mt-7 text-sm font-medium text-stone-500">
-                        Hôtels refusés
+                    <p class="text-sm text-red-700">
+                        Refusés
                     </p>
 
-                    <p class="mt-2 text-4xl font-semibold tracking-tight text-stone-950">
+                    <p class="mt-2 text-3xl font-bold text-red-900">
                         {{ $hotelsRefuses }}
                     </p>
 
-                    <p class="mt-2 text-xs text-stone-400">
-                        Nécessitent une attention
-                    </p>
-
                 </div>
 
             </div>
@@ -200,121 +109,69 @@
         </div>
 
 
+        {{-- Reservations --}}
+        <div class="mb-10">
 
-        {{-- =========================
-            RESERVATIONS
-        ========================== --}}
-        <div class="mt-14">
+            <div class="mb-5 flex items-center justify-between">
 
-            <div class="mb-6">
+                <div>
 
-                <p class="text-xs font-semibold uppercase tracking-[0.25em] text-stone-400">
-                    Réservations
-                </p>
+                    <h2 class="text-2xl font-bold text-slate-900">
+                        Réservations
+                    </h2>
 
-                <h2 class="mt-2 text-2xl font-semibold tracking-tight text-stone-950">
-                    Activité de vos hébergements
-                </h2>
+                    <p class="mt-1 text-sm text-slate-500">
+                        Suivez les réservations de vos hôtels.
+                    </p>
+
+                </div>
+
+                <a
+                    href="{{ route('proprietaire.reservations.index') }}"
+                    class="text-sm font-semibold text-emerald-600 hover:text-emerald-700"
+                >
+                    Voir les réservations →
+                </a>
 
             </div>
 
 
-            <div class="grid gap-5 lg:grid-cols-3">
+            <div class="grid gap-5 md:grid-cols-3">
 
+                <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
 
-                {{-- Total --}}
-                <div class="relative overflow-hidden rounded-3xl bg-stone-900 p-8 text-white shadow-[0_20px_50px_rgba(0,0,0,0.12)]">
+                    <p class="text-sm text-slate-500">
+                        Total réservations
+                    </p>
 
-                    <div class="relative z-10">
-
-                        <div class="flex items-start justify-between">
-
-                            <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-lg">
-                                📅
-                            </div>
-
-                            <span class="text-xs font-medium text-white/40">
-                                01
-                            </span>
-
-                        </div>
-
-                        <p class="mt-8 text-sm font-medium text-white/60">
-                            Total réservations
-                        </p>
-
-                        <p class="mt-2 text-5xl font-semibold tracking-tight">
-                            {{ $totalReservations }}
-                        </p>
-
-                        <p class="mt-3 text-xs leading-5 text-white/50">
-                            Toutes les réservations liées à vos hôtels.
-                        </p>
-
-                    </div>
-
-                    <div class="absolute -right-16 -top-16 h-48 w-48 rounded-full border border-white/10"></div>
-
-                    <div class="absolute -bottom-24 -right-8 h-56 w-56 rounded-full border border-white/5"></div>
+                    <p class="mt-2 text-3xl font-bold text-slate-900">
+                        {{ $totalReservations }}
+                    </p>
 
                 </div>
 
 
-                {{-- En attente --}}
-                <div class="rounded-3xl border border-stone-200 bg-white p-8 shadow-[0_15px_40px_rgba(0,0,0,0.04)]">
+                <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6">
 
-                    <div class="flex items-start justify-between">
-
-                        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-lg">
-                            ⏳
-                        </div>
-
-                        <span class="text-xs font-medium text-stone-400">
-                            02
-                        </span>
-
-                    </div>
-
-                    <p class="mt-8 text-sm font-medium text-stone-500">
+                    <p class="text-sm text-amber-700">
                         En attente
                     </p>
 
-                    <p class="mt-2 text-5xl font-semibold tracking-tight text-stone-950">
+                    <p class="mt-2 text-3xl font-bold text-amber-900">
                         {{ $reservationsEnAttente }}
-                    </p>
-
-                    <p class="mt-3 text-xs leading-5 text-stone-400">
-                        Réservations nécessitant votre confirmation.
                     </p>
 
                 </div>
 
 
-                {{-- Confirmées --}}
-                <div class="rounded-3xl border border-stone-200 bg-white p-8 shadow-[0_15px_40px_rgba(0,0,0,0.04)]">
+                <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
 
-                    <div class="flex items-start justify-between">
-
-                        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-green-50 text-lg">
-                            ✓
-                        </div>
-
-                        <span class="text-xs font-medium text-stone-400">
-                            03
-                        </span>
-
-                    </div>
-
-                    <p class="mt-8 text-sm font-medium text-stone-500">
+                    <p class="text-sm text-emerald-700">
                         Confirmées
                     </p>
 
-                    <p class="mt-2 text-5xl font-semibold tracking-tight text-stone-950">
+                    <p class="mt-2 text-3xl font-bold text-emerald-900">
                         {{ $reservationsConfirmees }}
-                    </p>
-
-                    <p class="mt-3 text-xs leading-5 text-stone-400">
-                        Réservations confirmées par vos soins.
                     </p>
 
                 </div>
@@ -324,132 +181,74 @@
         </div>
 
 
+        {{-- Actions rapides --}}
+        <div>
 
-        {{-- =========================
-            QUICK ACTIONS
-        ========================== --}}
-        <div class="mt-14">
-
-            <div class="mb-6">
-
-                <p class="text-xs font-semibold uppercase tracking-[0.25em] text-stone-400">
-                    Gestion
-                </p>
-
-                <h2 class="mt-2 text-2xl font-semibold tracking-tight text-stone-950">
-                    Accès rapides
-                </h2>
-
-            </div>
+            <h2 class="mb-5 text-2xl font-bold text-slate-900">
+                Actions rapides
+            </h2>
 
 
             <div class="grid gap-4 md:grid-cols-3">
 
-
-                {{-- Mes hôtels --}}
                 <a
-                    href="#"
-                    class="group rounded-3xl border border-stone-200 bg-white p-7 transition duration-300 hover:-translate-y-1 hover:border-stone-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)]"
+                    href="{{ route('proprietaire.hotels.create') }}"
+                    class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
 
-                    <div class="flex items-center justify-between">
-
-                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-100 text-lg">
-                            🏨
-                        </div>
-
-                        <span class="text-xl text-stone-300 transition group-hover:translate-x-1 group-hover:text-stone-900">
-                            →
-                        </span>
-
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-xl text-white">
+                        +
                     </div>
 
-                    <h3 class="mt-6 text-lg font-semibold text-stone-900">
+                    <h3 class="mt-5 font-bold text-slate-900">
+                        Ajouter un hôtel
+                    </h3>
+
+                    <p class="mt-2 text-sm text-slate-500">
+                        Ajoutez un nouvel établissement à Atlas Stay.
+                    </p>
+
+                </a>
+
+
+                <a
+                    href="{{ route('proprietaire.hotels.index') }}"
+                    class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                >
+
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-xl">
+                        🏔️
+                    </div>
+
+                    <h3 class="mt-5 font-bold text-slate-900">
                         Mes hôtels
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-stone-500">
+                    <p class="mt-2 text-sm text-slate-500">
                         Consultez et gérez vos établissements.
                     </p>
 
                 </a>
 
 
-                {{-- Réservations --}}
                 <a
-                    href="#"
-                    class="group rounded-3xl border border-stone-200 bg-white p-7 transition duration-300 hover:-translate-y-1 hover:border-stone-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)]"
+                    href="{{ route('proprietaire.reservations.index') }}"
+                    class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
 
-                    <div class="flex items-center justify-between">
-
-                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-100 text-lg">
-                            📋
-                        </div>
-
-                        <span class="text-xl text-stone-300 transition group-hover:translate-x-1 group-hover:text-stone-900">
-                            →
-                        </span>
-
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-xl">
+                        📅
                     </div>
 
-                    <h3 class="mt-6 text-lg font-semibold text-stone-900">
+                    <h3 class="mt-5 font-bold text-slate-900">
                         Réservations
                     </h3>
 
-                    <p class="mt-2 text-sm leading-6 text-stone-500">
-                        Consultez et gérez les demandes de vos clients.
+                    <p class="mt-2 text-sm text-slate-500">
+                        Gérez les demandes de réservation.
                     </p>
 
                 </a>
-
-
-                {{-- Notifications --}}
-                <a
-                    href="{{ route('notifications.index') }}"
-                    class="group rounded-3xl border border-stone-200 bg-white p-7 transition duration-300 hover:-translate-y-1 hover:border-stone-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)]"
-                >
-
-                    <div class="flex items-center justify-between">
-
-                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-100 text-lg">
-                            🔔
-                        </div>
-
-                        <span class="text-xl text-stone-300 transition group-hover:translate-x-1 group-hover:text-stone-900">
-                            →
-                        </span>
-
-                    </div>
-
-                    <h3 class="mt-6 text-lg font-semibold text-stone-900">
-                        Notifications
-                    </h3>
-
-                    <p class="mt-2 text-sm leading-6 text-stone-500">
-                        Consultez les dernières notifications reçues.
-                    </p>
-
-                </a>
-
-            </div>
-
-        </div>
-
-
-
-        {{-- Bottom note --}}
-        <div class="mt-14 border-t border-stone-200 pt-8">
-
-            <div class="flex flex-col justify-between gap-4 text-xs text-stone-400 sm:flex-row">
-
-                <p>
-                    Atlas Stay · Espace propriétaire
-                </p>
-
-                <p>
-                    Gérez vos hébergements en toute simplicité.
-                </p>
 
             </div>
 
@@ -457,6 +256,6 @@
 
     </div>
 
-</section>
+</div>
 
 @endsection

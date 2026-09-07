@@ -61,9 +61,10 @@
                 </a>
 
 
-                {{-- CLIENT NAVIGATION --}}
+                {{-- AUTHENTICATED USER NAVIGATION --}}
                 @auth
 
+                    {{-- CLIENT NAVIGATION --}}
                     @if (auth()->user()->role->nom === 'Client')
 
                         <a
@@ -71,6 +72,26 @@
                             class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
                         >
                             Mes réservations
+                        </a>
+
+                        <a
+                            href="{{ route('notifications.index') }}"
+                            class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
+                        >
+                            Notifications
+                        </a>
+
+                    @endif
+
+
+                    {{-- PROPRIETAIRE NAVIGATION --}}
+                    @if (auth()->user()->role->nom === 'Propriétaire')
+
+                        <a
+                            href="{{ route('proprietaire.dashboard') }}"
+                            class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
+                        >
+                            Dashboard
                         </a>
 
                         <a

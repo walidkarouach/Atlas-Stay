@@ -11,6 +11,7 @@ use App\Http\Controllers\AvisWebController;
 use App\Http\Controllers\ProprietaireDashboardController;
 use App\Http\Controllers\ProprietaireHotelWebController;
 use App\Http\Controllers\ImageWebController;
+use App\Http\Controllers\AdminDashboardController;
 
 
 /*
@@ -30,11 +31,15 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/hotels', [HotelWebController::class, 'index'])
-    ->name('hotels.index');
+Route::get('/hotels', [
+    HotelWebController::class,
+    'index'
+])->name('hotels.index');
 
-Route::get('/hotels/{id}', [HotelWebController::class, 'show'])
-    ->name('hotels.show');
+Route::get('/hotels/{id}', [
+    HotelWebController::class,
+    'show'
+])->name('hotels.show');
 
 
 /*
@@ -43,19 +48,30 @@ Route::get('/hotels/{id}', [HotelWebController::class, 'show'])
 |--------------------------------------------------------------------------
 */
 
-Route::get('/login', [WebAuthController::class, 'showLogin'])
-    ->name('login');
+Route::get('/login', [
+    WebAuthController::class,
+    'showLogin'
+])->name('login');
 
-Route::post('/login', [WebAuthController::class, 'login'])
-    ->name('login.submit');
+Route::post('/login', [
+    WebAuthController::class,
+    'login'
+])->name('login.submit');
 
-Route::get('/register', [WebAuthController::class, 'showRegister'])
-    ->name('register');
+Route::get('/register', [
+    WebAuthController::class,
+    'showRegister'
+])->name('register');
 
-Route::post('/register', [WebAuthController::class, 'register'])
-    ->name('register.submit');
+Route::post('/register', [
+    WebAuthController::class,
+    'register'
+])->name('register.submit');
 
-Route::post('/logout', [WebAuthController::class, 'logout'])
+Route::post('/logout', [
+    WebAuthController::class,
+    'logout'
+])
     ->middleware('auth')
     ->name('logout');
 
@@ -66,12 +82,28 @@ Route::post('/logout', [WebAuthController::class, 'logout'])
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:Propriétaire'])->group(function () {
+Route::middleware([
+    'auth',
+    'role:Propriétaire'
+])->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard
+    |--------------------------------------------------------------------------
+    */
 
     Route::get('/proprietaire/dashboard', [
         ProprietaireDashboardController::class,
         'index'
     ])->name('proprietaire.dashboard');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hotels
+    |--------------------------------------------------------------------------
+    */
 
     Route::get('/proprietaire/hotels', [
         ProprietaireHotelWebController::class,
@@ -106,7 +138,7 @@ Route::middleware(['auth', 'role:Propriétaire'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | IMAGES
+    | Images
     |--------------------------------------------------------------------------
     */
 
@@ -125,6 +157,33 @@ Route::middleware(['auth', 'role:Propriétaire'])->group(function () {
         'destroy'
     ])->name('proprietaire.images.destroy');
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reservations
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/proprietaire/reservations', [
+        ReservationWebController::class,
+        'ownerIndex'
+    ])->name('proprietaire.reservations.index');
+
+    Route::patch('/proprietaire/reservations/{id}/confirm', [
+        ReservationWebController::class,
+        'confirm'
+    ])->name('proprietaire.reservations.confirm');
+
+    Route::patch('/proprietaire/reservations/{id}/reject', [
+        ReservationWebController::class,
+        'reject'
+    ])->name('proprietaire.reservations.reject');
+
+    Route::patch('/proprietaire/reservations/{id}/cancel', [
+        ReservationWebController::class,
+        'cancel'
+    ])->name('proprietaire.reservations.cancel');
+
 });
 
 
@@ -134,7 +193,10 @@ Route::middleware(['auth', 'role:Propriétaire'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:Client'])->group(function () {
+Route::middleware([
+    'auth',
+    'role:Client'
+])->group(function () {
 
     Route::post('/reservations', [
         HotelWebController::class,
@@ -172,7 +234,10 @@ Route::get('/hotels/{hotelId}/avis', [
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'role:Client'])->group(function () {
+Route::middleware([
+    'auth',
+    'role:Client'
+])->group(function () {
 
     Route::post('/avis', [
         AvisWebController::class,
@@ -245,5 +310,24 @@ Route::middleware('auth')->group(function () {
         ProfileWebController::class,
         'update'
     ])->name('profile.update');
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN DASHBOARD
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware([
+    'auth',
+    'role:Admin'
+])->group(function () {
+
+    Route::get('/admin/dashboard', [
+        AdminDashboardController::class,
+        'index'
+    ])->name('admin.dashboard');
 
 });
