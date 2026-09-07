@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,15 +9,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-stone-50 text-stone-900 antialiased">
+<body class="bg-white text-stone-900">
 
-    {{-- HEADER --}}
-    <header class="border-b border-stone-200 bg-white">
+    {{-- NAVBAR --}}
+    <header class="sticky top-0 z-50 border-b border-stone-200 bg-white/95 backdrop-blur">
 
-        <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
 
             {{-- LOGO --}}
-            <a href="/" class="flex items-center">
+            <a href="{{ url('/') }}" class="flex items-center">
                 <img
                     src="{{ asset('images/logo-atlas.png') }}"
                     alt="Atlas Stay"
@@ -26,12 +25,11 @@
                 >
             </a>
 
-
             {{-- NAVIGATION --}}
-            <div class="hidden items-center gap-8 md:flex">
+            <nav class="hidden items-center gap-8 md:flex">
 
                 <a
-                    href="/"
+                    href="{{ url('/') }}"
                     class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
                 >
                     Accueil
@@ -45,20 +43,20 @@
                 </a>
 
                 <a
-                    href="#"
+                    href="{{ url('/#destinations') }}"
                     class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
                 >
                     Destinations
                 </a>
 
                 <a
-                    href="#"
+                    href="{{ url('/#a-propos') }}"
                     class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
                 >
                     À propos
                 </a>
 
-                {{-- MES RÉSERVATIONS : CLIENT UNIQUEMENT --}}
+                {{-- CLIENT NAVIGATION --}}
                 @auth
                     @if (auth()->user()->role->nom === 'Client')
 
@@ -69,14 +67,20 @@
                             Mes réservations
                         </a>
 
+                        <a
+                            href="{{ route('notifications.index') }}"
+                            class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
+                        >
+                            Notifications
+                        </a>
+
                     @endif
                 @endauth
 
-            </div>
+            </nav>
 
-
-            {{-- AUTHENTIFICATION --}}
-            <div class="flex items-center gap-3">
+            {{-- AUTHENTICATION AREA --}}
+            <div class="flex items-center gap-4">
 
                 @auth
 
@@ -93,22 +97,19 @@
 
                     </div>
 
-
                     {{-- LOGOUT --}}
                     <form
                         action="{{ route('logout') }}"
                         method="POST"
                     >
-
                         @csrf
 
                         <button
                             type="submit"
-                            class="rounded-full border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-100"
+                            class="rounded-xl border border-stone-300 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
                         >
                             Déconnexion
                         </button>
-
                     </form>
 
                 @else
@@ -116,140 +117,144 @@
                     {{-- LOGIN --}}
                     <a
                         href="{{ route('login') }}"
-                        class="hidden text-sm font-medium text-stone-700 transition hover:text-stone-950 sm:block"
+                        class="text-sm font-semibold text-stone-700 transition hover:text-stone-950"
                     >
                         Connexion
                     </a>
 
-
                     {{-- REGISTER --}}
                     <a
-                        href="/register"
-                        class="rounded-full bg-stone-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-stone-700"
+                        href="#"
+                        class="hidden rounded-xl bg-stone-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-stone-700 sm:inline-flex"
                     >
-                        Créer un compte
+                        Inscription
                     </a>
 
                 @endauth
 
             </div>
 
-        </nav>
+        </div>
 
     </header>
 
 
-    {{-- MAIN CONTENT --}}
+    {{-- FLASH SUCCESS MESSAGE --}}
+    @if (session('success'))
+
+        <div class="mx-auto max-w-7xl px-6 pt-6">
+
+            <div class="rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-sm text-green-700">
+                {{ session('success') }}
+            </div>
+
+        </div>
+
+    @endif
+
+
+    {{-- PAGE CONTENT --}}
     <main>
         @yield('content')
     </main>
 
 
     {{-- FOOTER --}}
-    <footer class="mt-20 border-t border-stone-200 bg-white">
+    <footer class="border-t border-stone-200 bg-stone-950 text-white">
 
-        <div class="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:grid-cols-3">
+        <div class="mx-auto max-w-7xl px-6 py-12">
 
-            {{-- BRAND --}}
-            <div>
+            <div class="grid gap-10 md:grid-cols-3">
 
-                <a
-                    href="/"
-                    class="inline-flex items-center"
-                >
+                {{-- BRAND --}}
+                <div>
 
                     <img
                         src="{{ asset('images/logo-atlas.png') }}"
                         alt="Atlas Stay"
-                        class="h-14 w-auto"
+                        class="h-12 w-auto brightness-0 invert"
                     >
 
-                </a>
+                    <p class="mt-4 max-w-sm text-sm leading-6 text-stone-400">
+                        Découvrez des hôtels authentiques dans les plus belles
+                        régions montagneuses du Maroc.
+                    </p>
 
-                <p class="mt-4 max-w-sm text-sm leading-6 text-stone-500">
-                    Découvrez des hébergements uniques au cœur des montagnes du Maroc.
-                </p>
-
-            </div>
+                </div>
 
 
-            {{-- NAVIGATION FOOTER --}}
-            <div>
+                {{-- NAVIGATION --}}
+                <div>
 
-                <h3 class="text-sm font-semibold uppercase tracking-wider">
-                    Navigation
-                </h3>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-white">
+                        Navigation
+                    </h3>
 
-                <div class="mt-4 space-y-2 text-sm text-stone-500">
+                    <div class="mt-4 space-y-3">
 
-                    <a
-                        href="/"
-                        class="block transition hover:text-stone-900"
-                    >
-                        Accueil
-                    </a>
+                        <a
+                            href="{{ url('/') }}"
+                            class="block text-sm text-stone-400 transition hover:text-white"
+                        >
+                            Accueil
+                        </a>
 
-                    <a
-                        href="{{ route('hotels.index') }}"
-                        class="block transition hover:text-stone-900"
-                    >
-                        Hôtels
-                    </a>
+                        <a
+                            href="{{ route('hotels.index') }}"
+                            class="block text-sm text-stone-400 transition hover:text-white"
+                        >
+                            Hôtels
+                        </a>
 
-                    @auth
-                        @if (auth()->user()->role->nom === 'Client')
+                        <a
+                            href="{{ url('/#destinations') }}"
+                            class="block text-sm text-stone-400 transition hover:text-white"
+                        >
+                            Destinations
+                        </a>
 
-                            <a
-                                href="{{ route('reservations.index') }}"
-                                class="block transition hover:text-stone-900"
-                            >
-                                Mes réservations
-                            </a>
+                        <a
+                            href="{{ url('/#a-propos') }}"
+                            class="block text-sm text-stone-400 transition hover:text-white"
+                        >
+                            À propos
+                        </a>
 
-                        @endif
-                    @endauth
+                    </div>
 
-                    <a
-                        href="#"
-                        class="block transition hover:text-stone-900"
-                    >
-                        Destinations
-                    </a>
+                </div>
 
-                    <a
-                        href="#"
-                        class="block transition hover:text-stone-900"
-                    >
-                        À propos
-                    </a>
+
+                {{-- CONTACT --}}
+                <div>
+
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-white">
+                        Atlas Stay
+                    </h3>
+
+                    <div class="mt-4 space-y-3 text-sm text-stone-400">
+
+                        <p>
+                            Maroc
+                        </p>
+
+                        <p>
+                            Explorez les montagnes autrement.
+                        </p>
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            {{-- ATLAS STAY --}}
-            <div>
+            {{-- COPYRIGHT --}}
+            <div class="mt-10 border-t border-stone-800 pt-6">
 
-                <h3 class="text-sm font-semibold uppercase tracking-wider">
-                    Atlas Stay
-                </h3>
-
-                <p class="mt-4 text-sm leading-6 text-stone-500">
-                    Plateforme de réservation d'hôtels de montagne au Maroc.
+                <p class="text-center text-sm text-stone-500">
+                    © {{ date('Y') }} Atlas Stay. Tous droits réservés.
                 </p>
-
-            </div>
-
-        </div>
-
-
-        {{-- COPYRIGHT --}}
-        <div class="border-t border-stone-200">
-
-            <div class="mx-auto max-w-7xl px-6 py-5 text-center text-sm text-stone-500">
-
-                © {{ date('Y') }} Atlas Stay. Tous droits réservés.
 
             </div>
 
@@ -258,5 +263,4 @@
     </footer>
 
 </body>
-
 </html>
