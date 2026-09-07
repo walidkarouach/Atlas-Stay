@@ -8,6 +8,7 @@ use App\Http\Controllers\ReservationWebController;
 use App\Http\Controllers\NotificationWebController;
 use App\Http\Controllers\ProfileWebController;
 use App\Http\Controllers\AvisWebController;
+use App\Http\Controllers\ProprietaireDashboardController;
 
 
 /*
@@ -55,6 +56,22 @@ Route::post('/register', [WebAuthController::class, 'register'])
 Route::post('/logout', [WebAuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
+
+
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD - PROPRIETAIRE
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:Propriétaire'])->group(function () {
+
+    Route::get('/proprietaire/dashboard', [
+        ProprietaireDashboardController::class,
+        'index'
+    ])->name('proprietaire.dashboard');
+
+});
 
 
 /*
