@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use App\Models\Notification;
+use App\Events\ReservationConfirmed;
 use Illuminate\Http\Request;
 
 class ReservationWebController extends Controller
@@ -82,12 +83,7 @@ class ReservationWebController extends Controller
             'statut' => 'confirmee',
         ]);
 
-        Notification::create([
-            'titre' => 'Réservation confirmée',
-            'message' => 'Votre réservation a été confirmée par le propriétaire.',
-            'lu' => false,
-            'utilisateur_id' => $reservation->utilisateur_id,
-        ]);
+        ReservationConfirmed::dispatch($reservation);
 
         return redirect()
             ->route('proprietaire.reservations.index')
