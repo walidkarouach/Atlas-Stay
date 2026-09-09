@@ -9,19 +9,23 @@ use Illuminate\Http\Request;
 class ProprietaireDashboardController extends Controller
 {
     /**
-     * Dashboard du propriétaire
+     * Dashboard du propriétaire.
      */
     public function index(Request $request)
     {
         $proprietaireId = $request->user()->id_user;
 
-        // Nombre total de mes hôtels
+        /*
+        |--------------------------------------------------------------------------
+        | Hôtels
+        |--------------------------------------------------------------------------
+        */
+
         $totalHotels = Hotel::where(
             'proprietaire_id',
             $proprietaireId
         )->count();
 
-        // Hôtels en attente
         $hotelsEnAttente = Hotel::where(
             'proprietaire_id',
             $proprietaireId
@@ -29,7 +33,6 @@ class ProprietaireDashboardController extends Controller
         ->where('statut', 'en_attente')
         ->count();
 
-        // Hôtels validés
         $hotelsValides = Hotel::where(
             'proprietaire_id',
             $proprietaireId
@@ -37,7 +40,6 @@ class ProprietaireDashboardController extends Controller
         ->where('statut', 'valide')
         ->count();
 
-        // Hôtels refusés
         $hotelsRefuses = Hotel::where(
             'proprietaire_id',
             $proprietaireId
@@ -46,7 +48,12 @@ class ProprietaireDashboardController extends Controller
         ->count();
 
 
-        // Toutes les réservations de mes hôtels
+        /*
+        |--------------------------------------------------------------------------
+        | Réservations
+        |--------------------------------------------------------------------------
+        */
+
         $totalReservations = Reservation::whereHas(
             'hotel',
             function ($query) use ($proprietaireId) {
@@ -57,8 +64,6 @@ class ProprietaireDashboardController extends Controller
             }
         )->count();
 
-
-        // Réservations en attente
         $reservationsEnAttente = Reservation::whereHas(
             'hotel',
             function ($query) use ($proprietaireId) {
@@ -71,8 +76,6 @@ class ProprietaireDashboardController extends Controller
         ->where('statut', 'en_attente')
         ->count();
 
-
-        // Réservations confirmées
         $reservationsConfirmees = Reservation::whereHas(
             'hotel',
             function ($query) use ($proprietaireId) {
@@ -85,6 +88,12 @@ class ProprietaireDashboardController extends Controller
         ->where('statut', 'confirmee')
         ->count();
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard
+        |--------------------------------------------------------------------------
+        */
 
         return view(
             'proprietaire.dashboard',

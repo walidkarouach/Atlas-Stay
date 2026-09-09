@@ -204,16 +204,32 @@
                 {{-- Actions --}}
                 <div class="mt-9 border-t border-stone-100 pt-8">
 
-                    <div class="grid gap-3 sm:grid-cols-2">
+                    <div class="space-y-4">
 
 
                         {{-- Edit profile --}}
-                        <a
-                            href="{{ route('profile.edit') }}"
-                            class="inline-flex items-center justify-center rounded-xl bg-stone-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
-                        >
-                            Modifier mon profil
-                        </a>
+                        @if (
+                            $user->role->nom === 'Admin' ||
+                            $user->role->nom === 'Propriétaire'
+                        )
+
+                            <a
+                                href="{{ route('profile.edit') }}"
+                                class="flex w-full items-center justify-center rounded-xl bg-stone-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-stone-700"
+                            >
+                                Modifier mon profil
+                            </a>
+
+                        @else
+
+                            <a
+                                href="{{ route('profile.edit') }}"
+                                class="flex w-full items-center justify-center rounded-xl bg-stone-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-stone-700"
+                            >
+                                Modifier mon profil
+                            </a>
+
+                        @endif
 
 
                         {{-- Reservations --}}
@@ -221,7 +237,7 @@
 
                             <a
                                 href="{{ route('reservations.index') }}"
-                                class="inline-flex items-center justify-center rounded-xl border border-stone-300 bg-white px-6 py-3.5 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
+                                class="flex w-full items-center justify-center rounded-xl border border-stone-300 bg-white px-6 py-3.5 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
                             >
                                 Mes réservations
                             </a>
@@ -232,7 +248,7 @@
                         {{-- Notifications --}}
                         <a
                             href="{{ route('notifications.index') }}"
-                            class="inline-flex items-center justify-center rounded-xl border border-stone-300 bg-white px-6 py-3.5 text-sm font-semibold text-stone-700 transition hover:bg-stone-100 sm:col-span-2"
+                            class="flex w-full items-center justify-center rounded-xl border border-stone-300 bg-white px-6 py-3.5 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
                         >
                             Notifications
                         </a>

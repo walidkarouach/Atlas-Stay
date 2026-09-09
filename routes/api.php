@@ -3,13 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HotelController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\AvisController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HotelController;
+use App\Http\Controllers\Api\ImageController;
+use App\Http\Controllers\Api\ReservationController;
+use App\Http\Controllers\Api\AvisController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\UserController;
 
 
 // =========================
@@ -44,7 +44,10 @@ Route::get('/hotels/{id}', [HotelController::class, 'show']);
 // HOTELS - PROPRIETAIRE
 // =========================
 
-Route::middleware(['auth:sanctum', 'role:Propriétaire'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    'role:Propriétaire'
+])->group(function () {
 
     Route::post('/hotels', [HotelController::class, 'store']);
 
@@ -52,9 +55,15 @@ Route::middleware(['auth:sanctum', 'role:Propriétaire'])->group(function () {
 
     Route::delete('/hotels/{id}', [HotelController::class, 'destroy']);
 
-    Route::post('/hotels/{hotelId}/images', [ImageController::class, 'store']);
+    Route::post(
+        '/hotels/{hotelId}/images',
+        [ImageController::class, 'store']
+    );
 
-    Route::delete('/images/{id}', [ImageController::class, 'destroy']);
+    Route::delete(
+        '/images/{id}',
+        [ImageController::class, 'destroy']
+    );
 
 });
 
@@ -63,13 +72,25 @@ Route::middleware(['auth:sanctum', 'role:Propriétaire'])->group(function () {
 // RESERVATIONS - CLIENT
 // =========================
 
-Route::middleware(['auth:sanctum', 'role:Client'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    'role:Client'
+])->group(function () {
 
-    Route::post('/reservations', [ReservationController::class, 'store']);
+    Route::post(
+        '/reservations',
+        [ReservationController::class, 'store']
+    );
 
-    Route::get('/reservations', [ReservationController::class, 'index']);
+    Route::get(
+        '/reservations',
+        [ReservationController::class, 'index']
+    );
 
-    Route::patch('/reservations/{id}/cancel', [ReservationController::class, 'destroy']);
+    Route::patch(
+        '/reservations/{id}/cancel',
+        [ReservationController::class, 'destroy']
+    );
 
 });
 
@@ -78,15 +99,30 @@ Route::middleware(['auth:sanctum', 'role:Client'])->group(function () {
 // RESERVATIONS - PROPRIETAIRE
 // =========================
 
-Route::middleware(['auth:sanctum', 'role:Propriétaire'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    'role:Propriétaire'
+])->group(function () {
 
-    Route::get('/proprietaire/reservations', [ReservationController::class, 'ownerReservations']);
+    Route::get(
+        '/proprietaire/reservations',
+        [ReservationController::class, 'ownerReservations']
+    );
 
-    Route::patch('/reservations/{id}/confirm', [ReservationController::class, 'confirm']);
+    Route::patch(
+        '/reservations/{id}/confirm',
+        [ReservationController::class, 'confirm']
+    );
 
-    Route::patch('/reservations/{id}/reject', [ReservationController::class, 'reject']);
+    Route::patch(
+        '/reservations/{id}/reject',
+        [ReservationController::class, 'reject']
+    );
 
-    Route::patch('/reservations/{id}/cancel-owner', [ReservationController::class, 'cancelByOwner']);
+    Route::patch(
+        '/reservations/{id}/cancel-owner',
+        [ReservationController::class, 'cancelByOwner']
+    );
 
 });
 
@@ -95,20 +131,35 @@ Route::middleware(['auth:sanctum', 'role:Propriétaire'])->group(function () {
 // AVIS - PUBLIC
 // =========================
 
-Route::get('/hotels/{hotelId}/avis', [AvisController::class, 'index']);
+Route::get(
+    '/hotels/{hotelId}/avis',
+    [AvisController::class, 'index']
+);
 
 
 // =========================
 // AVIS - CLIENT
 // =========================
 
-Route::middleware(['auth:sanctum', 'role:Client'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    'role:Client'
+])->group(function () {
 
-    Route::post('/avis', [AvisController::class, 'store']);
+    Route::post(
+        '/avis',
+        [AvisController::class, 'store']
+    );
 
-    Route::put('/avis/{id}', [AvisController::class, 'update']);
+    Route::put(
+        '/avis/{id}',
+        [AvisController::class, 'update']
+    );
 
-    Route::delete('/avis/{id}', [AvisController::class, 'destroy']);
+    Route::delete(
+        '/avis/{id}',
+        [AvisController::class, 'destroy']
+    );
 
 });
 
@@ -119,13 +170,25 @@ Route::middleware(['auth:sanctum', 'role:Client'])->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get(
+        '/notifications',
+        [NotificationController::class, 'index']
+    );
 
-    Route::get('/notifications/unread', [NotificationController::class, 'unread']);
+    Route::get(
+        '/notifications/unread',
+        [NotificationController::class, 'unread']
+    );
 
-    Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::patch(
+        '/notifications/{id}/read',
+        [NotificationController::class, 'markAsRead']
+    );
 
-    Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::patch(
+        '/notifications/read-all',
+        [NotificationController::class, 'markAllAsRead']
+    );
 
 });
 
@@ -136,11 +199,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('/profile', [UserController::class, 'profile']);
+    Route::get(
+        '/profile',
+        [UserController::class, 'profile']
+    );
 
-    Route::put('/profile', [UserController::class, 'updateProfile']);
+    Route::put(
+        '/profile',
+        [UserController::class, 'updateProfile']
+    );
 
-    Route::put('/profile/password', [UserController::class, 'changePassword']);
+    Route::put(
+        '/profile/password',
+        [UserController::class, 'changePassword']
+    );
 
 });
 
@@ -149,13 +221,25 @@ Route::middleware('auth:sanctum')->group(function () {
 // ADMIN - USERS
 // =========================
 
-Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    'role:Admin'
+])->group(function () {
 
-    Route::get('/admin/users', [UserController::class, 'index']);
+    Route::get(
+        '/admin/users',
+        [UserController::class, 'index']
+    );
 
-    Route::patch('/admin/users/{id}/role', [UserController::class, 'updateRole']);
+    Route::patch(
+        '/admin/users/{id}/role',
+        [UserController::class, 'updateRole']
+    );
 
-    Route::delete('/admin/users/{id}', [UserController::class, 'destroy']);
+    Route::delete(
+        '/admin/users/{id}',
+        [UserController::class, 'destroy']
+    );
 
 });
 
@@ -164,15 +248,30 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
 // ADMIN - HOTELS
 // =========================
 
-Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    'role:Admin'
+])->group(function () {
 
-    Route::get('/admin/hotels', [HotelController::class, 'adminIndex']);
+    Route::get(
+        '/admin/hotels',
+        [HotelController::class, 'adminIndex']
+    );
 
-    Route::patch('/admin/hotels/{id}/validate', [HotelController::class, 'validate']);
+    Route::patch(
+        '/admin/hotels/{id}/validate',
+        [HotelController::class, 'validate']
+    );
 
-    Route::patch('/admin/hotels/{id}/reject', [HotelController::class, 'reject']);
+    Route::patch(
+        '/admin/hotels/{id}/reject',
+        [HotelController::class, 'reject']
+    );
 
-    Route::delete('/admin/hotels/{id}', [HotelController::class, 'adminDestroy']);
+    Route::delete(
+        '/admin/hotels/{id}',
+        [HotelController::class, 'adminDestroy']
+    );
 
 });
 
@@ -181,19 +280,33 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
 // ADMIN - RESERVATIONS
 // =========================
 
-Route::middleware(['auth:sanctum', 'role:Admin'])
-    ->get('/admin/reservations', [ReservationController::class, 'adminIndex']);
+Route::middleware([
+    'auth:sanctum',
+    'role:Admin'
+])->get(
+    '/admin/reservations',
+    [ReservationController::class, 'adminIndex']
+);
 
 
 // =========================
 // ADMIN - AVIS
 // =========================
 
-Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    'role:Admin'
+])->group(function () {
 
-    Route::get('/admin/avis', [AvisController::class, 'adminIndex']);
+    Route::get(
+        '/admin/avis',
+        [AvisController::class, 'adminIndex']
+    );
 
-    Route::delete('/admin/avis/{id}', [AvisController::class, 'adminDestroy']);
+    Route::delete(
+        '/admin/avis/{id}',
+        [AvisController::class, 'adminDestroy']
+    );
 
 });
 
@@ -202,5 +315,10 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
 // ADMIN - STATISTICS
 // =========================
 
-Route::middleware(['auth:sanctum', 'role:Admin'])
-    ->get('/admin/statistics', [UserController::class, 'statistics']);
+Route::middleware([
+    'auth:sanctum',
+    'role:Admin'
+])->get(
+    '/admin/statistics',
+    [UserController::class, 'statistics']
+);

@@ -4,460 +4,520 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title', 'Atlas Stay')</title>
+    <title>
+        @yield('title', 'Atlas Stay')
+    </title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-white text-stone-900">
+<body class="min-h-screen bg-white text-stone-900">
 
-    {{-- NAVBAR --}}
-    <header class="sticky top-0 z-50 border-b border-stone-200 bg-white/95 backdrop-blur">
+    {{-- =========================
+        NAVBAR
+    ========================== --}}
+    <header class="sticky top-0 z-50 border-b border-stone-200 bg-white">
 
-        <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <nav class="mx-auto flex h-[80px] max-w-[1800px] items-center justify-between px-6 lg:px-10">
 
-            {{-- DESKTOP / MOBILE TOP BAR --}}
-            <div class="flex h-20 items-center justify-between">
+            {{-- =========================
+                LOGO
+            ========================== --}}
+            <a
+                href="{{ url('/') }}"
+                class="shrink-0"
+            >
 
-                {{-- LOGO --}}
+                <img
+                    src="{{ asset('images/logo-atlas.png') }}"
+                    alt="Atlas Stay"
+                    class="h-10 w-auto"
+                >
+
+            </a>
+
+
+            {{-- =========================
+                DESKTOP NAVIGATION
+            ========================== --}}
+            <div class="hidden items-center gap-9 lg:flex">
+
+                {{-- ACCUEIL --}}
                 <a
                     href="{{ url('/') }}"
-                    class="flex items-center"
+                    class="text-[16px] font-medium text-stone-700 transition hover:text-black"
                 >
-                    <img
-                        src="{{ asset('images/logo-atlas.png') }}"
-                        alt="Atlas Stay"
-                        class="h-11 w-auto sm:h-12"
-                    >
+                    Accueil
                 </a>
 
 
-                {{-- DESKTOP NAVIGATION --}}
-                <nav class="hidden items-center gap-8 md:flex">
-
-                    <a
-                        href="{{ url('/') }}"
-                        class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
-                    >
-                        Accueil
-                    </a>
-
-                    <a
-                        href="{{ route('hotels.index') }}"
-                        class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
-                    >
-                        Hôtels
-                    </a>
-
-                    <a
-                        href="{{ url('/#destinations') }}"
-                        class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
-                    >
-                        Destinations
-                    </a>
-
-                    <a
-                        href="{{ url('/#a-propos') }}"
-                        class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
-                    >
-                        À propos
-                    </a>
-
-
-                    @auth
-
-                        {{-- CLIENT --}}
-                        @if (auth()->user()->role->nom === 'Client')
-
-                            <a
-                                href="{{ route('reservations.index') }}"
-                                class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
-                            >
-                                Mes réservations
-                            </a>
-
-                            <a
-                                href="{{ route('notifications.index') }}"
-                                class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
-                            >
-                                Notifications
-                            </a>
-
-                        @endif
-
-
-                        {{-- PROPRIETAIRE --}}
-                        @if (auth()->user()->role->nom === 'Propriétaire')
-
-                            <a
-                                href="{{ route('proprietaire.dashboard') }}"
-                                class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
-                            >
-                                Dashboard
-                            </a>
-
-                            <a
-                                href="{{ route('notifications.index') }}"
-                                class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
-                            >
-                                Notifications
-                            </a>
-
-                        @endif
-
-
-                        {{-- ADMIN --}}
-                        @if (auth()->user()->role->nom === 'Admin')
-
-                            <a
-                                href="{{ route('admin.dashboard') }}"
-                                class="text-sm font-medium text-stone-700 transition hover:text-stone-950"
-                            >
-                                Dashboard
-                            </a>
-
-                        @endif
-
-                    @endauth
-
-                </nav>
-
-
-                {{-- DESKTOP AUTHENTICATION --}}
-                <div class="hidden items-center gap-4 md:flex">
-
-                    @auth
-
-                        {{-- PROFILE --}}
-                        <a
-                            href="{{ route('profile.index') }}"
-                            class="group text-right"
-                        >
-
-                            <p class="text-sm font-semibold text-stone-900 transition group-hover:text-stone-500">
-                                {{ auth()->user()->nom }}
-                            </p>
-
-                            <p class="text-xs text-stone-500">
-                                {{ auth()->user()->role->nom }}
-                            </p>
-
-                        </a>
-
-
-                        {{-- LOGOUT --}}
-                        <form action="{{ route('logout') }}" method="POST">
-
-                            @csrf
-
-                            <button
-                                type="submit"
-                                class="rounded-xl border border-stone-300 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
-                            >
-                                Déconnexion
-                            </button>
-
-                        </form>
-
-                    @else
-
-                        {{-- LOGIN --}}
-                        <a
-                            href="{{ route('login') }}"
-                            class="text-sm font-semibold text-stone-700 transition hover:text-stone-950"
-                        >
-                            Connexion
-                        </a>
-
-                        {{-- REGISTER --}}
-                        <a
-                            href="{{ route('register') }}"
-                            class="hidden rounded-xl bg-stone-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-stone-700 sm:inline-flex"
-                        >
-                            Inscription
-                        </a>
-
-                    @endauth
-
-                </div>
-
-
-                {{-- MOBILE MENU BUTTON --}}
-                <button
-                    type="button"
-                    id="mobile-menu-button"
-                    class="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-stone-200 bg-white text-stone-800 transition hover:bg-stone-100 md:hidden"
-                    aria-label="Ouvrir le menu"
-                    aria-expanded="false"
+                {{-- HOTELS --}}
+                <a
+                    href="{{ route('hotels.index') }}"
+                    class="text-[16px] font-medium text-stone-700 transition hover:text-black"
                 >
-
-                    {{-- MENU ICON --}}
-                    <svg
-                        id="mobile-menu-open-icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M4 6h16M4 12h16M4 18h16"
-                        />
-                    </svg>
+                    Hôtels
+                </a>
 
 
-                    {{-- CLOSE ICON --}}
-                    <svg
-                        id="mobile-menu-close-icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="hidden h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
+                {{-- DESTINATIONS --}}
+                <a
+                    href="{{ url('/#destinations') }}"
+                    class="text-[16px] font-medium text-stone-700 transition hover:text-black"
+                >
+                    Destinations
+                </a>
 
-                </button>
+
+                {{-- A PROPOS --}}
+                <a
+                    href="{{ url('/#a-propos') }}"
+                    class="text-[16px] font-medium text-stone-700 transition hover:text-black"
+                >
+                    À propos
+                </a>
+
+
+                {{-- =========================
+                    CLIENT
+                ========================== --}}
+                @auth
+
+                    @if(auth()->user()->role?->nom === 'Client')
+
+                        <a
+                            href="{{ route('reservations.index') }}"
+                            class="text-[16px] font-medium text-stone-700 transition hover:text-black"
+                        >
+                            Mes réservations
+                        </a>
+
+                    @endif
+
+                @endauth
+
+
+                {{-- =========================
+                    PROPRIETAIRE
+                ========================== --}}
+                @auth
+
+                    @if(auth()->user()->role?->nom === 'Propriétaire')
+
+                        <a
+                            href="{{ route('proprietaire.dashboard') }}"
+                            class="text-[16px] font-medium text-stone-700 transition hover:text-black"
+                        >
+                            Dashboard
+                        </a>
+
+                    @endif
+
+                @endauth
+
+
+                {{-- =========================
+                    ADMIN
+                ========================== --}}
+                @auth
+
+                    @if(auth()->user()->role?->nom === 'Admin')
+
+                        <a
+                            href="{{ route('admin.dashboard') }}"
+                            class="text-[16px] font-medium text-stone-700 transition hover:text-black"
+                        >
+                            Dashboard
+                        </a>
+
+                    @endif
+
+                @endauth
 
             </div>
 
 
-            {{-- MOBILE MENU --}}
-            <div
-                id="mobile-menu"
-                class="hidden border-t border-stone-100 pb-5 md:hidden"
-            >
+            {{-- =========================
+                RIGHT SIDE
+            ========================== --}}
+            <div class="hidden items-center gap-5 lg:flex">
 
-                <div class="pt-4">
+                @auth
+
+                    @if (
+                        auth()->user()->role?->nom === 'Client' ||
+                        auth()->user()->role?->nom === 'Propriétaire'
+                    )
+
+                    {{-- =========================
+                        UNREAD NOTIFICATIONS COUNT
+                    ========================== --}}
+                    @php
+
+                        $unreadNotificationsCount = auth()
+                            ->user()
+                            ->notifications()
+                            ->where('lu', false)
+                            ->count();
+
+                    @endphp
 
 
-                    {{-- USER PROFILE CARD --}}
-                    @auth
+                    {{-- =========================
+                        NOTIFICATION BELL
+                    ========================== --}}
+                    <a
+                        href="{{ route('notifications.index') }}"
+                        class="relative flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 text-stone-700 transition hover:bg-stone-100 hover:text-black"
+                        aria-label="Notifications"
+                        title="Notifications"
+                    >
 
-                        <a
-                            href="{{ route('profile.index') }}"
-                            class="mb-4 flex items-center gap-3 rounded-2xl border border-stone-200 bg-stone-50 p-4 transition hover:bg-stone-100"
+                        {{-- BELL ICON --}}
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.7"
+                            stroke="currentColor"
+                            class="h-5 w-5"
                         >
 
-                            {{-- AVATAR --}}
-                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-stone-900 text-sm font-semibold text-white">
-                                {{ strtoupper(substr(auth()->user()->nom, 0, 1)) }}
-                            </div>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M14.857 17.082a23.848 23.848 0 0 1-5.714 0M18.75 10.5c0 3.142.75 4.5 1.5 5.25H3.75c.75-.75 1.5-2.108 1.5-5.25a6.75 6.75 0 1 1 13.5 0Z"
+                            />
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M9.75 17.25a2.25 2.25 0 0 0 4.5 0"
+                            />
+
+                        </svg>
 
 
-                            {{-- USER INFO --}}
-                            <div class="min-w-0 flex-1">
+                        {{-- =========================
+                            UNREAD BADGE
+                        ========================== --}}
+                        @if($unreadNotificationsCount > 0)
 
-                                <p class="truncate text-sm font-semibold text-stone-900">
-                                    {{ auth()->user()->nom }}
-                                </p>
+                            <span
+                                class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white"
+                            >
+                                {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
+                            </span>
 
-                                <p class="mt-0.5 text-xs text-stone-500">
-                                    {{ auth()->user()->role->nom }}
-                                </p>
+                        @endif
 
-                            </div>
+                    </a>
+
+                    @endif
 
 
-                            {{-- ARROW --}}
+                    {{-- =========================
+                        USER NAME → PROFILE
+                    ========================== --}}
+                    <a
+                        href="{{ route('profile.index') }}"
+                        class="text-right leading-tight transition hover:opacity-70"
+                    >
+
+                        <div class="text-[15px] font-semibold text-stone-900">
+                            {{ auth()->user()->nom }}
+                        </div>
+
+                        <div class="mt-1 text-sm text-stone-500">
+                            {{ auth()->user()->role?->nom }}
+                        </div>
+
+                    </a>
+
+
+                    {{-- =========================
+                        LOGOUT
+                    ========================== --}}
+                    <form
+                        action="{{ route('logout') }}"
+                        method="POST"
+                    >
+
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="rounded-2xl border border-stone-300 px-5 py-2.5 text-[15px] font-medium text-stone-700 transition hover:bg-stone-900 hover:text-white"
+                        >
+                            Déconnexion
+                        </button>
+
+                    </form>
+
+                @else
+
+                    {{-- =========================
+                        GUEST
+                    ========================== --}}
+
+                    <a
+                        href="{{ route('login') }}"
+                        class="text-[15px] font-medium text-stone-700 transition hover:text-black"
+                    >
+                        Connexion
+                    </a>
+
+
+                    <a
+                        href="{{ route('register') }}"
+                        class="rounded-2xl bg-stone-900 px-5 py-2.5 text-[15px] font-medium text-white transition hover:bg-black"
+                    >
+                        Créer un compte
+                    </a>
+
+                @endauth
+
+            </div>
+
+
+            {{-- =========================
+                MOBILE BUTTON
+            ========================== --}}
+            <button
+                id="mobile-menu-button"
+                type="button"
+                class="flex h-10 w-10 items-center justify-center rounded-xl border border-stone-200 text-stone-700 lg:hidden"
+                aria-label="Ouvrir le menu"
+            >
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.7"
+                    stroke="currentColor"
+                    class="h-5 w-5"
+                >
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"
+                    />
+
+                </svg>
+
+            </button>
+
+        </nav>
+
+
+        {{-- =========================
+            MOBILE MENU
+        ========================== --}}
+        <div
+            id="mobile-menu"
+            class="hidden border-t border-stone-200 bg-white lg:hidden"
+        >
+
+            <div class="space-y-1 px-6 py-5">
+
+                {{-- ACCUEIL --}}
+                <a
+                    href="{{ url('/') }}"
+                    class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                >
+                    Accueil
+                </a>
+
+
+                {{-- HOTELS --}}
+                <a
+                    href="{{ route('hotels.index') }}"
+                    class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                >
+                    Hôtels
+                </a>
+
+
+                {{-- DESTINATIONS --}}
+                <a
+                    href="{{ url('/#destinations') }}"
+                    class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                >
+                    Destinations
+                </a>
+
+
+                {{-- A PROPOS --}}
+                <a
+                    href="{{ url('/#a-propos') }}"
+                    class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                >
+                    À propos
+                </a>
+
+
+                @auth
+
+                    @if (
+                        auth()->user()->role?->nom === 'Client' ||
+                        auth()->user()->role?->nom === 'Propriétaire'
+                    )
+
+                    {{-- =========================
+                        MOBILE NOTIFICATIONS
+                    ========================== --}}
+                    <a
+                        href="{{ route('notifications.index') }}"
+                        class="flex items-center justify-between rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                    >
+
+                        <span class="flex items-center gap-3">
+
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                class="h-4 w-4 text-stone-400"
                                 fill="none"
                                 viewBox="0 0 24 24"
+                                stroke-width="1.7"
                                 stroke="currentColor"
-                                stroke-width="1.8"
+                                class="h-5 w-5"
                             >
+
                                 <path
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
-                                    d="M9 5l7 7-7 7"
+                                    d="M14.857 17.082a23.848 23.848 0 0 1-5.714 0M18.75 10.5c0 3.142.75 4.5 1.5 5.25H3.75c.75-.75 1.5-2.108 1.5-5.25a6.75 6.75 0 1 1 13.5 0Z"
                                 />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M9.75 17.25a2.25 2.25 0 0 0 4.5 0"
+                                />
+
                             </svg>
 
-                        </a>
+                            <span>
+                                Notifications
+                            </span>
 
-                    @endauth
-
-
-                    {{-- NAVIGATION LINKS --}}
-                    <div class="space-y-1">
+                        </span>
 
 
-                        {{-- ACCUEIL --}}
-                        <a
-                            href="{{ url('/') }}"
-                            class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-stone-700 transition hover:bg-stone-100 hover:text-stone-950"
-                        >
-                            <span>Accueil</span>
+                        @if($unreadNotificationsCount > 0)
 
-                            <span class="text-stone-400">→</span>
-                        </a>
-
-
-                        {{-- HOTELS --}}
-                        <a
-                            href="{{ route('hotels.index') }}"
-                            class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-stone-700 transition hover:bg-stone-100 hover:text-stone-950"
-                        >
-                            <span>Hôtels</span>
-
-                            <span class="text-stone-400">→</span>
-                        </a>
-
-
-                        {{-- DESTINATIONS --}}
-                        <a
-                            href="{{ url('/#destinations') }}"
-                            class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-stone-700 transition hover:bg-stone-100 hover:text-stone-950"
-                        >
-                            <span>Destinations</span>
-
-                            <span class="text-stone-400">→</span>
-                        </a>
-
-
-                        {{-- A PROPOS --}}
-                        <a
-                            href="{{ url('/#a-propos') }}"
-                            class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-stone-700 transition hover:bg-stone-100 hover:text-stone-950"
-                        >
-                            <span>À propos</span>
-
-                            <span class="text-stone-400">→</span>
-                        </a>
-
-
-                        @auth
-
-                            {{-- CLIENT MOBILE --}}
-                            @if (auth()->user()->role->nom === 'Client')
-
-                                <div class="my-3 border-t border-stone-100"></div>
-
-                                <a
-                                    href="{{ route('reservations.index') }}"
-                                    class="flex items-center justify-between rounded-xl bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-800 transition hover:bg-stone-100"
-                                >
-                                    <span>Mes réservations</span>
-
-                                    <span class="text-stone-400">→</span>
-                                </a>
-
-                                <a
-                                    href="{{ route('notifications.index') }}"
-                                    class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-stone-700 transition hover:bg-stone-100 hover:text-stone-950"
-                                >
-                                    <span>Notifications</span>
-
-                                    <span class="text-stone-400">→</span>
-                                </a>
-
-                            @endif
-
-
-                            {{-- PROPRIETAIRE MOBILE --}}
-                            @if (auth()->user()->role->nom === 'Propriétaire')
-
-                                <div class="my-3 border-t border-stone-100"></div>
-
-                                <a
-                                    href="{{ route('proprietaire.dashboard') }}"
-                                    class="flex items-center justify-between rounded-xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
-                                >
-                                    <span>Dashboard</span>
-
-                                    <span class="text-stone-300">→</span>
-                                </a>
-
-                                <a
-                                    href="{{ route('notifications.index') }}"
-                                    class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-stone-700 transition hover:bg-stone-100 hover:text-stone-950"
-                                >
-                                    <span>Notifications</span>
-
-                                    <span class="text-stone-400">→</span>
-                                </a>
-
-                            @endif
-
-
-                            {{-- ADMIN MOBILE --}}
-                            @if (auth()->user()->role->nom === 'Admin')
-
-                                <div class="my-3 border-t border-stone-100"></div>
-
-                                <a
-                                    href="{{ route('admin.dashboard') }}"
-                                    class="flex items-center justify-between rounded-xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
-                                >
-                                    <span>Dashboard</span>
-
-                                    <span class="text-stone-300">→</span>
-                                </a>
-
-                            @endif
-
-                        @endauth
-
-                    </div>
-
-
-                    {{-- MOBILE AUTH ACTION --}}
-                    <div class="mt-4 border-t border-stone-100 pt-4">
-
-                        @auth
-
-                            <form
-                                action="{{ route('logout') }}"
-                                method="POST"
+                            <span
+                                class="flex h-6 min-w-6 items-center justify-center rounded-full bg-red-600 px-1.5 text-xs font-bold text-white"
                             >
+                                {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
+                            </span>
 
-                                @csrf
+                        @endif
 
-                                <button
-                                    type="submit"
-                                    class="flex w-full items-center justify-center rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
-                                >
-                                    Déconnexion
-                                </button>
+                    </a>
 
-                            </form>
+                    @endif
 
-                        @else
 
-                            <div class="grid grid-cols-2 gap-3">
+                    {{-- =========================
+                        CLIENT
+                    ========================== --}}
+                    @if(auth()->user()->role?->nom === 'Client')
 
-                                <a
-                                    href="{{ route('login') }}"
-                                    class="flex items-center justify-center rounded-xl border border-stone-300 px-4 py-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
-                                >
-                                    Connexion
-                                </a>
+                        <a
+                            href="{{ route('reservations.index') }}"
+                            class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                        >
+                            Mes réservations
+                        </a>
 
-                                <a
-                                    href="{{ route('register') }}"
-                                    class="flex items-center justify-center rounded-xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
-                                >
-                                    Inscription
-                                </a>
+                    @endif
 
-                            </div>
 
-                        @endauth
+                    {{-- =========================
+                        PROPRIETAIRE
+                    ========================== --}}
+                    @if(auth()->user()->role?->nom === 'Propriétaire')
 
-                    </div>
+                        <a
+                            href="{{ route('proprietaire.dashboard') }}"
+                            class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                        >
+                            Dashboard
+                        </a>
 
-                </div>
+                    @endif
+
+
+                    {{-- =========================
+                        ADMIN
+                    ========================== --}}
+                    @if(auth()->user()->role?->nom === 'Admin')
+
+                        <a
+                            href="{{ route('admin.dashboard') }}"
+                            class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                        >
+                            Dashboard
+                        </a>
+
+                    @endif
+
+
+                    {{-- =========================
+                        MOBILE PROFILE
+                    ========================== --}}
+                    <a
+                        href="{{ route('profile.index') }}"
+                        class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                    >
+                        {{ auth()->user()->nom }}
+                    </a>
+
+
+                    {{-- =========================
+                        MOBILE LOGOUT
+                    ========================== --}}
+                    <form
+                        action="{{ route('logout') }}"
+                        method="POST"
+                        class="mt-2"
+                    >
+
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="w-full rounded-xl border border-stone-300 px-4 py-3 text-left text-stone-700 hover:bg-stone-100"
+                        >
+                            Déconnexion
+                        </button>
+
+                    </form>
+
+                @else
+
+                    {{-- =========================
+                        MOBILE GUEST
+                    ========================== --}}
+
+                    <a
+                        href="{{ route('login') }}"
+                        class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                    >
+                        Connexion
+                    </a>
+
+
+                    <a
+                        href="{{ route('register') }}"
+                        class="block rounded-xl bg-stone-900 px-4 py-3 text-white"
+                    >
+                        Créer un compte
+                    </a>
+
+                @endauth
 
             </div>
 
@@ -466,44 +526,47 @@
     </header>
 
 
-    {{-- PAGE CONTENT --}}
+    {{-- =========================
+        MAIN CONTENT
+    ========================== --}}
     <main>
         @yield('content')
     </main>
 
 
-    {{-- FOOTER --}}
-    <footer class="border-t border-stone-200 bg-stone-950 text-white">
+    {{-- =========================
+        FOOTER
+    ========================== --}}
+    <footer class="border-t border-stone-800 bg-stone-950 text-white">
 
-        <div class="mx-auto max-w-7xl px-6 py-12">
+        <div class="mx-auto max-w-7xl px-6 py-12 lg:px-10">
 
             <div class="grid gap-10 md:grid-cols-3">
 
-                {{-- BRAND --}}
+                {{-- Atlas Stay --}}
                 <div>
 
                     <img
                         src="{{ asset('images/logo-atlas.png') }}"
                         alt="Atlas Stay"
-                        class="h-12 w-auto brightness-0 invert"
+                        class="h-10 w-auto brightness-0 invert"
                     >
 
-                    <p class="mt-4 max-w-sm text-sm leading-6 text-stone-400">
-                        Découvrez des hôtels authentiques dans les plus belles
-                        régions montagneuses du Maroc.
+                    <p class="mt-5 max-w-xs text-sm leading-6 text-stone-400">
+                        Découvrez des hôtels authentiques dans les plus belles régions montagneuses du Maroc.
                     </p>
 
                 </div>
 
 
-                {{-- NAVIGATION --}}
+                {{-- Navigation --}}
                 <div>
 
-                    <h3 class="text-sm font-semibold uppercase tracking-wider text-white">
+                    <p class="text-[10px] font-semibold uppercase tracking-[0.25em] text-stone-300">
                         Navigation
-                    </h3>
+                    </p>
 
-                    <div class="mt-4 space-y-3">
+                    <div class="mt-5 space-y-3">
 
                         <a
                             href="{{ url('/') }}"
@@ -538,18 +601,22 @@
                 </div>
 
 
-                {{-- CONTACT --}}
+                {{-- Atlas Stay --}}
                 <div>
 
-                    <h3 class="text-sm font-semibold uppercase tracking-wider text-white">
+                    <p class="text-[10px] font-semibold uppercase tracking-[0.25em] text-stone-300">
                         Atlas Stay
-                    </h3>
+                    </p>
 
-                    <div class="mt-4 space-y-3 text-sm text-stone-400">
+                    <div class="mt-5 space-y-3">
 
-                        <p>Maroc</p>
+                        <p class="text-sm text-stone-400">
+                            Maroc
+                        </p>
 
-                        <p>Explorez les montagnes autrement.</p>
+                        <p class="max-w-xs text-sm leading-6 text-stone-400">
+                            Explorez les montagnes autrement.
+                        </p>
 
                     </div>
 
@@ -558,10 +625,10 @@
             </div>
 
 
-            {{-- COPYRIGHT --}}
+            {{-- Bottom --}}
             <div class="mt-10 border-t border-stone-800 pt-6">
 
-                <p class="text-center text-sm text-stone-500">
+                <p class="text-center text-xs text-stone-500">
                     © {{ date('Y') }} Atlas Stay. Tous droits réservés.
                 </p>
 
@@ -572,7 +639,9 @@
     </footer>
 
 
-    {{-- MOBILE MENU SCRIPT --}}
+    {{-- =========================
+        MOBILE MENU JS
+    ========================== --}}
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -580,48 +649,15 @@
             const button = document.getElementById('mobile-menu-button');
             const menu = document.getElementById('mobile-menu');
 
-            const openIcon = document.getElementById('mobile-menu-open-icon');
-            const closeIcon = document.getElementById('mobile-menu-close-icon');
+            if (button && menu) {
 
-            if (!button || !menu) {
-                return;
-            }
+                button.addEventListener('click', function () {
 
-            button.addEventListener('click', function () {
-
-                const isOpen = !menu.classList.contains('hidden');
-
-                menu.classList.toggle('hidden');
-
-                openIcon.classList.toggle('hidden', !isOpen);
-                closeIcon.classList.toggle('hidden', isOpen);
-
-                button.setAttribute(
-                    'aria-expanded',
-                    (!isOpen).toString()
-                );
-
-            });
-
-
-            {{-- Close menu when clicking a link --}}
-            menu.querySelectorAll('a').forEach(function (link) {
-
-                link.addEventListener('click', function () {
-
-                    menu.classList.add('hidden');
-
-                    openIcon.classList.remove('hidden');
-                    closeIcon.classList.add('hidden');
-
-                    button.setAttribute(
-                        'aria-expanded',
-                        'false'
-                    );
+                    menu.classList.toggle('hidden');
 
                 });
 
-            });
+            }
 
         });
 

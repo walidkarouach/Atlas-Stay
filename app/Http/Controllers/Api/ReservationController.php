@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
@@ -10,7 +11,6 @@ use App\Models\Notification;
 
 class ReservationController extends Controller
 {
-
     public function index(Request $request): JsonResponse
     {
         $reservations = Reservation::with([
@@ -53,9 +53,9 @@ class ReservationController extends Controller
         $existingReservation = Reservation::where('hotel_id', $hotel->id_hotel)
             ->whereIn('statut', ['en_attente', 'confirmee'])
             ->where(function ($query) use ($validated) {
-        $query->where('date_arrivee', '<', $validated['date_depart'])
-            ->where('date_depart', '>', $validated['date_arrivee']);
-        })
+                $query->where('date_arrivee', '<', $validated['date_depart'])
+                    ->where('date_depart', '>', $validated['date_arrivee']);
+            })
             ->exists();
 
         if ($existingReservation) {
