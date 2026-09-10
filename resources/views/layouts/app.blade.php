@@ -8,6 +8,8 @@
         @yield('title', 'Atlas Stay')
     </title>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
