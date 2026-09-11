@@ -103,6 +103,7 @@
 
                                             <p class="mt-1 text-sm text-stone-500">
                                                 {{ $reservation->hotel->ville }}
+
                                                 @if ($reservation->hotel->adresse)
                                                     · {{ $reservation->hotel->adresse }}
                                                 @endif
@@ -197,7 +198,7 @@
 
                                         <a
                                             href="{{ route('hotels.show', $reservation->hotel->id_hotel) }}"
-                                            class="inline-flex items-center justify-center rounded-xl border border-stone-300 px-5 py-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
+                                            class="inline-flex cursor-pointer items-center justify-center rounded-xl border border-stone-300 px-5 py-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
                                         >
                                             Voir l'hôtel
                                         </a>
@@ -209,6 +210,7 @@
                                     @if (in_array($reservation->statut, ['en_attente', 'confirmee']))
 
                                         <form
+                                            id="cancel-form-{{ $reservation->id_reservation }}"
                                             action="{{ route('reservations.cancel', $reservation->id_reservation) }}"
                                             method="POST"
                                         >
@@ -218,9 +220,9 @@
                                             @method('PATCH')
 
                                             <button
-                                                type="submit"
-                                                class="inline-flex w-full items-center justify-center rounded-xl bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-700 sm:w-auto"
-                                                onclick="return confirm('Voulez-vous vraiment annuler cette réservation ?')"
+                                                type="button"
+                                                onclick="openCancelModal({{ $reservation->id_reservation }})"
+                                                class="inline-flex w-full cursor-pointer items-center justify-center rounded-xl bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-700 sm:w-auto"
                                             >
                                                 Annuler
                                             </button>
@@ -254,6 +256,7 @@
             <div class="rounded-3xl border border-dashed border-stone-300 bg-white px-6 py-20 text-center">
 
                 <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-stone-100">
+
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -268,20 +271,24 @@
                             d="M8.25 6.75h7.5M8.25 10.5h7.5m-7.5 3.75h4.5M6.75 3.75h10.5A2.25 2.25 0 0 1 19.5 6v12a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 18V6a2.25 2.25 0 0 1 2.25-2.25Z"
                         />
                     </svg>
+
                 </div>
+
 
                 <h2 class="mt-6 text-2xl font-semibold text-stone-950">
                     Aucune réservation
                 </h2>
+
 
                 <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-stone-500">
                     Vous n'avez encore effectué aucune réservation.
                     Découvrez nos hôtels et trouvez votre prochaine escapade.
                 </p>
 
+
                 <a
                     href="{{ route('hotels.index') }}"
-                    class="mt-7 inline-flex rounded-xl bg-stone-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
+                    class="mt-7 inline-flex cursor-pointer rounded-xl bg-stone-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
                 >
                     Découvrir les hôtels
                 </a>
@@ -293,5 +300,190 @@
     </div>
 
 </section>
+
+
+{{-- ========================================================= --}}
+{{-- MODAL CONFIRMATION ANNULATION --}}
+{{-- ========================================================= --}}
+
+<div
+    id="cancelModal"
+    class="fixed inset-0 z-[9999] hidden items-center justify-center bg-stone-950/50 px-4 backdrop-blur-sm"
+>
+
+    <div
+        id="cancelModalContent"
+        class="w-full max-w-md scale-95 rounded-3xl border border-stone-200 bg-white p-6 opacity-0 shadow-2xl transition-all duration-200 sm:p-8"
+    >
+
+        {{-- Icon --}}
+        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-stone-100">
+
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.7"
+                stroke="currentColor"
+                class="h-7 w-7 text-stone-700"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v3.75m0 3.75h.007v.008H12V16.5Zm9-4.5a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+            </svg>
+
+        </div>
+
+
+        {{-- Title --}}
+        <h2 class="mt-5 text-2xl font-semibold tracking-tight text-stone-950">
+            Annuler la réservation ?
+        </h2>
+
+
+        {{-- Message --}}
+        <p class="mt-3 text-sm leading-6 text-stone-500">
+            Voulez-vous vraiment annuler cette réservation ?
+            Cette action modifiera le statut de votre réservation.
+        </p>
+
+
+        {{-- Buttons --}}
+        <div class="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+
+            <button
+                type="button"
+                onclick="closeCancelModal()"
+                class="inline-flex cursor-pointer items-center justify-center rounded-xl border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
+            >
+                Retour
+            </button>
+
+
+            <button
+                id="confirmCancelButton"
+                type="button"
+                onclick="submitCancelForm()"
+                class="inline-flex cursor-pointer items-center justify-center rounded-xl bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
+            >
+                Oui, annuler
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{{-- ========================================================= --}}
+{{-- JAVASCRIPT MODAL --}}
+{{-- ========================================================= --}}
+
+<script>
+
+    let selectedReservationId = null;
+
+
+    function openCancelModal(reservationId) {
+
+        selectedReservationId = reservationId;
+
+        const modal = document.getElementById('cancelModal');
+        const modalContent = document.getElementById('cancelModalContent');
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        document.body.classList.add('overflow-hidden');
+
+        requestAnimationFrame(() => {
+
+            modalContent.classList.remove('scale-95', 'opacity-0');
+
+            modalContent.classList.add(
+                'scale-100',
+                'opacity-100'
+            );
+
+        });
+    }
+
+
+    function closeCancelModal() {
+
+        const modal = document.getElementById('cancelModal');
+        const modalContent = document.getElementById('cancelModalContent');
+
+        modalContent.classList.remove(
+            'scale-100',
+            'opacity-100'
+        );
+
+        modalContent.classList.add(
+            'scale-95',
+            'opacity-0'
+        );
+
+        setTimeout(() => {
+
+            modal.classList.add('hidden');
+
+            modal.classList.remove('flex');
+
+            document.body.classList.remove('overflow-hidden');
+
+            selectedReservationId = null;
+
+        }, 200);
+    }
+
+
+    function submitCancelForm() {
+
+        if (!selectedReservationId) {
+            return;
+        }
+
+        const form = document.getElementById(
+            'cancel-form-' + selectedReservationId
+        );
+
+        if (form) {
+            form.submit();
+        }
+    }
+
+
+    // Fermer en cliquant sur le fond
+    document
+        .getElementById('cancelModal')
+        .addEventListener('click', function (event) {
+
+            if (event.target === this) {
+                closeCancelModal();
+            }
+
+        });
+
+
+    // Fermer avec Escape
+    document.addEventListener('keydown', function (event) {
+
+        if (event.key === 'Escape') {
+
+            const modal = document.getElementById('cancelModal');
+
+            if (!modal.classList.contains('hidden')) {
+                closeCancelModal();
+            }
+
+        }
+
+    });
+
+</script>
 
 @endsection
