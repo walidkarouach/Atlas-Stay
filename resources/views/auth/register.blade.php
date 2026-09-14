@@ -4,38 +4,38 @@
 
 @section('content')
 
-<div class="min-h-[calc(100vh-80px)] bg-stone-50">
+<section class="min-h-screen bg-[#F4F3F0] px-4 py-6 sm:px-6 lg:flex lg:items-center lg:justify-center">
 
-    <div class="grid min-h-[calc(100vh-80px)] lg:grid-cols-2">
+    <div class="grid w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow-xl lg:grid-cols-2">
 
-        {{-- LEFT SIDE : IMAGE --}}
-        <div class="relative hidden lg:block">
+        {{-- IMAGE SIDE --}}
+        <div class="relative hidden min-h-[560px] overflow-hidden lg:block">
 
             <img
                 src="{{ asset('images/hero.png') }}"
-                alt="Atlas Stay - Montagnes du Maroc"
+                alt="Montagnes du Maroc"
                 class="absolute inset-0 h-full w-full object-cover"
             >
 
-            {{-- Overlay --}}
             <div class="absolute inset-0 bg-black/45"></div>
 
-            {{-- Content --}}
-            <div class="relative flex h-full items-end p-12 xl:p-16">
+            <div class="relative z-10 flex h-full items-center px-8 xl:px-10">
 
-                <div class="max-w-xl text-white">
+                <div class="max-w-xs text-white">
 
-                    <p class="text-sm font-semibold uppercase tracking-[0.25em] text-white/70">
+                    <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-white/80">
                         Atlas Stay
                     </p>
 
-                    <h2 class="mt-4 text-4xl font-semibold leading-tight xl:text-5xl">
-                        Votre prochaine escapade commence ici.
+                    <h2 class="text-4xl font-bold leading-tight">
+                        Créez votre
+                        <br>
+                        compte
                     </h2>
 
-                    <p class="mt-5 text-base leading-7 text-white/80">
-                        Créez votre compte et découvrez les plus beaux hôtels
-                        des régions montagneuses du Maroc.
+                    <p class="mt-4 text-sm leading-6 text-white/90">
+                        Rejoignez Atlas Stay et découvrez les plus beaux
+                        hôtels des régions montagneuses du Maroc.
                     </p>
 
                 </div>
@@ -45,20 +45,20 @@
         </div>
 
 
-        {{-- RIGHT SIDE : REGISTER FORM --}}
-        <div class="flex items-center justify-center px-6 py-12 sm:px-10 lg:px-16">
+        {{-- REGISTER FORM --}}
+        <div class="flex items-center justify-center px-6 py-7 sm:px-9 lg:px-10">
 
-            <div class="w-full max-w-md">
+            <div class="w-full max-w-sm">
 
-                {{-- Logo --}}
-                <div class="mb-10">
+                {{-- LOGO --}}
+                <div class="mb-4 text-center">
 
                     <a href="{{ url('/') }}" class="inline-flex">
 
                         <img
                             src="{{ asset('images/logo-atlas.png') }}"
                             alt="Atlas Stay"
-                            class="h-14 w-auto"
+                            class="h-12 w-auto"
                         >
 
                     </a>
@@ -66,62 +66,58 @@
                 </div>
 
 
-                {{-- Header --}}
-                <div>
+                {{-- TITLE --}}
+                <div class="text-center">
 
-                    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-stone-400">
+                    <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">
                         Bienvenue
                     </p>
 
-                    <h1 class="mt-3 text-3xl font-semibold tracking-tight text-stone-950 sm:text-4xl">
+                    <h1 class="mt-1 text-2xl font-bold text-stone-900">
                         Créer un compte
                     </h1>
 
-                    <p class="mt-3 text-sm leading-6 text-stone-500">
-                        Rejoignez Atlas Stay et préparez votre prochaine aventure.
+                    <p class="mt-1 text-xs text-stone-500">
+                        Préparez votre prochaine aventure.
                     </p>
 
                 </div>
 
 
-                {{-- Validation errors --}}
+                {{-- ERRORS --}}
                 @if ($errors->any())
 
-                    <div class="mt-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4">
+                    <div class="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2">
 
-                        <div class="space-y-1">
+                        @foreach ($errors->all() as $error)
 
-                            @foreach ($errors->all() as $error)
+                            <p class="text-xs text-red-700">
+                                {{ $error }}
+                            </p>
 
-                                <p class="text-sm text-red-700">
-                                    {{ $error }}
-                                </p>
-
-                            @endforeach
-
-                        </div>
+                        @endforeach
 
                     </div>
 
                 @endif
 
 
-                {{-- Register form --}}
+                {{-- FORM --}}
                 <form
                     action="{{ route('register.submit') }}"
                     method="POST"
-                    class="mt-8 space-y-5"
+                    class="mt-5 space-y-3"
                 >
 
                     @csrf
 
 
-                    {{-- Nom --}}
+                    {{-- NAME --}}
                     <div>
 
                         <label
                             for="nom"
-                            class="mb-2 block text-sm font-medium text-stone-700"
+                            class="mb-1 block text-sm font-medium text-stone-700"
                         >
                             Nom complet
                         </label>
@@ -131,21 +127,29 @@
                             type="text"
                             name="nom"
                             value="{{ old('nom') }}"
+                            placeholder="Votre nom complet"
                             required
                             autocomplete="name"
-                            placeholder="Votre nom complet"
-                            class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
+                            class="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
                         >
+
+                        @error('nom')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
 
                     </div>
 
 
-                    {{-- Email --}}
+                    {{-- EMAIL --}}
                     <div>
 
                         <label
                             for="email"
-                            class="mb-2 block text-sm font-medium text-stone-700"
+                            class="mb-1 block text-sm font-medium text-stone-700"
                         >
                             Adresse email
                         </label>
@@ -155,21 +159,29 @@
                             type="email"
                             name="email"
                             value="{{ old('email') }}"
+                            placeholder="exemple@email.com"
                             required
                             autocomplete="email"
-                            placeholder="exemple@email.com"
-                            class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
+                            class="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
                         >
+
+                        @error('email')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
 
                     </div>
 
 
-                    {{-- Password --}}
+                    {{-- PASSWORD --}}
                     <div>
 
                         <label
                             for="password"
-                            class="mb-2 block text-sm font-medium text-stone-700"
+                            class="mb-1 block text-sm font-medium text-stone-700"
                         >
                             Mot de passe
                         </label>
@@ -178,21 +190,29 @@
                             id="password"
                             type="password"
                             name="password"
+                            placeholder="Minimum 8 caractères"
                             required
                             autocomplete="new-password"
-                            placeholder="Minimum 8 caractères"
-                            class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
+                            class="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
                         >
+
+                        @error('password')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
 
                     </div>
 
 
-                    {{-- Confirm Password --}}
+                    {{-- CONFIRM PASSWORD --}}
                     <div>
 
                         <label
                             for="password_confirmation"
-                            class="mb-2 block text-sm font-medium text-stone-700"
+                            class="mb-1 block text-sm font-medium text-stone-700"
                         >
                             Confirmer le mot de passe
                         </label>
@@ -201,19 +221,47 @@
                             id="password_confirmation"
                             type="password"
                             name="password_confirmation"
+                            placeholder="Confirmez votre mot de passe"
                             required
                             autocomplete="new-password"
-                            placeholder="Confirmez votre mot de passe"
-                            class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
+                            class="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
                         >
+
+                        @error('password_confirmation')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
 
                     </div>
 
 
-                    {{-- Submit --}}
+                    {{-- TERMS --}}
+                    <div class="flex items-start gap-2 pt-1">
+
+                        <input
+                            id="terms"
+                            type="checkbox"
+                            required
+                            class="mt-0.5 h-3.5 w-3.5 rounded border-stone-300 text-stone-900 focus:ring-stone-900"
+                        >
+
+                        <label
+                            for="terms"
+                            class="text-[11px] leading-4 text-stone-500"
+                        >
+                            J'accepte les conditions générales d'utilisation.
+                        </label>
+
+                    </div>
+
+
+                    {{-- BUTTON --}}
                     <button
                         type="submit"
-                        class="w-full rounded-xl bg-stone-900 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2"
+                        class="w-full rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2"
                     >
                         Créer mon compte
                     </button>
@@ -221,29 +269,27 @@
                 </form>
 
 
-                {{-- Login link --}}
-                <div class="mt-8 text-center">
+                {{-- LOGIN LINK --}}
+                <p class="mt-4 text-center text-xs text-stone-500">
 
-                    <p class="text-sm text-stone-500">
-                        Vous avez déjà un compte ?
+                    Vous avez déjà un compte ?
 
-                        <a
-                            href="{{ route('login') }}"
-                            class="font-semibold text-stone-900 transition hover:text-stone-600"
-                        >
-                            Se connecter
-                        </a>
-                    </p>
+                    <a
+                        href="{{ route('login') }}"
+                        class="font-semibold text-stone-900 hover:underline"
+                    >
+                        Se connecter
+                    </a>
 
-                </div>
+                </p>
 
 
-                {{-- Back home --}}
-                <div class="mt-6 text-center">
+                {{-- HOME LINK --}}
+                <div class="mt-2 text-center">
 
                     <a
                         href="{{ url('/') }}"
-                        class="text-sm font-medium text-stone-400 transition hover:text-stone-700"
+                        class="text-xs text-stone-400 transition hover:text-stone-700"
                     >
                         ← Retour à l'accueil
                     </a>
@@ -256,6 +302,6 @@
 
     </div>
 
-</div>
+</section>
 
 @endsection

@@ -4,14 +4,12 @@
 
 @section('content')
 
-<section class="min-h-[calc(100vh-81px)] bg-stone-50">
+<section class="min-h-screen bg-[#F4F3F0] px-4 py-6 sm:px-6 lg:flex lg:items-center lg:justify-center">
 
-    <div class="mx-auto grid min-h-[calc(100vh-81px)] max-w-7xl lg:grid-cols-2">
+    <div class="grid w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow-xl lg:grid-cols-2">
 
-        {{-- =========================
-            LEFT - IMAGE
-        ========================== --}}
-        <div class="relative hidden overflow-hidden lg:block">
+        {{-- IMAGE SIDE --}}
+        <div class="relative hidden min-h-[500px] overflow-hidden lg:block">
 
             <img
                 src="{{ asset('images/hero.png') }}"
@@ -21,45 +19,46 @@
 
             <div class="absolute inset-0 bg-black/45"></div>
 
-            <div class="absolute bottom-12 left-12 right-12 text-white">
+            <div class="relative z-10 flex h-full items-center px-8 xl:px-10">
 
-                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
-                    Atlas Stay
-                </p>
+                <div class="max-w-xs text-white">
 
-                <h2 class="mt-3 max-w-lg text-4xl font-bold leading-tight">
-                    Votre prochaine
-                    <br>
-                    escapade commence ici.
-                </h2>
+                    <p class="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-white/80">
+                        Atlas Stay
+                    </p>
 
-                <p class="mt-4 max-w-md text-sm leading-6 text-white/70">
-                    Découvrez des hébergements uniques
-                    au cœur des montagnes du Maroc.
-                </p>
+                    <h2 class="text-4xl font-bold leading-tight">
+                        Bienvenue
+                        <br>
+                        chez vous
+                    </h2>
+
+                    <p class="mt-4 text-sm leading-6 text-white/90">
+                        Retrouvez les plus beaux hôtels des régions
+                        montagneuses du Maroc.
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
 
 
-        {{-- =========================
-            RIGHT - LOGIN
-        ========================== --}}
-        <div class="flex items-center justify-center px-6 py-16">
+        {{-- LOGIN FORM --}}
+        <div class="flex items-center justify-center px-6 py-7 sm:px-9 lg:px-10">
 
-            <div class="w-full max-w-md">
+            <div class="w-full max-w-sm">
 
+                {{-- LOGO --}}
+                <div class="mb-4 text-center">
 
-                {{-- Logo --}}
-                <div class="mb-10 text-center">
-
-                    <a href="/" class="inline-flex">
+                    <a href="{{ url('/') }}" class="inline-flex">
 
                         <img
                             src="{{ asset('images/logo-atlas.png') }}"
                             alt="Atlas Stay"
-                            class="h-16 w-auto"
+                            class="h-12 w-auto"
                         >
 
                     </a>
@@ -67,64 +66,90 @@
                 </div>
 
 
-                {{-- Title --}}
+                {{-- TITLE --}}
                 <div class="text-center">
 
-                    <h1 class="text-3xl font-bold tracking-tight text-stone-900">
-                        Bienvenue sur Atlas Stay
+                    <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">
+                        Bon retour
+                    </p>
+
+                    <h1 class="mt-1 text-2xl font-bold text-stone-900">
+                        Se connecter
                     </h1>
 
-                    <p class="mt-3 text-sm text-stone-500">
-                        Connectez-vous à votre compte pour continuer.
+                    <p class="mt-1 text-xs text-stone-500">
+                        Accédez à votre espace Atlas Stay.
                     </p>
 
                 </div>
 
 
-                {{-- Success --}}
-                @if(session('success'))
+                {{-- ERRORS --}}
+                @if ($errors->any())
 
-                    <div class="mt-6 rounded-xl bg-green-50 px-4 py-3 text-sm text-green-700">
-                        {{ session('success') }}
+                    <div class="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2">
+
+                        @foreach ($errors->all() as $error)
+
+                            <p class="text-xs text-red-700">
+                                {{ $error }}
+                            </p>
+
+                        @endforeach
+
                     </div>
 
                 @endif
 
 
-                {{-- Login Form --}}
+                @if (session('success'))
+
+                    <div class="mt-4 rounded-lg border border-green-200 bg-green-50 px-3 py-2">
+
+                        <p class="text-xs text-green-700">
+                            {{ session('success') }}
+                        </p>
+
+                    </div>
+
+                @endif
+
+
+                {{-- FORM --}}
                 <form
                     action="{{ route('login.submit') }}"
                     method="POST"
-                    class="mt-8 space-y-5"
+                    class="mt-5 space-y-4"
                 >
 
                     @csrf
 
 
-                    {{-- Email --}}
+                    {{-- EMAIL --}}
                     <div>
 
                         <label
                             for="email"
-                            class="mb-2 block text-sm font-medium text-stone-700"
+                            class="mb-1 block text-sm font-medium text-stone-700"
                         >
                             Adresse email
                         </label>
 
                         <input
-                            type="email"
                             id="email"
+                            type="email"
                             name="email"
                             value="{{ old('email') }}"
-                            placeholder="vous@example.com"
+                            placeholder="exemple@email.com"
                             required
                             autofocus
-                            class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3.5 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-1 focus:ring-stone-900"
+                            autocomplete="email"
+                            class="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
                         >
 
                         @error('email')
 
-                            <p class="mt-2 text-sm text-red-600">
+                            <p class="mt-1 text-xs text-red-600">
                                 {{ $message }}
                             </p>
 
@@ -133,28 +158,29 @@
                     </div>
 
 
-                    {{-- Password --}}
+                    {{-- PASSWORD --}}
                     <div>
 
                         <label
                             for="password"
-                            class="mb-2 block text-sm font-medium text-stone-700"
+                            class="mb-1 block text-sm font-medium text-stone-700"
                         >
                             Mot de passe
                         </label>
 
                         <input
-                            type="password"
                             id="password"
+                            type="password"
                             name="password"
-                            placeholder="••••••••"
+                            placeholder="Votre mot de passe"
                             required
-                            class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3.5 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-1 focus:ring-stone-900"
+                            autocomplete="current-password"
+                            class="w-full rounded-xl border border-stone-200 px-4 py-2.5 text-sm outline-none transition placeholder:text-stone-400 focus:border-stone-900 focus:ring-2 focus:ring-stone-900/10"
                         >
 
                         @error('password')
 
-                            <p class="mt-2 text-sm text-red-600">
+                            <p class="mt-1 text-xs text-red-600">
                                 {{ $message }}
                             </p>
 
@@ -163,20 +189,28 @@
                     </div>
 
 
-                    {{-- General Error --}}
-                    @if($errors->has('email') && $errors->first('email') === 'Les identifiants sont incorrects.')
+                    {{-- REMEMBER --}}
+                    <div class="flex items-center justify-between gap-3">
 
-                        <div class="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-                            Les identifiants sont incorrects.
-                        </div>
+                        <label class="flex items-center gap-2 text-xs text-stone-500">
 
-                    @endif
+                            <input
+                                type="checkbox"
+                                name="remember"
+                                class="h-3.5 w-3.5 rounded border-stone-300 text-stone-900 focus:ring-stone-900"
+                            >
+
+                            Se souvenir de moi
+
+                        </label>
+
+                    </div>
 
 
-                    {{-- Submit --}}
+                    {{-- BUTTON --}}
                     <button
                         type="submit"
-                        class="w-full rounded-xl bg-stone-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-stone-700"
+                        class="w-full rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 focus:outline-none focus:ring-2 focus:ring-stone-900 focus:ring-offset-2"
                     >
                         Se connecter
                     </button>
@@ -184,31 +218,27 @@
                 </form>
 
 
-                {{-- Register --}}
-                <div class="mt-8 text-center">
+                {{-- REGISTER LINK --}}
+                <p class="mt-5 text-center text-xs text-stone-500">
 
-                    <p class="text-sm text-stone-500">
-
-                        Vous n'avez pas encore de compte ?
-
-                        <a
-                            href="/register"
-                            class="font-semibold text-stone-900 transition hover:text-stone-600"
-                        >
-                            Créer un compte
-                        </a>
-
-                    </p>
-
-                </div>
-
-
-                {{-- Back Home --}}
-                <div class="mt-6 text-center">
+                    Vous n'avez pas encore de compte ?
 
                     <a
-                        href="/"
-                        class="text-sm text-stone-400 transition hover:text-stone-700"
+                        href="{{ route('register') }}"
+                        class="font-semibold text-stone-900 hover:underline"
+                    >
+                        Créer un compte
+                    </a>
+
+                </p>
+
+
+                {{-- HOME LINK --}}
+                <div class="mt-2 text-center">
+
+                    <a
+                        href="{{ url('/') }}"
+                        class="text-xs text-stone-400 transition hover:text-stone-700"
                     >
                         ← Retour à l'accueil
                     </a>
