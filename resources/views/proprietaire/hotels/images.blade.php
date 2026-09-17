@@ -25,11 +25,30 @@
 
             </div>
 
+
+            {{-- Retour --}}
             <a
                 href="{{ route('proprietaire.hotels.index') }}"
-                class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
+                class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
             >
-                ← Retour à mes hôtels
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.8"
+                    stroke="currentColor"
+                    class="h-5 w-5"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h20"
+                    />
+                </svg>
+
+                Retour à mes hôtels
+
             </a>
 
         </div>
@@ -42,8 +61,23 @@
 
                 <div class="flex items-center gap-3">
 
-                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-                        ✓
+                    <div class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="h-5 w-5"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M5 13l4 4L19 7"
+                            />
+                        </svg>
+
                     </div>
 
                     <p class="text-sm font-medium text-emerald-800">
@@ -62,17 +96,41 @@
 
             <div class="mb-8 rounded-2xl border border-red-200 bg-red-50 p-5">
 
-                <ul class="space-y-1 text-sm text-red-700">
+                <div class="flex items-start gap-3">
 
-                    @foreach ($errors->all() as $error)
+                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700">
 
-                        <li>
-                            • {{ $error }}
-                        </li>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-5 w-5"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 9v4m0 4h.01M10.3 3.6l-8 14A2 2 0 0 0 4 20.6h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0z"
+                            />
+                        </svg>
 
-                    @endforeach
+                    </div>
 
-                </ul>
+
+                    <ul class="space-y-1 text-sm text-red-700">
+
+                        @foreach ($errors->all() as $error)
+
+                            <li>
+                                {{ $error }}
+                            </li>
+
+                        @endforeach
+
+                    </ul>
+
+                </div>
 
             </div>
 
@@ -82,15 +140,54 @@
         {{-- Ajouter une image --}}
         <div class="mb-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
 
-            <div class="mb-6">
+            <div class="mb-6 flex items-start gap-4">
 
-                <h2 class="text-xl font-bold text-slate-900">
-                    Ajouter une image
-                </h2>
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
 
-                <p class="mt-1 text-sm text-slate-500">
-                    Ajoutez une photo de votre établissement.
-                </p>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.7"
+                        stroke="currentColor"
+                        class="h-6 w-6"
+                    >
+                        <rect
+                            x="3"
+                            y="5"
+                            width="18"
+                            height="14"
+                            rx="2"
+                            ry="2"
+                        />
+
+                        <circle
+                            cx="8.5"
+                            cy="10"
+                            r="1.5"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3 16l5-5 4 4 3-3 6 5"
+                        />
+                    </svg>
+
+                </div>
+
+
+                <div>
+
+                    <h2 class="text-xl font-bold text-slate-900">
+                        Ajouter une image
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Ajoutez une photo de votre établissement.
+                    </p>
+
+                </div>
 
             </div>
 
@@ -130,11 +227,29 @@
                     </div>
 
 
+                    {{-- Bouton ajouter --}}
                     <button
                         type="submit"
-                        class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
                     >
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="h-5 w-5"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 5v14M5 12h14"
+                            />
+                        </svg>
+
                         Ajouter l’image
+
                     </button>
 
                 </div>
@@ -147,15 +262,54 @@
         {{-- Galerie --}}
         <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
 
-            <div class="mb-8">
+            <div class="mb-8 flex items-start gap-4">
 
-                <h2 class="text-xl font-bold text-slate-900">
-                    Galerie
-                </h2>
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
 
-                <p class="mt-1 text-sm text-slate-500">
-                    {{ $hotel->images->count() }} image(s) enregistrée(s).
-                </p>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.7"
+                        stroke="currentColor"
+                        class="h-6 w-6"
+                    >
+                        <rect
+                            x="3"
+                            y="5"
+                            width="18"
+                            height="14"
+                            rx="2"
+                            ry="2"
+                        />
+
+                        <circle
+                            cx="8.5"
+                            cy="10"
+                            r="1.5"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3 16l5-5 4 4 3-3 6 5"
+                        />
+                    </svg>
+
+                </div>
+
+
+                <div>
+
+                    <h2 class="text-xl font-bold text-slate-900">
+                        Galerie
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        {{ $hotel->images->count() }} image(s) enregistrée(s).
+                    </p>
+
+                </div>
 
             </div>
 
@@ -179,12 +333,14 @@
                             </div>
 
 
-                            <div class="flex items-center justify-between p-4">
+                            <div class="flex items-center justify-between gap-3 p-4">
 
                                 <p class="text-sm font-medium text-slate-600">
                                     Image #{{ $image->id_image }}
                                 </p>
 
+
+                                {{-- Supprimer --}}
                                 <form
                                     action="{{ route('proprietaire.images.destroy', $image->id_image) }}"
                                     method="POST"
@@ -197,9 +353,33 @@
 
                                     <button
                                         type="submit"
-                                        class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                                        class="inline-flex items-center justify-center gap-2 rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                                        title="Supprimer cette image"
                                     >
+
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.8"
+                                            stroke="currentColor"
+                                            class="h-4 w-4"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M3 6h18"
+                                            />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5"
+                                            />
+                                        </svg>
+
                                         Supprimer
+
                                     </button>
 
                                 </form>
@@ -214,15 +394,48 @@
 
             @else
 
+                {{-- Empty state --}}
                 <div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-16 text-center">
 
-                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow-sm">
-                        📷
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-slate-500 shadow-sm">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.6"
+                            stroke="currentColor"
+                            class="h-8 w-8"
+                        >
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="2"
+                                ry="2"
+                            />
+
+                            <circle
+                                cx="8.5"
+                                cy="10"
+                                r="1.5"
+                            />
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3 16l5-5 4 4 3-3 6 5"
+                            />
+                        </svg>
+
                     </div>
+
 
                     <h3 class="mt-5 text-lg font-bold text-slate-900">
                         Aucune image
                     </h3>
+
 
                     <p class="mt-2 text-sm text-slate-500">
                         Ajoutez la première photo de votre hôtel.

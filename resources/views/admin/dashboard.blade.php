@@ -74,8 +74,38 @@
 
                     </div>
 
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-xl">
-                        👥
+
+                    {{-- Users Icon --}}
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-stone-700">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-6 w-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 19.128a9.38 9.38 0 0 0 2.625.372
+                                9.337 9.337 0 0 0 4.125-.952
+                                4.125 4.125 0 0 0-7.533-2.493
+                                M15 19.128v-.003
+                                c0-1.113-.285-2.16-.786-3.07
+                                M15 19.128v.106A12.318 12.318 0 0 1
+                                8.624 21c-2.331 0-4.512-.645-6.374-1.766
+                                l-.001-.109a6.375 6.375 0 0 1
+                                11.964-3.07
+                                M12 6.375a3.375 3.375 0 1 1-6.75 0
+                                3.375 3.375 0 0 1 6.75 0
+                                Z
+                                M18 8.25a2.25 2.25 0 1 1-4.5 0
+                                2.25 2.25 0 0 1 4.5 0 Z"
+                            />
+                        </svg>
+
                     </div>
 
                 </div>
@@ -85,6 +115,7 @@
                 </p>
 
             </a>
+
 
 
             {{-- HOTELS --}}
@@ -107,8 +138,37 @@
 
                     </div>
 
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-xl">
-                        🏨
+
+                    {{-- Hotel Icon --}}
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-stone-700">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-6 w-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3.75 21h16.5
+                                M4.5 21V5.25
+                                A1.5 1.5 0 0 1 6 3.75h12
+                                A1.5 1.5 0 0 1 19.5 5.25V21
+                                M8.25 7.5h1.5
+                                M8.25 11.25h1.5
+                                M8.25 15h1.5
+                                M14.25 7.5h1.5
+                                M14.25 11.25h1.5
+                                M14.25 15h1.5
+                                M9 21v-3.75
+                                A1.5 1.5 0 0 1 10.5 15h3
+                                A1.5 1.5 0 0 1 15 17.25V21"
+                            />
+                        </svg>
+
                     </div>
 
                 </div>
@@ -118,6 +178,7 @@
                 </p>
 
             </a>
+
 
 
             {{-- RESERVATIONS --}}
@@ -140,8 +201,33 @@
 
                     </div>
 
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-xl">
-                        📅
+
+                    {{-- Calendar Icon --}}
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-stone-700">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-6 w-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M6.75 3v2.25
+                                M17.25 3v2.25
+                                M3.75 9h16.5
+                                M5.25 4.5h13.5
+                                A2.25 2.25 0 0 1 21 6.75v12
+                                A2.25 2.25 0 0 1 18.75 21H5.25
+                                A2.25 2.25 0 0 1 3 18.75v-12
+                                A2.25 2.25 0 0 1 5.25 4.5Z
+                                M8.25 12h.008v.008H8.25V12Zm3.75 0h.008v.008H12V12Zm3.75 0h.008v.008H15.75V12Zm-7.5 3.75h.008v.008H8.25v-.008Zm3.75 0h.008v.008H12v-.008Zm3.75 0h.008v.008H15.75v-.008Z"
+                            />
+                        </svg>
+
                     </div>
 
                 </div>
@@ -151,6 +237,7 @@
                 </p>
 
             </a>
+
 
 
             {{-- AVIS --}}
@@ -173,8 +260,38 @@
 
                     </div>
 
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-xl">
-                        ⭐
+
+                    {{-- Star Icon --}}
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-stone-100 text-stone-700">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-6 w-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="m11.48 3.499
+                                a.75.75 0 0 1 1.04 0
+                                l2.26 2.318
+                                3.12.454
+                                a.75.75 0 0 1 .416 1.279
+                                l-2.26 2.204
+                                .534 3.108
+                                a.75.75 0 0 1-1.088.791
+                                L12 12.188
+                                l-2.792 1.469
+                                a.75.75 0 0 1-1.088-.79
+                                l.534-3.109-2.26-2.204
+                                a.75.75 0 0 1 .416-1.279
+                                l3.12-.454 2.26-2.318Z"
+                            />
+                        </svg>
+
                     </div>
 
                 </div>
@@ -186,6 +303,7 @@
             </a>
 
         </div>
+
 
 
         {{-- GESTION DES HOTELS --}}
@@ -227,8 +345,27 @@
 
                         </div>
 
-                        <div class="text-2xl">
-                            ⏳
+
+                        {{-- Clock Icon --}}
+                        <div class="text-amber-700">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.8"
+                                stroke="currentColor"
+                                class="h-8 w-8"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 6v6l4 2
+                                    M12 21a9 9 0 1 0 0-18
+                                    9 9 0 0 0 0 18Z"
+                                />
+                            </svg>
+
                         </div>
 
                     </div>
@@ -238,6 +375,7 @@
                     </p>
 
                 </a>
+
 
 
                 {{-- VALIDES --}}
@@ -260,8 +398,25 @@
 
                         </div>
 
-                        <div class="text-2xl">
-                            ✓
+
+                        {{-- Check Icon --}}
+                        <div class="text-green-700">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="h-8 w-8"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m5 12 4 4L19 6"
+                                />
+                            </svg>
+
                         </div>
 
                     </div>
@@ -271,6 +426,7 @@
                     </p>
 
                 </a>
+
 
 
                 {{-- REFUSES --}}
@@ -293,8 +449,26 @@
 
                         </div>
 
-                        <div class="text-2xl">
-                            ×
+
+                        {{-- X Icon --}}
+                        <div class="text-red-700">
+
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2"
+                                stroke="currentColor"
+                                class="h-8 w-8"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M6 6l12 12
+                                    M18 6 6 18"
+                                />
+                            </svg>
+
                         </div>
 
                     </div>
@@ -308,6 +482,7 @@
             </div>
 
         </div>
+
 
 
         {{-- RESERVATIONS --}}
@@ -350,6 +525,7 @@
                 </a>
 
 
+
                 {{-- EN ATTENTE --}}
                 <a
                     href="{{ route('admin.reservations.index') }}"
@@ -369,6 +545,7 @@
                     </p>
 
                 </a>
+
 
 
                 {{-- CONFIRMEES --}}
@@ -396,6 +573,7 @@
         </div>
 
 
+
         {{-- QUICK ACTIONS --}}
         <div class="mt-8">
 
@@ -421,8 +599,35 @@
                     class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
 
-                    <div class="text-2xl">
-                        👥
+                    {{-- Users Icon --}}
+                    <div class="text-stone-700">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-8 w-8"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 19.128a9.38 9.38 0 0 0 2.625.372
+                                9.337 9.337 0 0 0 4.125-.952
+                                4.125 4.125 0 0 0-7.533-2.493
+                                M15 19.128v-.003
+                                c0-1.113-.285-2.16-.786-3.07
+                                M15 19.128v.106A12.318 12.318 0 0 1
+                                8.624 21c-2.331 0-4.512-.645-6.374-1.766
+                                l-.001-.109a6.375 6.375 0 0 1
+                                11.964-3.07
+                                M12 6.375a3.375 3.375 0 1 1-6.75 0
+                                3.375 3.375 0 0 1 6.75 0
+                                Z"
+                            />
+                        </svg>
+
                     </div>
 
                     <h3 class="mt-4 font-semibold text-stone-950">
@@ -440,14 +645,43 @@
                 </a>
 
 
+
                 {{-- HOTELS --}}
                 <a
                     href="{{ route('admin.hotels.index') }}"
                     class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
 
-                    <div class="text-2xl">
-                        🏨
+                    {{-- Hotel Icon --}}
+                    <div class="text-stone-700">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-8 w-8"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3.75 21h16.5
+                                M4.5 21V5.25
+                                A1.5 1.5 0 0 1 6 3.75h12
+                                A1.5 1.5 0 0 1 19.5 5.25V21
+                                M8.25 7.5h1.5
+                                M8.25 11.25h1.5
+                                M8.25 15h1.5
+                                M14.25 7.5h1.5
+                                M14.25 11.25h1.5
+                                M14.25 15h1.5
+                                M9 21v-3.75
+                                A1.5 1.5 0 0 1 10.5 15h3
+                                A1.5 1.5 0 0 1 15 17.25V21"
+                            />
+                        </svg>
+
                     </div>
 
                     <h3 class="mt-4 font-semibold text-stone-950">
@@ -465,14 +699,38 @@
                 </a>
 
 
+
                 {{-- RESERVATIONS --}}
                 <a
                     href="{{ route('admin.reservations.index') }}"
                     class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
 
-                    <div class="text-2xl">
-                        📅
+                    {{-- Calendar Icon --}}
+                    <div class="text-stone-700">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-8 w-8"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M6.75 3v2.25
+                                M17.25 3v2.25
+                                M3.75 9h16.5
+                                M5.25 4.5h13.5
+                                A2.25 2.25 0 0 1 21 6.75v12
+                                A2.25 2.25 0 0 1 18.75 21H5.25
+                                A2.25 2.25 0 0 1 3 18.75v-12
+                                A2.25 2.25 0 0 1 5.25 4.5Z"
+                            />
+                        </svg>
+
                     </div>
 
                     <h3 class="mt-4 font-semibold text-stone-950">
@@ -490,14 +748,44 @@
                 </a>
 
 
+
                 {{-- AVIS --}}
                 <a
                     href="{{ route('admin.avis.index') }}"
                     class="group rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                 >
 
-                    <div class="text-2xl">
-                        ⭐
+                    {{-- Star Icon --}}
+                    <div class="text-stone-700">
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="h-8 w-8"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="m11.48 3.499
+                                a.75.75 0 0 1 1.04 0
+                                l2.26 2.318
+                                3.12.454
+                                a.75.75 0 0 1 .416 1.279
+                                l-2.26 2.204
+                                .534 3.108
+                                a.75.75 0 0 1-1.088.791
+                                L12 12.188
+                                l-2.792 1.469
+                                a.75.75 0 0 1-1.088-.79
+                                l.534-3.109-2.26-2.204
+                                a.75.75 0 0 1 .416-1.279
+                                l3.12-.454 2.26-2.318Z"
+                            />
+                        </svg>
+
                     </div>
 
                     <h3 class="mt-4 font-semibold text-stone-950">

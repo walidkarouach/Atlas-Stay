@@ -2,66 +2,35 @@
 <html lang="fr">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
         @yield('title', 'Atlas Stay')
     </title>
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="{{ asset('images/favicon.png') }}"
-    >
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 
-    @vite([
-        'resources/css/app.css',
-        'resources/js/app.js'
-    ])
-
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
+<body class="min-h-screen bg-white text-stone-900">
 
-@php
-    $isAuthPage = request()->routeIs('login', 'register');
-@endphp
-
-
-<body class="{{ $isAuthPage ? 'min-h-screen bg-stone-100' : 'min-h-screen bg-white text-stone-900' }}">
-
-
-    {{-- =====================================================
-        NAVBAR
-        Hidden on login and register pages
-    ====================================================== --}}
-
-    @if (!$isAuthPage)
+    {{-- NAVBAR --}}
+    @if (!in_array(Route::currentRouteName(), ['login', 'register']))
 
         <header class="sticky top-0 z-50 border-b border-stone-200 bg-white">
 
             <nav class="mx-auto flex h-[80px] max-w-[1800px] items-center justify-between px-6 lg:px-10">
 
-
                 {{-- LOGO --}}
-                <a
-                    href="{{ url('/') }}"
-                    class="shrink-0"
-                >
-
+                <a href="{{ url('/') }}" class="shrink-0">
                     <img
                         src="{{ asset('images/logo-atlas.png') }}"
                         alt="Atlas Stay"
                         class="h-10 w-auto"
                     >
-
                 </a>
-
 
                 {{-- DESKTOP NAVIGATION --}}
                 <div class="hidden items-center gap-9 lg:flex">
@@ -73,14 +42,12 @@
                         Accueil
                     </a>
 
-
                     <a
                         href="{{ route('hotels.index') }}"
                         class="text-[16px] font-medium text-stone-700 transition hover:text-black"
                     >
                         Hôtels
                     </a>
-
 
                     <a
                         href="{{ url('/#destinations') }}"
@@ -89,7 +56,6 @@
                         Destinations
                     </a>
 
-
                     <a
                         href="{{ url('/#a-propos') }}"
                         class="text-[16px] font-medium text-stone-700 transition hover:text-black"
@@ -97,81 +63,69 @@
                         À propos
                     </a>
 
-
                     {{-- CLIENT --}}
                     @auth
-
                         @if (auth()->user()->role?->nom === 'Client')
-
                             <a
                                 href="{{ route('reservations.index') }}"
                                 class="text-[16px] font-medium text-stone-700 transition hover:text-black"
                             >
                                 Mes réservations
                             </a>
-
                         @endif
+                    @endauth
 
-
-                        {{-- PROPRIETAIRE --}}
+                    {{-- PROPRIETAIRE --}}
+                    @auth
                         @if (auth()->user()->role?->nom === 'Propriétaire')
-
                             <a
                                 href="{{ route('proprietaire.dashboard') }}"
                                 class="text-[16px] font-medium text-stone-700 transition hover:text-black"
                             >
                                 Dashboard
                             </a>
-
                         @endif
+                    @endauth
 
-
-                        {{-- ADMIN --}}
+                    {{-- ADMIN --}}
+                    @auth
                         @if (auth()->user()->role?->nom === 'Admin')
-
                             <a
                                 href="{{ route('admin.dashboard') }}"
                                 class="text-[16px] font-medium text-stone-700 transition hover:text-black"
                             >
                                 Dashboard
                             </a>
-
                         @endif
-
                     @endauth
 
                 </div>
-
 
                 {{-- RIGHT SIDE --}}
                 <div class="hidden items-center gap-5 lg:flex">
 
                     @auth
 
-                        {{-- NOTIFICATIONS CLIENT + PROPRIETAIRE --}}
                         @if (
                             auth()->user()->role?->nom === 'Client' ||
                             auth()->user()->role?->nom === 'Propriétaire'
                         )
 
                             @php
-
                                 $unreadNotificationsCount = auth()
                                     ->user()
                                     ->notifications()
                                     ->where('lu', false)
                                     ->count();
-
                             @endphp
 
-
+                            {{-- NOTIFICATIONS --}}
                             <a
                                 href="{{ route('notifications.index') }}"
                                 class="relative flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 text-stone-700 transition hover:bg-stone-100 hover:text-black"
                                 aria-label="Notifications"
                                 title="Notifications"
                             >
-
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -180,7 +134,6 @@
                                     stroke="currentColor"
                                     class="h-5 w-5"
                                 >
-
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -192,31 +145,24 @@
                                         stroke-linejoin="round"
                                         d="M9.75 17.25a2.25 2.25 0 0 0 4.5 0"
                                     />
-
                                 </svg>
 
-
                                 @if ($unreadNotificationsCount > 0)
-
                                     <span
                                         class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white"
                                     >
                                         {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
                                     </span>
-
                                 @endif
-
                             </a>
 
                         @endif
-
 
                         {{-- PROFILE --}}
                         <a
                             href="{{ route('profile.index') }}"
                             class="text-right leading-tight transition hover:opacity-70"
                         >
-
                             <div class="text-[15px] font-semibold text-stone-900">
                                 {{ auth()->user()->nom }}
                             </div>
@@ -224,16 +170,13 @@
                             <div class="mt-1 text-sm text-stone-500">
                                 {{ auth()->user()->role?->nom }}
                             </div>
-
                         </a>
-
 
                         {{-- LOGOUT --}}
                         <form
                             action="{{ route('logout') }}"
                             method="POST"
                         >
-
                             @csrf
 
                             <button
@@ -242,7 +185,6 @@
                             >
                                 Déconnexion
                             </button>
-
                         </form>
 
                     @else
@@ -255,7 +197,6 @@
                             Connexion
                         </a>
 
-
                         <a
                             href="{{ route('register') }}"
                             class="rounded-2xl bg-stone-900 px-5 py-2.5 text-[15px] font-medium text-white transition hover:bg-black"
@@ -267,7 +208,6 @@
 
                 </div>
 
-
                 {{-- MOBILE BUTTON --}}
                 <button
                     id="mobile-menu-button"
@@ -275,7 +215,6 @@
                     class="flex h-10 w-10 items-center justify-center rounded-xl border border-stone-200 text-stone-700 lg:hidden"
                     aria-label="Ouvrir le menu"
                 >
-
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -284,26 +223,21 @@
                         stroke="currentColor"
                         class="h-5 w-5"
                     >
-
                         <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"
                         />
-
                     </svg>
-
                 </button>
 
             </nav>
-
 
             {{-- MOBILE MENU --}}
             <div
                 id="mobile-menu"
                 class="hidden border-t border-stone-200 bg-white lg:hidden"
             >
-
                 <div class="space-y-1 px-6 py-5">
 
                     <a
@@ -313,14 +247,12 @@
                         Accueil
                     </a>
 
-
                     <a
                         href="{{ route('hotels.index') }}"
                         class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
                     >
                         Hôtels
                     </a>
-
 
                     <a
                         href="{{ url('/#destinations') }}"
@@ -329,7 +261,6 @@
                         Destinations
                     </a>
 
-
                     <a
                         href="{{ url('/#a-propos') }}"
                         class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
@@ -337,44 +268,7 @@
                         À propos
                     </a>
 
-
                     @auth
-
-                        @if (auth()->user()->role?->nom === 'Client')
-
-                            <a
-                                href="{{ route('reservations.index') }}"
-                                class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
-                            >
-                                Mes réservations
-                            </a>
-
-                        @endif
-
-
-                        @if (auth()->user()->role?->nom === 'Propriétaire')
-
-                            <a
-                                href="{{ route('proprietaire.dashboard') }}"
-                                class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
-                            >
-                                Dashboard
-                            </a>
-
-                        @endif
-
-
-                        @if (auth()->user()->role?->nom === 'Admin')
-
-                            <a
-                                href="{{ route('admin.dashboard') }}"
-                                class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
-                            >
-                                Dashboard
-                            </a>
-
-                        @endif
-
 
                         @if (
                             auth()->user()->role?->nom === 'Client' ||
@@ -383,13 +277,39 @@
 
                             <a
                                 href="{{ route('notifications.index') }}"
-                                class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                                class="flex items-center justify-between rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
                             >
-                                Notifications
+                                <span>Notifications</span>
                             </a>
 
                         @endif
 
+                        @if (auth()->user()->role?->nom === 'Client')
+                            <a
+                                href="{{ route('reservations.index') }}"
+                                class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                            >
+                                Mes réservations
+                            </a>
+                        @endif
+
+                        @if (auth()->user()->role?->nom === 'Propriétaire')
+                            <a
+                                href="{{ route('proprietaire.dashboard') }}"
+                                class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                            >
+                                Dashboard
+                            </a>
+                        @endif
+
+                        @if (auth()->user()->role?->nom === 'Admin')
+                            <a
+                                href="{{ route('admin.dashboard') }}"
+                                class="block rounded-xl px-4 py-3 text-stone-700 hover:bg-stone-100"
+                            >
+                                Dashboard
+                            </a>
+                        @endif
 
                         <a
                             href="{{ route('profile.index') }}"
@@ -398,13 +318,11 @@
                             {{ auth()->user()->nom }}
                         </a>
 
-
                         <form
                             action="{{ route('logout') }}"
                             method="POST"
                             class="mt-2"
                         >
-
                             @csrf
 
                             <button
@@ -413,7 +331,6 @@
                             >
                                 Déconnexion
                             </button>
-
                         </form>
 
                     @else
@@ -425,7 +342,6 @@
                             Connexion
                         </a>
 
-
                         <a
                             href="{{ route('register') }}"
                             class="block rounded-xl bg-stone-900 px-4 py-3 text-white"
@@ -436,7 +352,6 @@
                     @endauth
 
                 </div>
-
             </div>
 
         </header>
@@ -444,23 +359,14 @@
     @endif
 
 
-    {{-- =====================================================
-        MAIN CONTENT
-    ====================================================== --}}
-
-    <main class="{{ $isAuthPage ? 'min-h-screen' : '' }}">
-
+    {{-- MAIN CONTENT --}}
+    <main>
         @yield('content')
-
     </main>
 
 
-    {{-- =====================================================
-        FOOTER
-        Hidden on login and register pages
-    ====================================================== --}}
-
-    @if (!$isAuthPage)
+    {{-- FOOTER --}}
+    @if (!in_array(Route::currentRouteName(), ['login', 'register']))
 
         <footer class="border-t border-stone-800 bg-stone-950 text-white">
 
@@ -468,10 +374,8 @@
 
                 <div class="grid gap-10 md:grid-cols-3">
 
-
-                    {{-- ATLAS STAY --}}
+                    {{-- Atlas Stay --}}
                     <div>
-
                         <img
                             src="{{ asset('images/logo-atlas.png') }}"
                             alt="Atlas Stay"
@@ -479,16 +383,12 @@
                         >
 
                         <p class="mt-5 max-w-xs text-sm leading-6 text-stone-400">
-                            Découvrez des hôtels authentiques dans les plus belles
-                            régions montagneuses du Maroc.
+                            Découvrez des hôtels authentiques dans les plus belles régions montagneuses du Maroc.
                         </p>
-
                     </div>
 
-
-                    {{-- NAVIGATION --}}
+                    {{-- Navigation --}}
                     <div>
-
                         <p class="text-[10px] font-semibold uppercase tracking-[0.25em] text-stone-300">
                             Navigation
                         </p>
@@ -502,7 +402,6 @@
                                 Accueil
                             </a>
 
-
                             <a
                                 href="{{ route('hotels.index') }}"
                                 class="block text-sm text-stone-400 transition hover:text-white"
@@ -510,14 +409,12 @@
                                 Hôtels
                             </a>
 
-
                             <a
                                 href="{{ url('/#destinations') }}"
                                 class="block text-sm text-stone-400 transition hover:text-white"
                             >
                                 Destinations
                             </a>
-
 
                             <a
                                 href="{{ url('/#a-propos') }}"
@@ -527,13 +424,10 @@
                             </a>
 
                         </div>
-
                     </div>
 
-
-                    {{-- INFORMATION --}}
+                    {{-- Atlas Stay --}}
                     <div>
-
                         <p class="text-[10px] font-semibold uppercase tracking-[0.25em] text-stone-300">
                             Atlas Stay
                         </p>
@@ -549,19 +443,15 @@
                             </p>
 
                         </div>
-
                     </div>
 
                 </div>
 
-
-                {{-- BOTTOM --}}
+                {{-- Bottom --}}
                 <div class="mt-10 border-t border-stone-800 pt-6">
-
                     <p class="text-center text-xs text-stone-500">
                         © {{ date('Y') }} Atlas Stay. Tous droits réservés.
                     </p>
-
                 </div>
 
             </div>
@@ -571,30 +461,21 @@
     @endif
 
 
-    {{-- MOBILE MENU JAVASCRIPT --}}
+    {{-- MOBILE MENU JS --}}
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
 
             const button = document.getElementById('mobile-menu-button');
-
             const menu = document.getElementById('mobile-menu');
 
-
             if (button && menu) {
-
                 button.addEventListener('click', function () {
-
                     menu.classList.toggle('hidden');
-
                 });
-
             }
 
         });
-
     </script>
-
 
 </body>
 

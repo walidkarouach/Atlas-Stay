@@ -16,8 +16,8 @@ class AdminAvisWebController extends Controller
             'utilisateur:id_user,nom,email',
             'hotel:id_hotel,nom,ville',
         ])
-        ->orderByDesc('created_at')
-        ->paginate(10);
+            ->orderByDesc('id_avis')
+            ->paginate(10);
 
         return view(
             'admin.avis.index',
